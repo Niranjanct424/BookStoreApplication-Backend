@@ -22,15 +22,15 @@ public class CustomerController {
 
 	@Autowired
 	Customerservice service;
-	
-	@PostMapping( value = "carts/addcart/{bookId}/{userId}")
-	public ResponseEntity<BookResponse> addCart( @PathVariable( value = "bookId") long bookId,
-			                                            @PathVariable( value = "userId") long userId) {
+
+	@PostMapping(value = "carts/addcart/{bookId}/{userId}")
+	public ResponseEntity<BookResponse> addCart(@PathVariable(value = "bookId") long bookId,
+			@PathVariable(value = "userId") long userId) {
 		List<BookInformation> bookinfo = service.getBookfromCart(bookId, userId);
 
-			 return ResponseEntity.status(HttpStatus.OK).body( new BookResponse("Book Details Found..", bookinfo));
+		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Book Details Found..", bookinfo));
 	}
-	   
+
 //	@DeleteMapping( value = "deletecart/{bookId}/{cartId}")
 //	public ResponseEntity<BookResponse> deletefromCart( @PathVariable( value = "bookId") long bookId,
 //			                                            @PathVariable( value = "cartId") long cartId) {
@@ -48,10 +48,11 @@ public class CustomerController {
 //			return ResponseEntity.status(HttpStatus.OK).body( new BookResponse("Book Detail are :", info));
 //	}
 
-	@PostMapping( value = "customers/addcustomer")
-	public ResponseEntity<BookResponse> addCustomerDetails( @RequestBody CustomerDto dto) {
+	@PostMapping(value = "customers/addcustomer")
+	public ResponseEntity<BookResponse> addCustomerDetails(@RequestBody CustomerDto dto) {
 		CustomerInformation is_created = service.addCustomerDetails(dto);
-			return ResponseEntity.status(HttpStatus.CREATED).body( new BookResponse("Added Customer Details is:", is_created));
-	
-}
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(new BookResponse("Added Customer Details is:", is_created));
+
+	}
 }
