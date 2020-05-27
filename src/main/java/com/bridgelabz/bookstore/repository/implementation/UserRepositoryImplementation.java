@@ -45,26 +45,60 @@ public class UserRepositoryImplementation implements IUserRepository {
 
 	@Override
 	public boolean verify(Long id) {
-		// TODO Auto-generated method stub
-		return false;
+		Session session = entityManager.unwrap(Session.class);
+		Query q = session.createQuery("update UserInformation set is_verified=:p" + " " + " " + "where id=:i");
+		q.setParameter("p", true);
+		q.setParameter("i", id);
+
+		int status = q.executeUpdate();
+		if (status > 0) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
+
+
+	/**
+	 *  Here updating password
+	 *  @param password and id
+	 *  @return true and false
+	 */
 
 	@Override
-	public boolean upDate(PasswordUpdate information, Long token) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public boolean upDate(PasswordUpdate information, Long id) {
+		Session session = entityManager.unwrap(Session.class);
+		Query q = session.createQuery("update UserInformation set password=:p" + " " + " " + "where id=:i");
+		q.setParameter("p", information.getConfirmPassword());
+		q.setParameter("i", id);
 
+		int status = q.executeUpdate();
+		if (status > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	/**
+	 * Getting the userInformation based on there Id
+	 * @return user details
+	 * @param id of the user
+	 */
 	@Override
 	public UserInformation getUserById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = entityManager.unwrap(Session.class);
+		Query q = session.createQuery(" FROM UserInformation where id=:id");
+		q.setParameter("id", id);
+		return (UserInformation) q.uniqueResult();
+
 	}
 
 	@Override
 	public List<UserInformation> getUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		Session currentsession = entityManager.unwrap(Session.class);
+		List<UserInformation> usersList = currentsession.createQuery("from UserInformation").getResultList();
+		return  usersList;
 	}
 
 }

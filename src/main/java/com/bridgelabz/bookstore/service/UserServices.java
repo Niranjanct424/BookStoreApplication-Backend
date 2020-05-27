@@ -7,8 +7,8 @@ import java.util.List;
 
 import com.bridgelabz.bookstore.dto.UserDto;
 import com.bridgelabz.bookstore.entity.UserInformation;
+import com.bridgelabz.bookstore.request.LoginInformation;
 import com.bridgelabz.bookstore.request.PasswordUpdate;
-import com.bridgelabz.bookstore.response.UserInfo;
 
 /**
  * @author HP
@@ -16,7 +16,7 @@ import com.bridgelabz.bookstore.response.UserInfo;
  */
 public interface UserServices {
 
-	UserInfo login(UserInformation information);
+	UserInformation login(LoginInformation information);
 	boolean register(UserDto ionformation);
 	boolean verify(String token) throws Exception;
 	boolean isUserExist(String email);
