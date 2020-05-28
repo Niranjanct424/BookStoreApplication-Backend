@@ -10,8 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "usersdetail")
+@Data
 public class UserInformation {
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
@@ -102,5 +105,14 @@ public class UserInformation {
 		}
 		public void setCartId(CartInformation cartId) {
 			this.cartId = cartId;
+		}
+		@Override
+		public String toString() {
+			return "UserInformation [userId=" + userId + ", name=" + name + ", email=" + email + ", password="
+					+ password + ", mobileNumber=" + mobileNumber + ", createdDate=" + createdDate + ", isVerified="
+					+ isVerified + ", role=" + role + ", Home=" + Home + ", Work=" + Work + ", Others=" + Others
+					+ ", cartId=" + cartId + "]";
 		}	
+		
+		
 }

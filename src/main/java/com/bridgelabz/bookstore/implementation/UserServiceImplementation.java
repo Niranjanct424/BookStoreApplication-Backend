@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.transaction.Transactional;
 
+import org.jboss.jandex.Main;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -142,9 +143,10 @@ public class UserServiceImplementation implements UserServices {
 		try {
 			UserInformation user = repository.getUser(email);
 			if (user.isVerified() == true) {
-				String mailResponse = response.formMessage("http://localhost:4200/update-password",
+				String mailResponse = response.formMessage("http://localhost:8080/update-password",
 						generate.jwtToken(user.getUserId()));
-				MailServiceProvider.sendEmail(user.getEmail(), "verification", mailResponse);
+				System.out.println(mailResponse);
+				MailServiceProvider.sendEmail(user.getEmail(), "Reset Your Password", mailResponse);
 				return true;
 			} else {
 				return false;
@@ -153,11 +155,32 @@ public class UserServiceImplementation implements UserServices {
 			throw new UserException("User doesn't exist");
 		}
 	}
-
+	@Transactional
 	@Override
 	public boolean update(PasswordUpdate information, String token) {
-		// TODO Auto-generated method stub
-		return false;
+		System.out.println("User information" + information.toString());
+		if (information.getNewPassword().equals(information.getConfirmPassword())) {
+			Long id = null;
+			try {
+				id = (long) generate.parseJWT(token);
+				System.out.println("User id " +id);
+				UserInformation UpdateUser = repository.getUser(information.getEmail());
+				System.out.println("updated user info" + UpdateUser);
+				if (id == UpdateUser.getUserId()) {
+					String epassword = encryption.encode(information.getConfirmPassword());
+					information.setConfirmPassword(epassword);
+					
+					return repository.upDate(information, id);
+				} else {
+					throw new UserException("Please Enter valid Email ");
+				}
+			} catch (Exception e) {
+				throw new UserException("invalid credentials");}
+		}
+		else {
+			System.out.println("Password Not match");
+			throw new UserException("invalid password");
+		}
 	}
 
 	@Override
@@ -166,10 +189,22 @@ public class UserServiceImplementation implements UserServices {
 		return null;
 	}
 
+	/**
+	 * by this we can get the single user
+	 *
+	 * @param it's taking the token
+	 * @return returning the single user
+	 */
+	@Transactional
 	@Override
 	public UserInformation getSingleUser(String token) {
-		// TODO Auto-generated method stub
-		return null;
+		Long id;
+		try {
+			 id = (long) generate.parseJWT(token);
+		} catch (Exception e) {
+			throw new UserException("User doesn't exist");}
+		UserInformation user=repository.getUserById(id);
+		return user;
 	}
 
 }

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,8 @@ import com.bridgelabz.bookstore.dto.UserDto;
 import com.bridgelabz.bookstore.entity.UserInformation;
 import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.request.LoginInformation;
+import com.bridgelabz.bookstore.request.PasswordReset;
+import com.bridgelabz.bookstore.request.PasswordUpdate;
 import com.bridgelabz.bookstore.response.Response;
 import com.bridgelabz.bookstore.response.UsersDetailRes;
 import com.bridgelabz.bookstore.service.UserServices;
@@ -80,8 +84,45 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * This is used for the get one user based on there token
+	 * @param token
+	 * @return response
+	 */
+
+	@PostMapping("user/forgotpassword")
+	public ResponseEntity<Response> forgogPassword(@RequestBody PasswordReset passwordReset) {
+	
+		boolean result = service.isUserExist(passwordReset.getEmail());
+		if (result) {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("Check your email: Email sent", 200));
+		} else {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("user does not exist with given email id", 400));
+		}
+
+	}
+	
+	@PutMapping("user/update/{token}")
+	public ResponseEntity<Response> update(@PathVariable("token") String token, @RequestBody PasswordUpdate update) {
+		
+		System.out.println("inside controller  " +token);
+		boolean result = service.update(update, token);
+		if (result) {
+			return ResponseEntity.status(HttpStatus.ACCEPTED)
+					.body(new Response("password updated successfully", 200));
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Response("password doesn't match", 401));
+		}
+
+	}
 	
 	
-	
+	@GetMapping("user/getOneUser")
+	public ResponseEntity<Response> getOneUsers(@RequestHeader("token") String token){
+	UserInformation user=service.getSingleUser(token);
+		return ResponseEntity.status(HttpStatus.ACCEPTED)
+				.body(new Response("user is", 200, user));
+	}
 
 }
