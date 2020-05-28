@@ -29,6 +29,11 @@ public interface BookImple extends JpaRepository<BookInformation, Long> {
 	@Query("delete from BookInformation where book_id=:id")
 	void deleteByBookId(long id);
 	
-	@Query( value = "select * from bookinfo where is_approved=true", nativeQuery = true)
+	@Query( value = "select * from bookinfo where status='approved'", nativeQuery = true)
     List<BookInformation> getAllApprovedBooks();
+	
+	@Modifying
+	@Query("update from BookInformation set status=:status where book_id=:id")
+	int updateBookStatusByBookId(String status,long id);
+
 }

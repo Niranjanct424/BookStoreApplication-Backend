@@ -31,6 +31,8 @@ public interface IBookService {
 
 	List<BookInformation> getAllAprovedBooks();
 
+	boolean editStatus(long bookId, String status);
+
 	
 	
 }
