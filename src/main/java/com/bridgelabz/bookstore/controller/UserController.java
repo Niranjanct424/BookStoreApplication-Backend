@@ -140,4 +140,12 @@ public class UserController {
 				.body(new Response("user is", 200, user));
 	}
 
+	
+	@GetMapping("user/getOneUser")
+	public ResponseEntity<Response> getAllUser(@RequestHeader("token") String token){
+	UserInformation user=service.getSingleUser(token);
+		return ResponseEntity.status(HttpStatus.ACCEPTED)
+				.body(new Response("user is", 200, user));
+	}
+
 }
