@@ -16,40 +16,38 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "cartinfo")
-public class CartInformation  {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)	
-private long cartId;
-@OneToOne
-private CustomerInformation userId;
-@ManyToMany
-@JsonIgnore
-private List<BookInformation> bookId;
+public class CartInformation {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long cartId;
+	@OneToOne
+	private CustomerInformation userId;
+	@ManyToMany
+	@JsonIgnore
+	private List<BookInformation> bookId;
 
+	public long getCartId() {
+		return cartId;
+	}
 
-public long getCartId() {
-	return cartId;
-}
+	public void setCartId(long cartId) {
+		this.cartId = cartId;
+	}
 
-public void setCartId(long cartId) {
-	this.cartId = cartId;
-}
+	public CustomerInformation getUserId() {
+		return userId;
+	}
 
-public CustomerInformation getUserId() {
-	return userId;
-}
+	public void setUserId(CustomerInformation userId) {
+		this.userId = userId;
+	}
 
-public void setUserId(CustomerInformation userId) {
-	this.userId = userId;
-}
+	public List<BookInformation> getBookId() {
+		return bookId;
+	}
 
-public List<BookInformation> getBookId() {
-	return bookId;
-}
-
-public void setBookId(List<BookInformation> bookId) {
-	this.bookId = bookId;
-}
-
+	public void setBookId(List<BookInformation> bookId) {
+		this.bookId = bookId;
+	}
 
 }
