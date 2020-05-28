@@ -1,1 +1,5 @@
 2020-05-26 11:06:34,489 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+<<<<<<< HEAD
+=======
+2020-05-27 13:30:34,634 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+>>>>>>> 489ab49b64f9c6308c5e760fbfc6c496273eafd8

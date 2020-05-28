@@ -2,6 +2,7 @@ package com.bridgelabz.bookstore.service;
 
 import java.util.List;
 import com.bridgelabz.bookstore.dto.BookDto;
+import com.bridgelabz.bookstore.dto.EditBookDto;
 import com.bridgelabz.bookstore.entity.BookInformation;
 
 public interface IBookService {
@@ -24,7 +25,19 @@ public interface IBookService {
 
 	BookInformation getTotalPriceofBook(long bookId, int quantity);
 	
+<<<<<<< HEAD
 	public void deleteBook(int bookId);
+=======
+	BookInformation getTotalPriceofBook( long bookId, int quantity);
+
+	boolean editBook(EditBookDto information);
+
+	boolean deleteBook(long bookId);
+
+	List<BookInformation> getAllAprovedBooks();
+
+	
+>>>>>>> 489ab49b64f9c6308c5e760fbfc6c496273eafd8
 	
 	/*
 	 * 
