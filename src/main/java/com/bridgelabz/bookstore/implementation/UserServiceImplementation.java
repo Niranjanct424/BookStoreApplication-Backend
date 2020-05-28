@@ -71,18 +71,22 @@ public class UserServiceImplementation implements UserServices {
 	public UserInformation login(LoginInformation information) {
 		UserInformation user = repository.getUser(information.getEmail());
 		if (user != null) {
-			if ((user.isVerified() == true)) {
-				if (encryption.matches(information.getPassword(), user.getPassword())) {
-					System.out.println(generate.jwtToken(user.getUserId()));
-					return user;
-				} else {
-					throw new UserException("Invalid password");
-				}
-			} else {
-				String mailResponse = response.formMessage("http://localhost:8080/user/verify",
-						generate.jwtToken(user.getUserId()));
-				MailServiceProvider.sendEmail(information.getEmail(), "verification", mailResponse);
-				throw new UserException("Please verify Your email id");
+			String userRole=information.getRole();
+			String fetchRole=user.getRole();
+			if(fetchRole.equals("admin")) {
+				UserInformation userInfo = verifyPassword(user, information);
+				return userInfo;
+			}
+			else if(fetchRole.equals("seller") && !userRole.equals("admin")) {
+				UserInformation userInfo = verifyPassword(user, information);
+				return userInfo;
+			}
+			else if(fetchRole.equals(userRole)) {
+				UserInformation userInfo = verifyPassword(user, information);
+				return userInfo;
+			}
+			else {
+				throw new UserException("Your are not Authorized person");
 			}
 		} else {
 			throw new UserException("User Not present enter valid your email id");
@@ -90,6 +94,26 @@ public class UserServiceImplementation implements UserServices {
 
 	}
 
+	
+	
+	
+	public UserInformation verifyPassword(UserInformation user, LoginInformation information) {
+		if ((user.isVerified() == true)) {
+			if (encryption.matches(information.getPassword(), user.getPassword())) {
+				System.out.println(generate.jwtToken(user.getUserId()));
+				return user;
+			} else {
+				throw new UserException("Invalid password");
+			}
+		} else {
+			String mailResponse = response.formMessage("http://localhost:8080/user/verify",
+					generate.jwtToken(user.getUserId()));
+			MailServiceProvider.sendEmail(information.getEmail(), "verification", mailResponse);
+			throw new UserException("Please verify Your email id");
+		}	
+	}
+	
+	
 	/**
 	 * Verifying the user based on there token
 	 * @param id
