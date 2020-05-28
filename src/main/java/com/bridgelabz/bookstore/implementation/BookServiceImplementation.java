@@ -1,6 +1,7 @@
 package com.bridgelabz.bookstore.implementation;
 
 import com.bridgelabz.bookstore.dto.BookDto;
+import com.bridgelabz.bookstore.dto.EditBookDto;
 import com.bridgelabz.bookstore.entity.BookInformation;
 import com.bridgelabz.bookstore.entity.CartInformation;
 import com.bridgelabz.bookstore.repository.AddressRepository;
@@ -48,17 +49,20 @@ public class BookServiceImplementation implements IBookService {
 		bookinformation.setPrice(information.getPrice());
 		bookinformation.setQuantity(information.getQuantity());
 		bookinformation.setCreatedDateAndTime(LocalDateTime.now());
+		bookinformation.setApproved(false);
 		repository.save(bookinformation);
 		return true;
 	}
 
 	@Transactional
 	@Override
-	public List<BookInformation> getBookInfo() {
+	public List<BookInformation> getBookInfo() 
+	{
 		List<BookInformation> users = repository.getAllBooks();
-
 		return users;
 	}
+	
+	
 
 	@Transactional
 	@Override
@@ -209,5 +213,42 @@ public class BookServiceImplementation implements IBookService {
 	           }
 		return null;
 	}
+
+	@Override
+	public boolean editBook(EditBookDto information) {
+		BookInformation info =repository.fetchbyId(information.getBookId());
+		if(info!=null) {
+			info.setBookId(information.getBookId());
+			info.setBookName(information.getBookName());
+			info.setQuantity(information.getQuantity());
+			info.setPrice(information.getPrice());
+			info.setAuthorName(information.getAuthorName());
+			info.setBookDetails(information.getBookDetails());
+			info.setImage(information.getImage());
+			info.setUpdatedDateAndTime(information.getUpdatedAt());
+			repository.save(info);
+			return true;
+		}
+		return false;
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteBook(long bookId) {
+		BookInformation info =repository.fetchbyId(bookId);
+		if(info!=null) {
+			repository.deleteByBookId(bookId);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public List<BookInformation> getAllAprovedBooks() {
+		List<BookInformation> approvedBooks=repository.getAllApprovedBooks();
+		return approvedBooks;
+	}
+
+	
 
 }
