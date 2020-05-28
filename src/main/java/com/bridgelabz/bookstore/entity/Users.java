@@ -15,7 +15,7 @@ import lombok.Data;
 @Entity
 @Table(name = "usersdetail")
 @Data
-public class UserInformation {
+public class Users {
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private long userId;
@@ -33,7 +33,7 @@ public class UserInformation {
 		@OneToOne
 		private Address Others;
 		@OneToOne( mappedBy = "userId")
-		private CartInformation cartId;
+		private Cart cartId;
 		public long getUserId() {
 			return userId;
 		}
@@ -100,10 +100,10 @@ public class UserInformation {
 		public void setOthers(Address others) {
 			Others = others;
 		}
-		public CartInformation getCartId() {
+		public Cart getCartId() {
 			return cartId;
 		}
-		public void setCartId(CartInformation cartId) {
+		public void setCartId(Cart cartId) {
 			this.cartId = cartId;
 		}
 		@Override

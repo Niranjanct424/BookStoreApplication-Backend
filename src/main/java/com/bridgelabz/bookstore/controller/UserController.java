@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.bookstore.dto.UserDto;
-import com.bridgelabz.bookstore.entity.UserInformation;
+import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.request.LoginInformation;
 import com.bridgelabz.bookstore.request.PasswordReset;
@@ -54,9 +54,9 @@ public class UserController {
 	@PostMapping("/user/login")
 	public ResponseEntity<UsersDetailRes> login(@RequestBody LoginInformation information) {
 		
-		UserInformation userInformation = service.login(information);
-		if (userInformation!=null) {
-			String token=generate.jwtToken(userInformation.getUserId());
+		Users users = service.login(information);
+		if (users!=null) {
+			String token=generate.jwtToken(users.getUserId());
 			return ResponseEntity.status(HttpStatus.ACCEPTED).header("login successfull", information.getEmail())
 					.body(new UsersDetailRes(token, 200, information));
 		}
@@ -135,7 +135,7 @@ public class UserController {
 	
 	@GetMapping("user/getOneUser")
 	public ResponseEntity<Response> getOneUsers(@RequestHeader("token") String token){
-	UserInformation user=service.getSingleUser(token);
+	Users user=service.getSingleUser(token);
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("user is", 200, user));
 	}
@@ -143,7 +143,7 @@ public class UserController {
 	
 	@GetMapping("user/getallUser")
 	public ResponseEntity<Response> getAllUser(@RequestHeader("token") String token){
-	UserInformation user=service.getSingleUser(token);
+	Users user=service.getSingleUser(token);
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("user is", 200, user));
 	}

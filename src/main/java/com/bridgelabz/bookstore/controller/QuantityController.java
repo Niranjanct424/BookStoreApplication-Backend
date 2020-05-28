@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.bookstore.implementation.QuantityServiceImpl;
 import com.bridgelabz.bookstore.response.BookResponse;
 
-@RestController
-@CrossOrigin
+//@RestController
+//@CrossOrigin
 
 @RequestMapping("/books")
 public class QuantityController {

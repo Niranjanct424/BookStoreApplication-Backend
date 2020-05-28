@@ -5,7 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bridgelabz.bookstore.entity.BookInformation;
+import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.QuantityEntity;
 import com.bridgelabz.bookstore.repository.BookImple;
 import com.bridgelabz.bookstore.repository.QuantityRepository;
@@ -25,7 +25,7 @@ public class QuantityServiceImpl implements QuantityService{
 	@Override
 	public void addQuantity(long bookId,int Quantity) 
 	{
-	BookInformation book=bookrepo.fetchbyId(bookId);
+	Book book=bookrepo.fetchbyId(bookId);
 	QuantityEntity en = new QuantityEntity();
 	if(book!=null)
 	{

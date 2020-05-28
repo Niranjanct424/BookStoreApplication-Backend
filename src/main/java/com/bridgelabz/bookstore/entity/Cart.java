@@ -1,6 +1,7 @@
 package com.bridgelabz.bookstore.entity;
 
 import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,20 +12,18 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name = "cartinfo")
-public class CartInformation {
+public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long cartId;
+	//private LocalDateTime placeTime;
 	@OneToOne
-	private CustomerInformation userId;
+	private Users userId;
 	@ManyToMany
 	@JsonIgnore
-	private List<BookInformation> bookId;
+	private List<Book> bookId;
 
 	public long getCartId() {
 		return cartId;
@@ -34,19 +33,19 @@ public class CartInformation {
 		this.cartId = cartId;
 	}
 
-	public CustomerInformation getUserId() {
+	public Users getUserId() {
 		return userId;
 	}
 
-	public void setUserId(CustomerInformation userId) {
+	public void setUserId(Users userId) {
 		this.userId = userId;
 	}
 
-	public List<BookInformation> getBookId() {
+	public List<Book> getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(List<BookInformation> bookId) {
+	public void setBookId(List<Book> bookId) {
 		this.bookId = bookId;
 	}
 

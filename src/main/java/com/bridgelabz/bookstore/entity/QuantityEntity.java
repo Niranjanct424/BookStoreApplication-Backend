@@ -36,12 +36,12 @@ public class QuantityEntity
 	}
 	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name ="bookId")	
-	private BookInformation  bookquantity;
+	private Book  bookquantity;
 	
-	public BookInformation getBookquantity() {
+	public Book getBookquantity() {
 		return bookquantity;
 	}
-	public void setBookquantity(BookInformation bookquantity) {
+	public void setBookquantity(Book bookquantity) {
 		this.bookquantity = bookquantity;
 	}
 }

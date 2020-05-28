@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.bookstore.dto.UserDto;
-import com.bridgelabz.bookstore.entity.UserInformation;
+import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.request.LoginInformation;
@@ -26,7 +26,7 @@ import com.bridgelabz.bookstore.util.MailServiceProvider;
 
 @Service
 public class UserServiceImplementation implements UserServices {
-	private UserInformation userInformation = new UserInformation();
+	private Users users = new Users();
 	@Autowired
 	private IUserRepository repository;
 
@@ -44,19 +44,19 @@ public class UserServiceImplementation implements UserServices {
 	@Override
 	@Transactional
 	public boolean register(UserDto information) {
-		UserInformation user = repository.getUser(information.getEmail());
+		Users user = repository.getUser(information.getEmail());
 		if (user == null) {
-			userInformation = modelMapper.map(information, UserInformation.class);
-			userInformation.setCreatedDate(LocalDateTime.now());
+			users = modelMapper.map(information, Users.class);
+			users.setCreatedDate(LocalDateTime.now());
 			String epassword = encryption.encode(information.getPassword());
 			// setting the some extra information and encrypting the password
-			userInformation.setPassword(epassword);
+			users.setPassword(epassword);
 			System.out.println("password is" + epassword);
-			userInformation.setVerified(false);
+			users.setVerified(false);
 			// calling the save method
-			userInformation = repository.save(userInformation);
+			users = repository.save(users);
 			String mailResponse = response.formMessage("http://localhost:8080/user/verify",
-					generate.jwtToken(userInformation.getUserId()));
+					generate.jwtToken(users.getUserId()));
 			// setting the data to mail
 			System.out.println(mailResponse);
 			return true;
@@ -68,19 +68,19 @@ public class UserServiceImplementation implements UserServices {
 	}
 
 	@Override
-	public UserInformation login(LoginInformation information) {
-		UserInformation user = repository.getUser(information.getEmail());
+	public Users login(LoginInformation information) {
+		Users user = repository.getUser(information.getEmail());
 		if (user != null) {
 			String userRole = information.getRole();
 			String fetchRole = user.getRole();
 			if (fetchRole.equals("admin")) {
-				UserInformation userInfo = verifyPassword(user, information);
+				Users userInfo = verifyPassword(user, information);
 				return userInfo;
 			} else if (fetchRole.equals("seller") && !userRole.equals("admin")) {
-				UserInformation userInfo = verifyPassword(user, information);
+				Users userInfo = verifyPassword(user, information);
 				return userInfo;
 			} else if (fetchRole.equals(userRole)) {
-				UserInformation userInfo = verifyPassword(user, information);
+				Users userInfo = verifyPassword(user, information);
 				return userInfo;
 			} else {
 				throw new UserException("Your are not Authorized person");
@@ -101,7 +101,7 @@ public class UserServiceImplementation implements UserServices {
 		long id;
 		try {
 			id = (long) generate.parseJWT(token);
-			UserInformation information = repository.getUserById(id);
+			Users information = repository.getUserById(id);
 			String userRole = information.getRole();
 			System.out.println("actual Role is " + userRole);
 			System.out.println("expected role is" + role);
@@ -120,7 +120,7 @@ public class UserServiceImplementation implements UserServices {
 		}
 	}
 
-	public UserInformation verifyPassword(UserInformation user, LoginInformation information) {
+	public Users verifyPassword(Users user, LoginInformation information) {
 		if ((user.isVerified() == true)) {
 			if (encryption.matches(information.getPassword(), user.getPassword())) {
 				System.out.println(generate.jwtToken(user.getUserId()));
@@ -162,7 +162,7 @@ public class UserServiceImplementation implements UserServices {
 	@Override
 	public boolean isUserExist(String email) {
 		try {
-			UserInformation user = repository.getUser(email);
+			Users user = repository.getUser(email);
 			if (user.isVerified() == true) {
 				String mailResponse = response.formMessage("http://localhost:8080/update-password",
 						generate.jwtToken(user.getUserId()));
@@ -186,7 +186,7 @@ public class UserServiceImplementation implements UserServices {
 			try {
 				id = (long) generate.parseJWT(token);
 				System.out.println("User id " + id);
-				UserInformation UpdateUser = repository.getUser(information.getEmail());
+				Users UpdateUser = repository.getUser(information.getEmail());
 				System.out.println("updated user info" + UpdateUser);
 				if (id == UpdateUser.getUserId()) {
 					String epassword = encryption.encode(information.getConfirmPassword());
@@ -206,7 +206,7 @@ public class UserServiceImplementation implements UserServices {
 	}
 
 	@Override
-	public List<UserInformation> getUsers() {
+	public List<Users> getUsers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -219,7 +219,7 @@ public class UserServiceImplementation implements UserServices {
 	 */
 	@Transactional
 	@Override
-	public UserInformation getSingleUser(String token) {
+	public Users getSingleUser(String token) {
 		Long id;
 		try {
 			id = (long) generate.parseJWT(token);
@@ -228,7 +228,7 @@ public class UserServiceImplementation implements UserServices {
 		}
 		
 		if(isValidToken("admin", token)) {
-		UserInformation user = repository.getUserById(id);
+		Users user = repository.getUserById(id);
 		return user;
 		}else {
 			throw new UserException("token is not valid");
