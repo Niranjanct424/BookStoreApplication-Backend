@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.bookstore.entity.Book;
-import com.bridgelabz.bookstore.entity.QuantityEntity;
+import com.bridgelabz.bookstore.entity.Quantity;
 import com.bridgelabz.bookstore.repository.BookImple;
 import com.bridgelabz.bookstore.repository.QuantityRepository;
 import com.bridgelabz.bookstore.service.QuantityService;
@@ -26,11 +26,11 @@ public class QuantityServiceImpl implements QuantityService{
 	public void addQuantity(long bookId,int Quantity) 
 	{
 	Book book=bookrepo.fetchbyId(bookId);
-	QuantityEntity en = new QuantityEntity();
+	Quantity en = new Quantity();
 	if(book!=null)
 	{
-		en.setBookquantity(book);
-		en.setQuantity(Quantity);
+//		en.setBookquantity(book);
+//		en.setQuantity(Quantity);
 	    repo.create(Quantity,book.getBookId());
        
 	    bookrepo.save(book);
