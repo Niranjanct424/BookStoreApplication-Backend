@@ -14,7 +14,7 @@ public class Quantity
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long quantity_id;
     @Column
-    private int quantityOfBook;
+    private Long quantityOfBook;
 	@Column
 	private Double totalprice;
 	
@@ -24,10 +24,10 @@ public class Quantity
 	public void setQuantity_id(long quantity_id) {
 		this.quantity_id = quantity_id;
 	}
-	public int getQuantityOfBook() {
+	public Long getQuantityOfBook() {
 		return quantityOfBook;
 	}
-	public void setQuantityOfBook(int quantityOfBook) {
+	public void setQuantityOfBook(long quantityOfBook) {
 		this.quantityOfBook = quantityOfBook;
 	}
 	public Double getTotalprice() {

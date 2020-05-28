@@ -44,9 +44,7 @@ public class Book {
 	private boolean isApproved;
 	
 	private String image;
-	@ManyToMany(mappedBy = "bookId")
-    @JsonIgnore
-    private List<Cart> cartId;
+
 
 	public Book() {
 		super();
@@ -77,13 +75,7 @@ public class Book {
 		this.updatedDateAndTime = updatedDateAndTime;
 	}
 
-	public List<Cart> getCartId() {
-		return cartId;
-	}
 
-	public void setCartId(List<Cart> cartId) {
-		this.cartId = cartId;
-	}
 
 	public long getBookId() {
 		return bookId;

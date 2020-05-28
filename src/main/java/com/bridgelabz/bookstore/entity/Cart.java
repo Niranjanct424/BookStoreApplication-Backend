@@ -2,6 +2,7 @@ package com.bridgelabz.bookstore.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,14 +18,20 @@ public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long cartId;
-	//private LocalDateTime datime;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<Book> booksList;
+	public List<Book> getBooksList() {
+		return booksList;
+	}
 
-	@ManyToMany
-	@JsonIgnore
-	private List<Book> bookId;
+	public void setBooksList(List<Book> booksList) {
+		this.booksList = booksList;
+	}
+
 	@OneToMany
-	@JsonIgnore
 	private List<Quantity> quantityOfBook;
+	
 
 	public List<Quantity> getQuantityOfBook() {
 		return quantityOfBook;
@@ -42,12 +49,6 @@ public class Cart {
 		this.cartId = cartId;
 	}
 
-	public List<Book> getBookId() {
-		return bookId;
-	}
-
-	public void setBookId(List<Book> bookId) {
-		this.bookId = bookId;
-	}
+	
 
 }
