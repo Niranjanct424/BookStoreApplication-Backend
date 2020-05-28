@@ -17,6 +17,7 @@ public class CustomerInformation {
 	private long userId;
 	@Column(name = " customer_name")
 	private String Name;
+	
 	@Column(name = "customer_phonenumber")
 	private long Phonenumber;
 	@OneToOne
