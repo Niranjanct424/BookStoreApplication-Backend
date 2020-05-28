@@ -210,4 +210,10 @@ public class BookServiceImplementation implements IBookService {
 		return null;
 	}
 
+	@Override
+	public void deleteBook(int bookId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
