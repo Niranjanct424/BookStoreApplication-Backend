@@ -23,11 +23,9 @@ public interface IBookService {
 
 	BookInformation getBookbyId(long bookId);
 
-	BookInformation getTotalPriceofBook(long bookId, int quantity);
+	//BookInformation getTotalPriceofBook(long bookId, int quantity);
 	
-<<<<<<< HEAD
 	public void deleteBook(int bookId);
-=======
 	BookInformation getTotalPriceofBook( long bookId, int quantity);
 
 	boolean editBook(EditBookDto information);
@@ -37,7 +35,6 @@ public interface IBookService {
 	List<BookInformation> getAllAprovedBooks();
 
 	
->>>>>>> 489ab49b64f9c6308c5e760fbfc6c496273eafd8
 	
 	/*
 	 * 

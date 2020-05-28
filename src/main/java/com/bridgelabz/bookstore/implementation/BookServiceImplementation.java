@@ -215,13 +215,11 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public void deleteBook(int bookId) {
 		// TODO Auto-generated method stub
 		
 	}
 
-=======
 	public boolean editBook(EditBookDto information) {
 		BookInformation info =repository.fetchbyId(information.getBookId());
 		if(info!=null) {
@@ -258,5 +256,4 @@ public class BookServiceImplementation implements IBookService {
 
 	
 
->>>>>>> 489ab49b64f9c6308c5e760fbfc6c496273eafd8
 }
