@@ -19,8 +19,16 @@ import lombok.Data;
 public class BookInformation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int bookId;
+	private long bookId;
 	
+	public boolean isApproved() {
+		return isApproved;
+	}
+
+	public void setApproved(boolean isApproved) {
+		this.isApproved = isApproved;
+	}
+
 	private String bookName;
 
 	private int quantity;
@@ -31,6 +39,10 @@ public class BookInformation {
 
 	private String bookDetails;
 	private LocalDateTime createdDateAndTime;
+	private LocalDateTime updatedDateAndTime;
+	
+	private boolean isApproved;
+	
 	private String image;
 	@ManyToMany(mappedBy = "bookId")
     @JsonIgnore
@@ -53,11 +65,31 @@ public class BookInformation {
 		this.createdDateAndTime = createdDateAndTime;
 	}
 
-	public int getBookId() {
+	
+
+	
+
+	public LocalDateTime getUpdatedDateAndTime() {
+		return updatedDateAndTime;
+	}
+
+	public void setUpdatedDateAndTime(LocalDateTime updatedDateAndTime) {
+		this.updatedDateAndTime = updatedDateAndTime;
+	}
+
+	public List<CartInformation> getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(List<CartInformation> cartId) {
+		this.cartId = cartId;
+	}
+
+	public long getBookId() {
 		return bookId;
 	}
 
-	public void setBookId(int bookId) {
+	public void setBookId(long bookId) {
 		this.bookId = bookId;
 	}
 
