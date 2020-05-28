@@ -131,6 +131,22 @@ public class BookStoreController {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"The Book Status is not updated.."));
 	}
 	
+	@GetMapping("books/approvedOnHoldBooks")
+	public ResponseEntity<BookResponse> getAllApprovedAndOnHoldBooks() {
+		List<BookInformation> books = bookservice.getAllApprovedAndOnHoldBooks();
+		if(books != null)
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved & OnHold Book details are", books ));
+		else
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Approved & OnHold Books available" ));
+	}
 	
+	@GetMapping("books/rejectedBooks")
+	public ResponseEntity<BookResponse> getAllRejectedBooks() {
+		List<BookInformation> books = bookservice.getAllRejectedBooks();
+		if(books != null)
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Rejected Book details are", books ));
+		else
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Rejected Books available" ));
+	}
 
 }
