@@ -8,11 +8,12 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 @Repository
 public interface BookImple extends JpaRepository<BookInformation, Long> {
 	
-	@Query("from BookInformation where book_id=:id ")
+	@Query("from BookInformation where book_id=:id")
 	BookInformation fetchbyId(Long id);
 	
 	@Query( value = "select * from bookinfo", nativeQuery = true)
@@ -23,4 +24,11 @@ public interface BookImple extends JpaRepository<BookInformation, Long> {
 
 	@Query("from BookInformation where book_id=:id ")
 	List<BookInformation> fetchbyIdList(Long id);
+	
+	@Modifying
+	@Query("delete from BookInformation where book_id=:id")
+	void deleteByBookId(long id);
+	
+	@Query( value = "select * from bookinfo where is_approved=true", nativeQuery = true)
+    List<BookInformation> getAllApprovedBooks();
 }
