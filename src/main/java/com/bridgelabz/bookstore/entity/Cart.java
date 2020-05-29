@@ -21,6 +21,10 @@ public class Cart {
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Book> booksList;
+	
+	@OneToMany
+	private List<Quantity> quantityOfBook;
+
 	public List<Book> getBooksList() {
 		return booksList;
 	}
@@ -29,8 +33,7 @@ public class Cart {
 		this.booksList = booksList;
 	}
 
-	@OneToMany
-	private List<Quantity> quantityOfBook;
+
 	
 
 	public List<Quantity> getQuantityOfBook() {

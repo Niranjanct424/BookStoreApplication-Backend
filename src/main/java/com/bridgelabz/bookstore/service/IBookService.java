@@ -31,6 +31,12 @@ public interface IBookService {
 
 	List<Book> getAllAprovedBooks();
 
+	boolean editStatus(long bookId, String status);
+
+	List<Book> getAllApprovedAndOnHoldBooks();
+
+	List<Book> getAllRejectedBooks();
+
 	
 	
 }

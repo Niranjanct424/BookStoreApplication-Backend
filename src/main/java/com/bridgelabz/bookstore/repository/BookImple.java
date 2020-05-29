@@ -31,4 +31,17 @@ public interface BookImple extends JpaRepository<Book, Long> {
 	
 	@Query( value = "select * from bookinfo where is_approved=true", nativeQuery = true)
     List<Book> getAllApprovedBooks();
+	
+
+	
+	@Modifying
+	@Query("update from BookInformation set status=:status where book_id=:id")
+	int updateBookStatusByBookId(String status,long id);
+
+	@Query( value = "select * from bookinfo where status='approved' or status='OnHold'", nativeQuery = true)
+	List<Book> getAllApprovedOnHoldBooks();
+	
+	@Query( value = "select * from bookinfo where status='rejected'", nativeQuery = true)
+	List<Book> getAllRejectedBooks();
+
 }

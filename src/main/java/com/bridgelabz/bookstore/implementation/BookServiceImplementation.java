@@ -50,7 +50,7 @@ public class BookServiceImplementation implements IBookService {
 		bookinformation.setPrice(information.getPrice());
 		bookinformation.setQuantity(information.getQuantity());
 		bookinformation.setCreatedDateAndTime(LocalDateTime.now());
-		bookinformation.setApproved(false);
+		bookinformation.setStatus("OnHold");
 		repository.save(bookinformation);
 		return true;
 	}
@@ -249,12 +249,37 @@ public class BookServiceImplementation implements IBookService {
 		List<Book> approvedBooks=repository.getAllApprovedBooks();
 		return approvedBooks;
 	}
+	
+	@Transactional
+	@Override
+	public boolean editStatus(long bookId, String status) {
+		Book info =repository.fetchbyId(bookId);
+		if(info != null) {
+			repository.updateBookStatusByBookId(status, bookId);
+			return true;
+		}
+		return false;
+	}
+	@Transactional
+	@Override
+	public List<Book> getAllApprovedAndOnHoldBooks() {
+		List<Book> approvedOnHoldBooks=repository.getAllApprovedOnHoldBooks();
+		return approvedOnHoldBooks;
+	}
 
 	@Override
+
 	public boolean addandupdatecart(Long userId, int quantity, Long bookId) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public List<Book> getAllRejectedBooks() {
+		List<Book> rejectedBooks=repository.getAllRejectedBooks();
+		return rejectedBooks;
+	}
+
+	
 
 	
 

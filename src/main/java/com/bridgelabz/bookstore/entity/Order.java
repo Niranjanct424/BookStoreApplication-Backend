@@ -22,15 +22,15 @@ public class Order {
 	
 	private Long quantityOfBooks;
 	
-	@ManyToMany
-	private List<Book> BooksList;
+//	@ManyToMany
+//	private List<Book> BooksList;
 
-	public Order(Long orderId, LocalDateTime orderTime, Long quantityOfBooks, List<Book> booksList) {
-		this.orderId = orderId;
-		this.orderTime = orderTime;
-		this.quantityOfBooks = quantityOfBooks;
-		BooksList = booksList;
-	}
+//	public Order(Long orderId, LocalDateTime orderTime, Long quantityOfBooks, List<Book> booksList) {
+//		this.orderId = orderId;
+//		this.orderTime = orderTime;
+//		this.quantityOfBooks = quantityOfBooks;
+//		BooksList = booksList;
+//	}
 
 	public Long getOrderId() {
 		return orderId;
@@ -56,11 +56,11 @@ public class Order {
 		this.quantityOfBooks = quantityOfBooks;
 	}
 
-	public List<Book> getBooksList() {
-		return BooksList;
-	}
-
-	public void setBooksList(List<Book> booksList) {
-		BooksList = booksList;
-	}
+//	public List<Book> getBooksList() {
+//		return BooksList;
+//	}
+//
+//	public void setBooksList(List<Book> booksList) {
+//		BooksList = booksList;
+//	}
 }
