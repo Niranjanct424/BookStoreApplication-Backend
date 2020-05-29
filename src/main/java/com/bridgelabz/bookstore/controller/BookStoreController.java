@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.bookstore.dto.BookDto;
@@ -27,10 +28,13 @@ public class BookStoreController {
 	IBookService bookservice;
 
 	@PostMapping("books/addbook")
-	public ResponseEntity<BookResponse> addBook(@RequestBody BookDto information) {
-		bookservice.addBooks(information);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse("The Book details are", information));
+	public ResponseEntity<BookResponse> addBook(@RequestBody BookDto information,@RequestHeader("token") String token) {
+		
+		boolean res=bookservice.addBooks(information,token);
+		if(res)
+			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse("The Book details are", information));
+		else
+			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse(400,"The Book details not added "));
 	}
 	
 	
@@ -45,7 +49,6 @@ public class BookStoreController {
 		List<Book> list=bookservice.sortGetAllBooks();
 		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("all books",list));
 	}
-
 
 	
 	@GetMapping("books/sorting")
@@ -73,16 +76,16 @@ public class BookStoreController {
 	
 	
 	@PutMapping("books/editbook")
-	public ResponseEntity<BookResponse> editBook(@RequestBody EditBookDto information){
-		boolean res =bookservice.editBook(information);
+	public ResponseEntity<BookResponse> editBook(@RequestBody EditBookDto information,@RequestHeader("token") String token){
+		boolean res =bookservice.editBook(information,token);
 		if(res)
 			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse("The Book is Edited", information));
 		return null;
 	}
 	
 	@DeleteMapping("books/deletebook/{bookId}")
-	public ResponseEntity<BookResponse> deleteBook(@PathVariable long bookId){
-		boolean res =bookservice.deleteBook(bookId);
+	public ResponseEntity<BookResponse> deleteBook(@PathVariable long bookId,@RequestHeader("token") String token){
+		boolean res =bookservice.deleteBook(bookId,token);
 		if(res)
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(202,"The Book is Deleted"));
 		return null;
@@ -90,9 +93,8 @@ public class BookStoreController {
 	
 	@GetMapping("books/approvedBooks")
 	public ResponseEntity<BookResponse> getAllApprovedBooks() {
-		
 	List<Book> books = bookservice.getAllAprovedBooks();
-	if(books != null)
+		if(books != null)
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved Book details are", books ));
 		else
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Approved Books available" ));
@@ -123,6 +125,6 @@ public class BookStoreController {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Rejected Book details are", books ));
 		else
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Rejected Books available" ));
-	}
 
+	}
 }
