@@ -5,7 +5,7 @@ package com.bridgelabz.bookstore.repository;
 
 import java.util.List;
 
-import com.bridgelabz.bookstore.entity.UserInformation;
+import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.request.PasswordUpdate;
 
 /**
@@ -13,16 +13,16 @@ import com.bridgelabz.bookstore.request.PasswordUpdate;
  *
  */
 public interface IUserRepository {
-	UserInformation save(UserInformation userInformation);
+	Users save(Users users);
 
-	UserInformation getUser(String email);
+	Users getUser(String email);
 
 	boolean verify(Long id);
 
 	boolean upDate(PasswordUpdate information, Long token);
 
-	UserInformation getUserById(Long id );
+	Users getUserById(Long id );
 
-	List<UserInformation> getUsers();
+	List<Users> getUsers();
 
 }

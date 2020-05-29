@@ -1,20 +1,14 @@
 package com.bridgelabz.bookstore.repository;
 
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.bridgelabz.bookstore.entity.CustomerInformation;
-import com.bridgelabz.bookstore.entity.QuantityEntity;
-
-import java.util.List;
-
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.bridgelabz.bookstore.entity.Quantity;
 @Repository
-public interface QuantityRepository  extends JpaRepository<QuantityEntity, Long> 
+public interface QuantityRepository  extends JpaRepository<Quantity, Long> 
 {
 
 	@Modifying
@@ -27,7 +21,7 @@ public interface QuantityRepository  extends JpaRepository<QuantityEntity, Long>
 	
 	@Modifying
 	@Query( value = "select * from Quantity_entity  where quantity_id = :quantity_id", nativeQuery = true)
-	QuantityEntity  getquantId( long quantity_id);
+	Quantity  getquantId( long quantity_id);
 	
 	/*
 	 * @Modifying
