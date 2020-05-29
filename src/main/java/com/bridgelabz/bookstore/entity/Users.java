@@ -2,20 +2,21 @@
 package com.bridgelabz.bookstore.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 import lombok.Data;
 
 @Entity
-@Table(name = "usersdetail")
 @Data
-public class UserInformation {
+public class Users {
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private long userId;
@@ -32,8 +33,10 @@ public class UserInformation {
 		private Address Work;
 		@OneToOne
 		private Address Others;
-		@OneToOne( mappedBy = "userId")
-		private CartInformation cartId;
+		@OneToMany
+		@JoinColumn(name="userId")
+		private List<Cart> cartBooks;
+		
 		public long getUserId() {
 			return userId;
 		}
@@ -100,18 +103,13 @@ public class UserInformation {
 		public void setOthers(Address others) {
 			Others = others;
 		}
-		public CartInformation getCartId() {
-			return cartId;
-		}
-		public void setCartId(CartInformation cartId) {
-			this.cartId = cartId;
-		}
+	
 		@Override
 		public String toString() {
 			return "UserInformation [userId=" + userId + ", name=" + name + ", email=" + email + ", password="
 					+ password + ", mobileNumber=" + mobileNumber + ", createdDate=" + createdDate + ", isVerified="
 					+ isVerified + ", role=" + role + ", Home=" + Home + ", Work=" + Work + ", Others=" + Others
-					+ ", cartId=" + cartId + "]";
+					+ ", cartbooks=" +cartBooks+ "]";
 		}	
 		
 		

@@ -12,7 +12,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bridgelabz.bookstore.entity.UserInformation;
+import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.request.PasswordUpdate;
 
@@ -24,26 +24,26 @@ public class UserRepositoryImplementation implements IUserRepository {
 	private EntityManager entityManager;
 
 	@Override
-	public UserInformation save(UserInformation userInformation) {
+	public Users save(Users users) {
 		System.out.println("repository implementation called save" );
 		Session session = entityManager.unwrap(Session.class);
-		session.saveOrUpdate(userInformation);
-		return userInformation;
+		session.saveOrUpdate(users);
+		return users;
 	}
 
 	@Override
-	public UserInformation getUser(String email) {
+	public Users getUser(String email) {
 		Session session = entityManager.unwrap(Session.class);
 		@SuppressWarnings("rawtypes")
-		Query q = session.createQuery(" FROM UserInformation where email=:email");
+		Query q = session.createQuery(" FROM Users where email=:email");
 		q.setParameter("email", email);
-		return (UserInformation) q.uniqueResult();
+		return (Users) q.uniqueResult();
 	}
 
 	@Override
 	public boolean verify(Long id) {
 		Session session = entityManager.unwrap(Session.class);
-		Query q = session.createQuery("update UserInformation set is_verified=:p" + " " + " " + "where id=:i");
+		Query q = session.createQuery("update Users set is_verified=:p" + " " + " " + "where id=:i");
 		q.setParameter("p", true);
 		q.setParameter("i", id);
 
@@ -66,7 +66,7 @@ public class UserRepositoryImplementation implements IUserRepository {
 	@Override
 	public boolean upDate(PasswordUpdate information, Long id) {
 		Session session = entityManager.unwrap(Session.class);
-		Query q = session.createQuery("update UserInformation set password=:p" + " " + " " + "where id=:i");
+		Query q = session.createQuery("update Users set password=:p" + " " + " " + "where id=:i");
 		q.setParameter("p", information.getConfirmPassword());
 		q.setParameter("i", id);
 
@@ -84,18 +84,18 @@ public class UserRepositoryImplementation implements IUserRepository {
 	 * @param id of the user
 	 */
 	@Override
-	public UserInformation getUserById(Long id) {
+	public Users getUserById(Long id) {
 		Session session = entityManager.unwrap(Session.class);
-		Query q = session.createQuery(" FROM UserInformation where id=:id");
+		Query q = session.createQuery(" FROM Users where id=:id");
 		q.setParameter("id", id);
-		return (UserInformation) q.uniqueResult();
+		return (Users) q.uniqueResult();
 
 	}
 
 	@Override
-	public List<UserInformation> getUsers() {
+	public List<Users> getUsers() {
 		Session currentsession = entityManager.unwrap(Session.class);
-		List<UserInformation> usersList = currentsession.createQuery("from UserInformation").getResultList();
+		List<Users> usersList = currentsession.createQuery("from Users").getResultList();
 		return  usersList;
 	}
 

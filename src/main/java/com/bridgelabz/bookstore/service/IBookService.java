@@ -3,39 +3,39 @@ package com.bridgelabz.bookstore.service;
 import java.util.List;
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
-import com.bridgelabz.bookstore.entity.BookInformation;
+import com.bridgelabz.bookstore.entity.Book;
 
 public interface IBookService {
 	
 	boolean addBooks(BookDto information);
 
-	List<BookInformation> getBookInfo();
+	List<Book> getBookInfo();
 	
 	void removefromcart(Long userId, Long bookId);
 
-	List<BookInformation> sortGetAllBooks();
+	List<Book> sortGetAllBooks();
 	
 	boolean addandupdatecart(Long userId, int quantity, Long bookId);
 
-	List<BookInformation> sorting(boolean value);
+	List<Book> sorting(boolean value);
 
-    List<BookInformation> findAllPageBySize( int pagenumber);
+    List<Book> findAllPageBySize( int pagenumber);
 	
-	BookInformation getBookbyId( long bookId);
+	Book getBookbyId( long bookId);
 	
-	BookInformation getTotalPriceofBook( long bookId, int quantity);
+	Book getTotalPriceofBook( long bookId, int quantity);
 
 	boolean editBook(EditBookDto information);
 
 	boolean deleteBook(long bookId);
 
-	List<BookInformation> getAllAprovedBooks();
+	List<Book> getAllAprovedBooks();
 
 	boolean editStatus(long bookId, String status);
 
-	List<BookInformation> getAllApprovedAndOnHoldBooks();
+	List<Book> getAllApprovedAndOnHoldBooks();
 
-	List<BookInformation> getAllRejectedBooks();
+	List<Book> getAllRejectedBooks();
 
 	
 	

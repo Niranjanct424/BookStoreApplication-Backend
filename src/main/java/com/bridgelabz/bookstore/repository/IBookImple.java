@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import org.hibernate.Session;
 
 import org.springframework.stereotype.Repository;
-import com.bridgelabz.bookstore.entity.BookInformation;
+import com.bridgelabz.bookstore.entity.Book;
 
 @Repository
 public class IBookImple implements IBook {
@@ -16,16 +16,16 @@ public class IBookImple implements IBook {
 	private EntityManager entityManager;
 
 	@Override
-	public BookInformation save(BookInformation bookinformation) {
+	public Book save(Book bookinformation) {
 		Session session = entityManager.unwrap(Session.class);
 		session.saveOrUpdate(bookinformation);
 		return bookinformation;
 	}
 
 	@Override
-	public List<BookInformation> getUsers() {
+	public List<Book> getUsers() {
 		Session currentSession = entityManager.unwrap(Session.class);
-		List BookList = currentSession.createQuery("from BookInformation").getResultList();
+		List BookList = currentSession.createQuery("from Book").getResultList();
 		return BookList;
 
 	}
