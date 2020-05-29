@@ -33,9 +33,10 @@ public class Users {
 		private Address Work;
 		@OneToOne
 		private Address Others;
+		
 		@OneToMany
 		@JoinColumn(name="userId")
-		private List<Cart> cartBooks;
+		private List<Cart> cartBooks;// refactored dont delete this 
 		
 		public long getUserId() {
 			return userId;

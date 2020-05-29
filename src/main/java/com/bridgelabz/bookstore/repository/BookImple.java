@@ -35,7 +35,7 @@ public interface BookImple extends JpaRepository<Book, Long> {
 
 	
 	@Modifying
-	@Query("update from BookInformation set status=:status where book_id=:id")
+	@Query("update from Book set status=:status where book_id=:id")
 	int updateBookStatusByBookId(String status,long id);
 
 	@Query( value = "select * from bookinfo where status='approved' or status='OnHold'", nativeQuery = true)
