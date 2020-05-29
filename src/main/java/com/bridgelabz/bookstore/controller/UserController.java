@@ -1,6 +1,4 @@
-
 package com.bridgelabz.bookstore.controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,6 +47,7 @@ public class UserController {
 					.body(new Response("User Already Exist", 400, information));
 		}
 	}
+	
 	
 	@PostMapping("/user/login")
 	public ResponseEntity<UsersDetailRes> login(@RequestBody LoginInformation information) {
@@ -99,7 +97,6 @@ public class UserController {
 		} else {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("user does not exist with given email id", 400));
 		}
-
 	}
 	
 	@PutMapping("user/update/{token}")
@@ -131,21 +128,17 @@ public class UserController {
 		}
 	}
 	
-	
-	
 	@GetMapping("user/getOneUser")
 	public ResponseEntity<Response> getOneUsers(@RequestHeader("token") String token){
 	UserInformation user=service.getSingleUser(token);
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("user is", 200, user));
 	}
-
 	
-	@GetMapping("user/getOneUser")
+	@GetMapping("user/getAllUser")
 	public ResponseEntity<Response> getAllUser(@RequestHeader("token") String token){
 	UserInformation user=service.getSingleUser(token);
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("user is", 200, user));
 	}
-
 }
