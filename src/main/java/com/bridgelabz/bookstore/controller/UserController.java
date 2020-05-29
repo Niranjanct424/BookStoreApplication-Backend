@@ -141,7 +141,7 @@ public class UserController {
 	}
 
 	
-	@GetMapping("user/getOneUser")
+	@GetMapping("user/getAllUser")
 	public ResponseEntity<Response> getAllUser(@RequestHeader("token") String token){
 	UserInformation user=service.getSingleUser(token);
 		return ResponseEntity.status(HttpStatus.ACCEPTED)

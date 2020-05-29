@@ -21,14 +21,7 @@ public class BookInformation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long bookId;
 	
-	public boolean isApproved() {
-		return isApproved;
-	}
-
-	public void setApproved(boolean isApproved) {
-		this.isApproved = isApproved;
-	}
-
+	
 	private String bookName;
 
 	private int quantity;
@@ -41,7 +34,7 @@ public class BookInformation {
 	private LocalDateTime createdDateAndTime;
 	private LocalDateTime updatedDateAndTime;
 	
-	private boolean isApproved;
+	private String status;
 	
 	private String image;
 	@ManyToMany(mappedBy = "bookId")
@@ -103,6 +96,14 @@ public class BookInformation {
 
 	public int getQuantity() {
 		return quantity;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public void setQuantity(int quantity) {
