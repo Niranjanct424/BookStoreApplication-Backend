@@ -1,13 +1,11 @@
 package com.bridgelabz.bookstore.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 @Entity
 
@@ -22,15 +20,9 @@ public class Order {
 	
 	private Long quantityOfBooks;
 	
-//	@ManyToMany
+//	@ManyToOne
 //	private List<Book> BooksList;
 
-//	public Order(Long orderId, LocalDateTime orderTime, Long quantityOfBooks, List<Book> booksList) {
-//		this.orderId = orderId;
-//		this.orderTime = orderTime;
-//		this.quantityOfBooks = quantityOfBooks;
-//		BooksList = booksList;
-//	}
 
 	public Long getOrderId() {
 		return orderId;
