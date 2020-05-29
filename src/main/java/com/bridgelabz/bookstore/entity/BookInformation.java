@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,9 +38,9 @@ public class BookInformation {
 	private String status;
 	
 	private String image;
-	@ManyToMany(mappedBy = "bookId")
+	@OneToOne(mappedBy = "bookId")
     @JsonIgnore
-    private List<CartInformation> cartId;
+    private CartInformation cartId;
 
 	public BookInformation() {
 		super();
@@ -70,11 +71,12 @@ public class BookInformation {
 		this.updatedDateAndTime = updatedDateAndTime;
 	}
 
-	public List<CartInformation> getCartId() {
+	
+	public CartInformation getCartId() {
 		return cartId;
 	}
 
-	public void setCartId(List<CartInformation> cartId) {
+	public void setCartId(CartInformation cartId) {
 		this.cartId = cartId;
 	}
 
