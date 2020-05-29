@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
-import com.bridgelabz.bookstore.entity.BookInformation;
+import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.response.BookResponse;
 import com.bridgelabz.bookstore.service.IBookService;
 
-@RestController
-@CrossOrigin
+//@RestController
+//@CrossOrigin
 public class BookStoreController {
 
 	@Autowired
@@ -46,13 +46,13 @@ public class BookStoreController {
 	
 	@GetMapping("books")
 	public ResponseEntity<BookResponse> getBooks() {
-		List<BookInformation> books = bookservice.getBookInfo();
+		List<Book> books = bookservice.getBookInfo();
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Book details are", books ));
  
 	}
 	@GetMapping("books/unsorting")
 	public ResponseEntity<BookResponse> sort(){
-		List<BookInformation> list=bookservice.sortGetAllBooks();
+		List<Book> list=bookservice.sortGetAllBooks();
 		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("all books",list));
 	}
 
@@ -75,7 +75,7 @@ public class BookStoreController {
 	
 	@GetMapping("books/sorting")
 	public ResponseEntity<BookResponse> sorting(@RequestParam("value") boolean value){
-		List<BookInformation> list=bookservice.sorting( value);
+		List<Book> list=bookservice.sorting( value);
 		if (value==true) {
 			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("all books",list));
 		} else {
@@ -85,14 +85,14 @@ public class BookStoreController {
 	}
 	@GetMapping( value = "books/pagewise/{pagenumber}")
 	public ResponseEntity<BookResponse> getBookPagewise( @PathVariable( value = "pagenumber") int pagenumber) {
-		List<BookInformation> pageList = bookservice.findAllPageBySize( pagenumber);
+		List<Book> pageList = bookservice.findAllPageBySize( pagenumber);
 	
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("Successfull", pageList));
 	}
 	
 	@GetMapping( value = "books/{bookId}")
  public ResponseEntity<BookResponse> getBookbyId( @PathVariable("bookId") long bookId) {
-		BookInformation info = bookservice.getBookbyId(bookId);	
+		Book info = bookservice.getBookbyId(bookId);	
 			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is",info));
 	}
 	
@@ -115,11 +115,13 @@ public class BookStoreController {
 	
 	@GetMapping("books/approvedBooks")
 	public ResponseEntity<BookResponse> getAllApprovedBooks() {
-		List<BookInformation> books = bookservice.getAllAprovedBooks();
-		if(books != null)
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved Book details are", books ));
-		else
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Approved Books available" ));
+		List<Book> books = bookservice.getAllAprovedBooks();
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved Book details are", books ));
+		//List<BookInformation> books = bookservice.getAllAprovedBooks();
+//		if(books != null)
+//			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved Book details are", books ));
+//		else
+//			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Approved Books available" ));
 	}
 	
 	@PutMapping("books/{bookId}/{status}")
@@ -131,22 +133,23 @@ public class BookStoreController {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"The Book Status is not updated.."));
 	}
 	
-	@GetMapping("books/approvedOnHoldBooks")
-	public ResponseEntity<BookResponse> getAllApprovedAndOnHoldBooks() {
-		List<BookInformation> books = bookservice.getAllApprovedAndOnHoldBooks();
-		if(books != null)
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved & OnHold Book details are", books ));
-		else
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Approved & OnHold Books available" ));
-	}
+//	@GetMapping("books/approvedOnHoldBooks")
+//	public ResponseEntity<BookResponse> getAllApprovedAndOnHoldBooks() {
+//		//List<Book> books = bookservice.getAllApprovedAndOnHoldBooks();
+//		if(books != null)
+//			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved & OnHold Book details are", books ));
+//		else
+//			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Approved & OnHold Books available" ));
+//	}
 	
-	@GetMapping("books/rejectedBooks")
-	public ResponseEntity<BookResponse> getAllRejectedBooks() {
-		List<BookInformation> books = bookservice.getAllRejectedBooks();
-		if(books != null)
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Rejected Book details are", books ));
-		else
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Rejected Books available" ));
+//	@GetMapping("books/rejectedBooks")
+//	public ResponseEntity<BookResponse> getAllRejectedBooks() {
+//		List<BookInformation> books = bookservice.getAllRejectedBooks();
+//		if(books != null)
+//			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Rejected Book details are", books ));
+//		else
+//			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Rejected Books available" ));
+
 	}
 
-}
+//}

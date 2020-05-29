@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "bookinfo")
-public class BookInformation {
+public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long bookId;
@@ -38,15 +38,14 @@ public class BookInformation {
 	private String status;
 	
 	private String image;
-	@OneToOne(mappedBy = "bookId")
-    @JsonIgnore
-    private CartInformation cartId;
 
-	public BookInformation() {
+
+
+	public Book() {
 		super();
 	}
 	
-	public BookInformation(int bookId, String bookName, int quantity, Double price, String authorName,
+	public Book(int bookId, String bookName, int quantity, Double price, String authorName,
 			String bookDetails, String image, LocalDateTime createdDateAndTime) {
 		super();
 		this.bookId = bookId;
@@ -72,13 +71,8 @@ public class BookInformation {
 	}
 
 	
-	public CartInformation getCartId() {
-		return cartId;
-	}
+	
 
-	public void setCartId(CartInformation cartId) {
-		this.cartId = cartId;
-	}
 
 	public long getBookId() {
 		return bookId;
