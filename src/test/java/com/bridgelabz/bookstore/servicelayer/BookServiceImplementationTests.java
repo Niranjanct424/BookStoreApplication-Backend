@@ -76,26 +76,26 @@ class BookServiceImplementationTests {
 		assertEquals(sort.size(), book.size());
 	}
 
-	@Test
-	final void addBooks() {
-		BookDto dto = new BookDto();
-		Book book = new Book();
-		Book info = new Book();
-		info.setAuthorName("Naveen");
-		info.setBookDetails("Naveen");
-		info.setBookName("Naveen");
-		info.setImage("Animal");
-		info.setPrice(1000.00);
-		info.setQuantity(2);
-		when(repository.save(info)).thenReturn(book);
-		dto.setAuthorName(book.getAuthorName());
-		dto.setBookDetails(book.getBookDetails());
-		dto.setBookName(book.getBookName());
-		dto.setImage(book.getImage());
-		dto.setPrice(book.getPrice());
-		dto.setQuantity(book.getQuantity());
-		boolean check = service.addBooks(dto);
-		assertTrue(check == true);
-	}
+//	@Test
+//	final void addBooks() {
+//		BookDto dto = new BookDto();
+//		Book book = new Book();
+//		Book info = new Book();
+//		info.setAuthorName("Naveen");
+//		info.setBookDetails("Naveen");
+//		info.setBookName("Naveen");
+//		info.setImage("Animal");
+//		info.setPrice(1000.00);
+//		info.setQuantity(2);
+//		when(repository.save(info)).thenReturn(book);
+//		dto.setAuthorName(book.getAuthorName());
+//		dto.setBookDetails(book.getBookDetails());
+//		dto.setBookName(book.getBookName());
+//		dto.setImage(book.getImage());
+//		dto.setPrice(book.getPrice());
+//		dto.setQuantity(book.getQuantity());
+//		boolean check = service.addBooks(dto);
+//		assertTrue(check == true);
+//	}
 	
 }

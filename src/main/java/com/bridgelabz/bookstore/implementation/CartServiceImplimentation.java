@@ -43,7 +43,7 @@ public class CartServiceImplimentation implements ICartService{
 			Book book=bookRepository.fetchbyId(bookId);
 			
 			List<Book> books = null; //intialization of book list ftch all book and checking storing in list of books
-			for (Cart cart : user.getCartBooks()) {
+			for (Cart cart :user.getCartBooks()) {
 				books = cart.getBooksList();
 			}
 			//checking for book is null ,adding the book
