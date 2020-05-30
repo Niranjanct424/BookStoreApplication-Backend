@@ -17,25 +17,15 @@ public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long bookId;
-	
-	
 	private String bookName;
-
 	private int quantity;
-
 	private Double price;
-
 	private String authorName;
-
 	private String bookDetails;
 	private LocalDateTime createdDateAndTime;
 	private LocalDateTime updatedDateAndTime;
-	
 	private String status;
-	
 	private String image;
-
-
 	public Book() {
 		super();
 	}

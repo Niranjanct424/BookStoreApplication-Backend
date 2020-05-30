@@ -17,7 +17,6 @@ import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.Cart;
 import com.bridgelabz.bookstore.repository.AddressRepository;
 import com.bridgelabz.bookstore.repository.BookImple;
-import com.bridgelabz.bookstore.repository.CustomerRepository;
 import com.bridgelabz.bookstore.service.IBookService;
 
 @Service
@@ -32,8 +31,7 @@ public class BookServiceImplementation implements IBookService {
 	@Autowired
 	private BookImple repository;
 
-	@Autowired
-	CustomerRepository customerrep;
+
 	
 	@Autowired
 	AddressRepository addrepository;
