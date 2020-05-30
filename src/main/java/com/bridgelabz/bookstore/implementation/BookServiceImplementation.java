@@ -18,6 +18,7 @@ import com.bridgelabz.bookstore.dto.EditBookDto;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.Cart;
 import com.bridgelabz.bookstore.entity.Users;
+import com.bridgelabz.bookstore.exception.BookAlreadyExist;
 import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.AddressRepository;
 import com.bridgelabz.bookstore.repository.BookImple;
@@ -69,15 +70,25 @@ public class BookServiceImplementation implements IBookService {
 				
 				if (fetchRole.equals("seller") && !userRole.equals("admin")) 
 				{
-					bookinformation = modelMapper.map(information, Book.class);
-					bookinformation.setBookName(information.getBookName());
-					bookinformation.setAuthorName(information.getAuthorName());
-					bookinformation.setPrice(information.getPrice());
-					bookinformation.setQuantity(information.getQuantity());
-					bookinformation.setCreatedDateAndTime(LocalDateTime.now());
-					bookinformation.setStatus("OnHold");
-					repository.save(bookinformation);
-					return true;
+					Book book=repository.fetchbyBookName(information.getBookName());
+					System.out.println("Book name "+information.getBookName());
+					
+					if(book ==null)
+					{
+						bookinformation = modelMapper.map(information, Book.class);
+						bookinformation.setBookName(information.getBookName());
+						bookinformation.setAuthorName(information.getAuthorName());
+						bookinformation.setPrice(information.getPrice());
+						bookinformation.setQuantity(information.getQuantity());
+						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
+						bookinformation.setStatus("OnHold");
+						repository.save(bookinformation);
+						return true;
+					}
+					else
+					{
+						throw new BookAlreadyExist("Book is already exist Exception..");
+					}
 				}
 				else 
 				{
