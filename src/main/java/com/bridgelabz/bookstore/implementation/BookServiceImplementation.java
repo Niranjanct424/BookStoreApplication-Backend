@@ -1,27 +1,29 @@
 package com.bridgelabz.bookstore.implementation;
 
-import com.bridgelabz.bookstore.dto.BookDto;
-import com.bridgelabz.bookstore.entity.BookInformation;
-import com.bridgelabz.bookstore.entity.CartInformation;
-import com.bridgelabz.bookstore.repository.AddressRepository;
-import com.bridgelabz.bookstore.repository.BookImple;
-import com.bridgelabz.bookstore.repository.CartImple;
-import com.bridgelabz.bookstore.repository.CustomerRepository;
-import com.bridgelabz.bookstore.service.IBookService;
-import org.springframework.stereotype.Service;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+import com.bridgelabz.bookstore.dto.BookDto;
+import com.bridgelabz.bookstore.dto.EditBookDto;
+import com.bridgelabz.bookstore.entity.Book;
+import com.bridgelabz.bookstore.entity.Cart;
+import com.bridgelabz.bookstore.repository.AddressRepository;
+import com.bridgelabz.bookstore.repository.BookImple;
+import com.bridgelabz.bookstore.repository.CustomerRepository;
+import com.bridgelabz.bookstore.service.IBookService;
+
 @Service
 public class BookServiceImplementation implements IBookService {
-	private BookInformation bookinformation = new BookInformation();
-	private CartInformation cartinformation = new CartInformation();
+	private Book bookinformation = new Book();
+	private Cart cartinformation = new Cart();
 	private ModelMapper modelMapper = new ModelMapper();
 //	@Autowired
 //	private ModelMapper modelMapper;
@@ -36,55 +38,58 @@ public class BookServiceImplementation implements IBookService {
 	@Autowired
 	AddressRepository addrepository;
 	
-	@Autowired
-	private CartImple cartrepository;
+//	@Autowired
+//	private CartImple cartrepository;
 
 	@Transactional
 	@Override
 	public boolean addBooks(BookDto information) {
-		bookinformation = modelMapper.map(information, BookInformation.class);
+		bookinformation = modelMapper.map(information, Book.class);
 		bookinformation.setBookName(information.getBookName());
 		bookinformation.setAuthorName(information.getAuthorName());
 		bookinformation.setPrice(information.getPrice());
 		bookinformation.setQuantity(information.getQuantity());
 		bookinformation.setCreatedDateAndTime(LocalDateTime.now());
+		bookinformation.setStatus("OnHold");
 		repository.save(bookinformation);
 		return true;
 	}
 
 	@Transactional
 	@Override
-	public List<BookInformation> getBookInfo() {
-		List<BookInformation> users = repository.getAllBooks();
-
+	public List<Book> getBookInfo() 
+	{
+		List<Book> users = repository.getAllBooks();
 		return users;
 	}
+	
+	
 
-	@Transactional
-	@Override
-	public boolean addandupdatecart(Long userId, int quantity, Long bookId) {
-		BookInformation book = repository.fetchbyId(bookId);
-		CartInformation cart = cartrepository.fetchbyId(bookId);
-		if (cart != null) {
-//			cart.getQuantity()
-			int updatedquantity =   quantity;
-			System.out.println(updatedquantity);
-			if (book.getQuantity() >= updatedquantity) {
-
-				cartrepository.verifyTheUser(updatedquantity, bookId);
-				return true;
-			} else
-				return false;
-		} else if (book.getQuantity() >= quantity) {
-//			cartinformation.setUserId(userId);
-//			cartinformation.setQuantity(quantity);
-//			cartinformation.setBookId(bookId);
-			cartrepository.save(cartinformation);
-			return true;
-		}
-		return false;
-
-	}
+//	@Transactional
+//	@Override
+//	public boolean addandupdatecart(Long userId, int quantity, Long bookId) {
+//		Book book = repository.fetchbyId(bookId);
+//		Cart cart = cartrepository.fetchbyId(bookId);
+//		if (cart != null) {
+////			cart.getQuantity()
+//			int updatedquantity =   quantity;
+//			System.out.println(updatedquantity);
+//			if (book.getQuantity() >= updatedquantity) {
+//
+//				cartrepository.verifyTheUser(updatedquantity, bookId);
+//				return true;
+//			} else
+//				return false;
+//		} else if (book.getQuantity() >= quantity) {
+////			cartinformation.setUserId(userId);
+////			cartinformation.setQuantity(quantity);
+////			cartinformation.setBookId(bookId);
+//			cartrepository.save(cartinformation);
+//			return true;
+//		}
+//		return false;
+//
+//	}
 
 	public double getOriginalPrice(double price, int quantity) {
 		long result = (long) (price / quantity);
@@ -92,8 +97,8 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public BookInformation getTotalPriceofBook(long bookId, int quantity) {
-		BookInformation bookinfo = repository.fetchbyId(bookId);
+	public Book getTotalPriceofBook(long bookId, int quantity) {
+		Book bookinfo = repository.fetchbyId(bookId);
 		double Price = bookinfo.getPrice();
 		int Quantity = quantity;
 		if (Quantity <= bookinfo.getQuantity() || Quantity >= bookinfo.getQuantity()) {
@@ -121,14 +126,14 @@ public class BookServiceImplementation implements IBookService {
 	public void removefromcart(Long userId, Long bookId) {
 		// CartInformation cart =cartrepository.fetchbyId(bookId);
 		// System.out.println(cart);
-		cartrepository.deletebyId(bookId);
+//		cartrepository.deletebyId(bookId);
 	}
 
 	@Transactional
 	@Override
-	public List<BookInformation> sortGetAllBooks() {
-		List<BookInformation> list = repository.findAll();
-		list.sort((BookInformation book1, BookInformation book2) -> book1.getCreatedDateAndTime().compareTo(book2.getCreatedDateAndTime()));
+	public List<Book> sortGetAllBooks() {
+		List<Book> list = repository.findAll();
+		list.sort((Book book1, Book book2) -> book1.getCreatedDateAndTime().compareTo(book2.getCreatedDateAndTime()));
 		return list;
 	}
 
@@ -174,27 +179,27 @@ public class BookServiceImplementation implements IBookService {
 //}
 	
 	@Override
-	public List<BookInformation> sorting(boolean value){
-		List<BookInformation> list = repository.findAll();
+	public List<Book> sorting(boolean value){
+		List<Book> list = repository.findAll();
 		if(value==true) {
-		list.sort((BookInformation book1, BookInformation book2) -> book1.getPrice().compareTo(book2.getPrice()));
+		list.sort((Book book1, Book book2) -> book1.getPrice().compareTo(book2.getPrice()));
 		return list;
 		}
 		else {
-			list.sort((BookInformation book1, BookInformation book2) -> book1.getPrice().compareTo(book2.getPrice()));
+			list.sort((Book book1, Book book2) -> book1.getPrice().compareTo(book2.getPrice()));
 			Collections.reverse(list);
 			return list;
 		}
 	}
 
 	@Override
-	public List<BookInformation> findAllPageBySize(int pagenumber) {
+	public List<Book> findAllPageBySize(int pagenumber) {
 		long count = repository.count();
 		int pageSize = 2;
 		int pages = (int) ((count / pageSize));
 		int i = pagenumber; // i should start with zero or 0...
 		while (i <= pages) {
-			List<BookInformation> list = repository.findAllPage(PageRequest.of(i, pageSize));
+			List<Book> list = repository.findAllPage(PageRequest.of(i, pageSize));
 			i++;
 			return list;
 		}
@@ -202,12 +207,80 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public BookInformation getBookbyId(long bookId) {
-	           BookInformation info	= repository.fetchbyId(bookId);
+	public Book getBookbyId(long bookId) {
+	           Book info	= repository.fetchbyId(bookId);
 	           if( info != null) {
 	        	   return info;
 	           }
 		return null;
 	}
+
+	@Override
+	public boolean editBook(EditBookDto information) {
+		Book info =repository.fetchbyId(information.getBookId());
+		if(info!=null) {
+			info.setBookId(information.getBookId());
+			info.setBookName(information.getBookName());
+			info.setQuantity(information.getQuantity());
+			info.setPrice(information.getPrice());
+			info.setAuthorName(information.getAuthorName());
+			info.setBookDetails(information.getBookDetails());
+			info.setImage(information.getImage());
+			info.setUpdatedDateAndTime(information.getUpdatedAt());
+			repository.save(info);
+			return true;
+		}
+		return false;
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteBook(long bookId) {
+		Book info =repository.fetchbyId(bookId);
+		if(info!=null) {
+			repository.deleteByBookId(bookId);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public List<Book> getAllAprovedBooks() {
+		List<Book> approvedBooks=repository.getAllApprovedBooks();
+		return approvedBooks;
+	}
+	
+	@Transactional
+	@Override
+	public boolean editStatus(long bookId, String status) {
+		Book info =repository.fetchbyId(bookId);
+		if(info != null) {
+			repository.updateBookStatusByBookId(status, bookId);
+			return true;
+		}
+		return false;
+	}
+	@Transactional
+	@Override
+	public List<Book> getAllApprovedAndOnHoldBooks() {
+		List<Book> approvedOnHoldBooks=repository.getAllApprovedOnHoldBooks();
+		return approvedOnHoldBooks;
+	}
+
+	@Override
+
+	public boolean addandupdatecart(Long userId, int quantity, Long bookId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public List<Book> getAllRejectedBooks() {
+		List<Book> rejectedBooks=repository.getAllRejectedBooks();
+		return rejectedBooks;
+	}
+
+	
+
+	
 
 }
