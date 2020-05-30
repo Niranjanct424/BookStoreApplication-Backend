@@ -11,7 +11,6 @@ public interface IBookService {
 
 	List<Book> getBookInfo();
 	
-	void removefromcart(Long userId, Long bookId);
 
 	List<Book> sortGetAllBooks();
 	

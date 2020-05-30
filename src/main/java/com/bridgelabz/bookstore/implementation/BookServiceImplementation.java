@@ -65,7 +65,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (fetchRole.equals("seller") && !userRole.equals("admin")) 
+				if (fetchRole.equals("seller") && userRole.equals("admin")) 
 				{
 					Book book=repository.fetchbyBookName(information.getBookName());
 					System.out.println("Book name "+information.getBookName());
