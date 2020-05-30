@@ -1,5 +1,6 @@
 package com.bridgelabz.bookstore.implementation;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -11,14 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.Cart;
+import com.bridgelabz.bookstore.entity.Users;
+import com.bridgelabz.bookstore.exception.BookAlreadyExist;
+import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.AddressRepository;
 import com.bridgelabz.bookstore.repository.BookImple;
 import com.bridgelabz.bookstore.repository.CustomerRepository;
+import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.service.IBookService;
+import com.bridgelabz.bookstore.util.JwtGenerator;
 
 @Service
 public class BookServiceImplementation implements IBookService {
@@ -31,6 +38,9 @@ public class BookServiceImplementation implements IBookService {
 //	private IBook repository;
 	@Autowired
 	private BookImple repository;
+	
+	@Autowired
+	private IUserRepository userRepository;
 
 	@Autowired
 	CustomerRepository customerrep;
@@ -38,21 +48,62 @@ public class BookServiceImplementation implements IBookService {
 	@Autowired
 	AddressRepository addrepository;
 	
+	@Autowired
+	private JwtGenerator generate;
 //	@Autowired
 //	private CartImple cartrepository;
 
 	@Transactional
 	@Override
-	public boolean addBooks(BookDto information) {
-		bookinformation = modelMapper.map(information, Book.class);
-		bookinformation.setBookName(information.getBookName());
-		bookinformation.setAuthorName(information.getAuthorName());
-		bookinformation.setPrice(information.getPrice());
-		bookinformation.setQuantity(information.getQuantity());
-		bookinformation.setCreatedDateAndTime(LocalDateTime.now());
-		bookinformation.setStatus("OnHold");
-		repository.save(bookinformation);
-		return true;
+	public boolean addBooks(BookDto information,String token)
+	{	
+		Long id;
+		try 
+		{
+			id = (long) generate.parseJWT(token);
+			Users userInfo = userRepository.getUserById(id);
+			if(userInfo != null) 
+			{			
+				String userRole = userInfo.getRole();
+				System.out.println("actual Role is " + userRole);
+				String fetchRole = userRole;
+				
+				if (fetchRole.equals("seller") && !userRole.equals("admin")) 
+				{
+					Book book=repository.fetchbyBookName(information.getBookName());
+					System.out.println("Book name "+information.getBookName());
+					
+					if(book ==null)
+					{
+						bookinformation = modelMapper.map(information, Book.class);
+						bookinformation.setBookName(information.getBookName());
+						bookinformation.setAuthorName(information.getAuthorName());
+						bookinformation.setPrice(information.getPrice());
+						bookinformation.setQuantity(information.getQuantity());
+						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
+						bookinformation.setStatus("OnHold");
+						repository.save(bookinformation);
+						return true;
+					}
+					else
+					{
+						throw new BookAlreadyExist("Book is already exist Exception..");
+					}
+				}
+				else 
+				{
+					throw new UserException("Your are not Authorized User");
+				}
+			}
+			else 
+			{
+				throw new UserException("User doesn't exist");
+			}
+		} 
+		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
+			System.out.println(e.getMessage());
+		}
+		return false;	
 	}
 
 	@Transactional
@@ -216,30 +267,87 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public boolean editBook(EditBookDto information) {
-		Book info =repository.fetchbyId(information.getBookId());
-		if(info!=null) {
-			info.setBookId(information.getBookId());
-			info.setBookName(information.getBookName());
-			info.setQuantity(information.getQuantity());
-			info.setPrice(information.getPrice());
-			info.setAuthorName(information.getAuthorName());
-			info.setBookDetails(information.getBookDetails());
-			info.setImage(information.getImage());
-			info.setUpdatedDateAndTime(information.getUpdatedAt());
-			repository.save(info);
-			return true;
+	public boolean editBook(EditBookDto information,String token) {
+		
+		Long id;
+		try 
+		{
+			id = (long) generate.parseJWT(token);
+			Users userInfo = userRepository.getUserById(id);
+			if(userInfo != null) 
+			{			
+				String userRole = userInfo.getRole();
+				System.out.println("actual Role is " + userRole);
+				String fetchRole = userRole;
+				
+				if (fetchRole.equals("seller") && !userRole.equals("admin")) 
+				{
+					Book info =repository.fetchbyId(information.getBookId());
+					if(info!=null) 
+					{
+						info.setBookId(information.getBookId());
+						info.setBookName(information.getBookName());
+						info.setQuantity(information.getQuantity());
+						info.setPrice(information.getPrice());
+						info.setAuthorName(information.getAuthorName());
+						info.setBookDetails(information.getBookDetails());
+						info.setImage(information.getImage());
+						info.setUpdatedDateAndTime(information.getUpdatedAt());
+						repository.save(info);
+						return true;
+					}
+				}
+				else 
+				{
+					throw new UserException("Your are not Authorized User");
+				}
+			}
+			else 
+			{
+				throw new UserException("User doesn't exist");
+			}
+		} 
+		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
+			System.out.println(e.getMessage());
 		}
 		return false;
 	}
 
 	@Transactional
 	@Override
-	public boolean deleteBook(long bookId) {
-		Book info =repository.fetchbyId(bookId);
-		if(info!=null) {
-			repository.deleteByBookId(bookId);
-			return true;
+	public boolean deleteBook(long bookId,String token) {
+		Long id;
+		try 
+		{
+			id = (long) generate.parseJWT(token);
+			Users userInfo = userRepository.getUserById(id);
+			if(userInfo != null) 
+			{			
+				String userRole = userInfo.getRole();
+				System.out.println("actual Role is " + userRole);
+				String fetchRole = userRole;
+				
+				if (fetchRole.equals("seller") && !userRole.equals("admin")) 
+				{
+					Book info =repository.fetchbyId(bookId);
+					if(info!=null)
+					{
+						repository.deleteByBookId(bookId);
+						return true;
+					}
+				}
+				else 
+				{
+					throw new UserException("Your are not Authorized User");
+				}
+			}
+			else 
+			{
+				throw new UserException("User doesn't exist");
+			}
+		} 
+		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
+			System.out.println(e.getMessage());
 		}
 		return false;
 	}

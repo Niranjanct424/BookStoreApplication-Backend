@@ -38,6 +38,12 @@ public class Users {
 		@JoinColumn(name="userId")
 		private List<Cart> cartBooks;// refactored dont delete this 
 		
+		public List<Cart> getCartBooks() {
+			return cartBooks;
+		}
+		public void setCartBooks(List<Cart> cartBooks) {
+			this.cartBooks = cartBooks;
+		}
 		public long getUserId() {
 			return userId;
 		}

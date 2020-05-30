@@ -7,7 +7,7 @@ import com.bridgelabz.bookstore.entity.Book;
 
 public interface IBookService {
 	
-	boolean addBooks(BookDto information);
+	boolean addBooks(BookDto information, String token);
 
 	List<Book> getBookInfo();
 	
@@ -25,9 +25,9 @@ public interface IBookService {
 	
 	Book getTotalPriceofBook( long bookId, int quantity);
 
-	boolean editBook(EditBookDto information);
+	boolean editBook(EditBookDto information, String token);
 
-	boolean deleteBook(long bookId);
+	boolean deleteBook(long bookId, String token);
 
 	List<Book> getAllAprovedBooks();
 
