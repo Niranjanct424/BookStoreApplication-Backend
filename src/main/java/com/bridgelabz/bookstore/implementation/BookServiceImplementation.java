@@ -78,7 +78,7 @@ public class BookServiceImplementation implements IBookService {
 						bookinformation.setPrice(information.getPrice());
 						bookinformation.setQuantity(information.getQuantity());
 						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
-						bookinformation.setStatus("OnHold");
+					
 						repository.save(bookinformation);
 						return true;
 					}
@@ -372,12 +372,6 @@ public class BookServiceImplementation implements IBookService {
 		return approvedOnHoldBooks;
 	}
 
-	@Override
-
-	public boolean addandupdatecart(Long userId, int quantity, Long bookId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	public List<Book> getAllRejectedBooks() {
 		List<Book> rejectedBooks=repository.getAllRejectedBooks();
