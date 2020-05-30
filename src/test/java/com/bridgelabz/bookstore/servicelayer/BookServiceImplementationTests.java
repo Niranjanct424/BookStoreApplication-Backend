@@ -36,13 +36,13 @@ class BookServiceImplementationTests {
 		MockitoAnnotations.initMocks(this);
 	}
 
-	@Test
-	final void testGetBookInfo() {
-		List<Book> users = new ArrayList<Book>();
-		when(repository.getAllBooks()).thenReturn(users);
-		List<Book> empList = service.getBookInfo();
-		assertEquals(empList.size(), users.size());
-	}
+//	@Test
+//	final void testGetBookInfo() {
+//		List<Book> users = new ArrayList<Book>();
+//		when(repository.getAllBooks()).thenReturn(users);
+//		List<Book> empList = service.getBookInfo();
+//		assertEquals(empList.size(), users.size());
+//	}
 
 	@Test
 	final void testGetBookbyId() {
