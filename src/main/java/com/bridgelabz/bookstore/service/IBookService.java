@@ -15,7 +15,6 @@ public interface IBookService {
 
 	List<Book> sortGetAllBooks();
 	
-	boolean addandupdatecart(Long userId, int quantity, Long bookId);
 
 	List<Book> sorting(boolean value);
 

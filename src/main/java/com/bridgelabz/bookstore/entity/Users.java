@@ -4,6 +4,7 @@ package com.bridgelabz.bookstore.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,23 +28,23 @@ public class Users {
 		private LocalDateTime createdDate;
 		private boolean isVerified;
 		private String role;
-		private Address Home;
-
-		private Address Work;
-	
-		private Address Others;
+		
+		@OneToMany(cascade = CascadeType.ALL, targetEntity = Address.class)
+		@JoinColumn(name = "userId")
+		private List<Address> address;
 		
 		@OneToMany
 		@JoinColumn(name="userId")
 		private List<Cart> cartBooks;// refactored dont delete this 
-		
+
 		@Override
 		public String toString() {
-			return "UserInformation [userId=" + userId + ", name=" + name + ", email=" + email + ", password="
-					+ password + ", mobileNumber=" + mobileNumber + ", createdDate=" + createdDate + ", isVerified="
-					+ isVerified + ", role=" + role + ", Home=" + Home + ", Work=" + Work + ", Others=" + Others
-					+ ", cartbooks=" +cartBooks+ "]";
-		}	
+			return "Users [userId=" + userId + ", name=" + name + ", email=" + email + ", password=" + password
+					+ ", mobileNumber=" + mobileNumber + ", createdDate=" + createdDate + ", isVerified=" + isVerified
+					+ ", role=" + role + ", address=" + address + ", cartBooks=" + cartBooks + "]";
+		}
+		
+	
 		
 		
 }
