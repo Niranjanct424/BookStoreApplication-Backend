@@ -19,9 +19,6 @@ public interface BookImple extends JpaRepository<Book, Long> {
 	@Query( value = "select * from book", nativeQuery = true)
     List<Book> findAllPage(Pageable pageable);
 	
-	@Query( value = "select * from bookinfo", nativeQuery = true)
-    List<Book> getAllBooks();
-
 	@Query("from Book where book_id=:id ")
 	List<Book> fetchbyIdList(Long id);
 	
@@ -29,15 +26,18 @@ public interface BookImple extends JpaRepository<Book, Long> {
 	@Query("delete from Book where book_id=:id")
 	void deleteByBookId(long id);
 	
-	@Query( value = "select * from bookinfo where is_approved=true", nativeQuery = true)
-    List<Book> getAllApprovedBooks();
-	
 	@Modifying
 	@Query("update from Book set status=:status where book_id=:id")
 	int updateBookStatusByBookId(String status,long id);
+	
+	@Query( value = "select * from bookinfo", nativeQuery = true)
+    List<Book> getAllBooks();
+	
+	@Query( value = "select * from bookinfo where status='approved'", nativeQuery = true)
+    List<Book> getAllApprovedBooks();
 
-	@Query( value = "select * from bookinfo where status='approved' or status='OnHold'", nativeQuery = true)
-	List<Book> getAllApprovedOnHoldBooks();
+	@Query( value = "select * from bookinfo where status='onhold'", nativeQuery = true)
+	List<Book> getAllOnHoldBooks();
 	
 	@Query( value = "select * from bookinfo where status='rejected'", nativeQuery = true)
 	List<Book> getAllRejectedBooks();
