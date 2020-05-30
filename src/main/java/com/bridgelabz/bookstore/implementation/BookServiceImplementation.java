@@ -68,7 +68,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (fetchRole.equals("seller") && !userRole.equals("admin")) 
+				if (fetchRole.equals("seller") || userRole.equals("admin")) 
 				{
 					Book book=repository.fetchbyBookName(information.getBookName());
 					System.out.println("Book name "+information.getBookName());
@@ -81,7 +81,6 @@ public class BookServiceImplementation implements IBookService {
 						bookinformation.setPrice(information.getPrice());
 						bookinformation.setQuantity(information.getQuantity());
 						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
-						bookinformation.setStatus(null);
 						repository.save(bookinformation);
 						return true;
 					}
@@ -297,7 +296,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (fetchRole.equals("seller") && !userRole.equals("admin")) 
+				if (fetchRole.equals("seller") || userRole.equals("admin")) 
 				{
 					Book info =repository.fetchbyId(information.getBookId());
 					if(info!=null) 
@@ -344,7 +343,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (fetchRole.equals("seller") && !userRole.equals("admin")) 
+				if (fetchRole.equals("seller") || userRole.equals("admin")) 
 				{
 					Book info =repository.fetchbyId(bookId);
 					if(info!=null)
