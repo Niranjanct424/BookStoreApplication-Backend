@@ -39,82 +39,6 @@ public class CartServiceImplimentation implements ICartService{
 	@Autowired
 	private BookImple bookRepository;
 	Users user=new Users();
-//	CartItem cartItem =new CartItem();
-//	 Quantity quanty=new Quantity();
-//	@Transactional
-//	@Override
-//	public List<CartItem> addBooktoCart(String token, long bookId) {
-//		Long id;
-//		try {
-//			id = (long) generate.parseJWT(token);
-//		
-//		Users user = userRepository.findById(id).orElse(null);
-//		if(user!= null) 
-//		{	
-//			Book book=bookRepository.fetchbyId(bookId);
-//			System.out.println("--------------------------------------------"+book);
-//			if(book!=null){
-//				System.out.println("-------------------------not equal to null------------");
-//				List<Book> books = null;
-//				for (CartItem d : user.getCartBooks()) {
-//					books = d.getBooksList();
-//					System.out.println("-------------------------"+books);
-//					
-//				}
-//				if(books==null) {
-//					System.out.println("-------------------------equal to null------------");
-//					Users userdetails = this.cartbooks(book,user);
-//					return userRepository.save(userdetails).getCartBooks();
-//				}else {
-//				Users userdetails = this.cartbooks(book,user);
-//				return userRepository.save(userdetails).getCartBooks();
-//				}
-//			
-//			}//book ends
-//			
-//           
-//		}
-//		} catch (JWTVerificationException e) {
-//			e.printStackTrace();
-//		} catch (IllegalArgumentException e) {
-//
-//			e.printStackTrace();
-//		} catch (UnsupportedEncodingException e){ 
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
-//	@Transactional
-//	public Users cartbooks(Book book,Users user) {
-//		long quantity=1;
-//        CartItem cart = new CartItem();
-//		Quantity qunatityofbook = new Quantity();
-//		
-//		ArrayList<Book> booklist = new ArrayList<>();
-//		ArrayList<Quantity> quantitydetails = new ArrayList<Quantity>();
-//		/**
-//		 * adding the book details
-//		 */
-//		booklist.add(book);
-//		// cart.setPlaceTime(LocalDateTime.now());
-//		cart.setBooksList(booklist);
-//		/**
-//		 * adding the quantity to the book
-//		 */
-//		qunatityofbook.setQuantityOfBook(quantity);
-//		qunatityofbook.setTotalprice(22.00);
-//		quantitydetails.add(qunatityofbook);
-//		
-//		cart.setQuantityOfBook(quantitydetails);
-//		/**
-//		 * saving the complete cart in user
-//		 */
-//		user.getCartBooks().add(cart);
-//		//cartRepo.save(cart);
-//		//userRepository.save(user);
-//		return user;
-//	}
-
 	@Transactional
 	@Override
 	public List<CartItem> addBooktoCart(String token, long bookId) {
@@ -196,7 +120,29 @@ public class CartServiceImplimentation implements ICartService{
 		user.getCartBooks().add(cart);
 		return user;
 	}
-	
+
+
+	@Transactional
+	@Override
+	public List<CartItem> getBooksfromCart(String token) {
+		Long id;
+		try {
+			id = (long) generate.parseJWT(token);
+		Users user = userRepository.findById(id).orElse(null);//orElseThrow(() -> new UserException()));
+		List<CartItem> cartBooks = user.getCartBooks();
+		return cartBooks;
+		} catch (JWTVerificationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 
 }
