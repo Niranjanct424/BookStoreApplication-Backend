@@ -6,5 +6,6 @@ import com.bridgelabz.bookstore.entity.CartItem;
 
 public interface ICartService {
  List<CartItem> addBooktoCart(String token,long bookId);
+ List<CartItem> getBooksfromCart(String token);
  
 }
