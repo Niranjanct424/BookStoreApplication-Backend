@@ -27,7 +27,7 @@ public class CartController {
 
 	@Autowired
 	private ICartService cartService;
-	@PostMapping(value="/bookdetails/{bookId}")
+	@PostMapping("bookstore/v3/cart/addbookCart/{bookId}")
 	public ResponseEntity<Response> addBooksToCart(@RequestHeader String token,@PathVariable long bookId) throws Exception {
 	    List<CartItem> cartItem = cartService.addBooktoCart(token,bookId);
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
@@ -35,7 +35,7 @@ public class CartController {
 	  	}
 	
 
-	@GetMapping(value="/detials")
+	@GetMapping("bookstore/v3/cart/getcartbooks")
 	public ResponseEntity<Response> getBooksfromCart(@RequestHeader(name="token")  String token) throws Exception {
 		    List<CartItem> cartdetails = cartService.getBooksfromCart(token);
 		    return ResponseEntity.status(HttpStatus.ACCEPTED)
@@ -43,25 +43,32 @@ public class CartController {
 	}
 
 	
-	@DeleteMapping(value="/book/{token}/{bookId}")
+	@DeleteMapping("bookstore/v3/cart/removeCartBooks/{token}/{bookId}")
 	public ResponseEntity<Response> removeBooksToCart(@PathVariable String token,@PathVariable Long bookId) throws Exception {
 		boolean cartdetails = cartService.removeBooksFromCart(token,bookId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("book removed from cart", 200,cartdetails));  				
 	}
 	
-	@GetMapping(value="/bookCount")
+	@GetMapping("bookstore/v3/cart/bookCount")
 	public ResponseEntity<Response> getBooksCount(@RequestHeader(name="token") String token) throws Exception {
 		    int cartdetails = cartService.getCountOfBooks(token);
-		    return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("Count of book in cart", 200,cartdetails));
+		    return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("Count of to book in cart", 200,cartdetails));
 	}
 	
-	@PutMapping(value="/booksquantity")
-	public ResponseEntity<Response> addBooksQuantityToCart(@RequestHeader String token,@RequestParam Long bookId,
+	@PutMapping("bookstore/v3/cart/increasebooksquantity")
+	public ResponseEntity<Response> increaseBooksQuantity(@RequestHeader String token,@RequestParam Long bookId,
 			@RequestBody CartDto bookQuantityDetails) throws Exception {
-		CartItem cartdetails = cartService.addBooksQuantityInCart(token, bookId,bookQuantityDetails);
-	    return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("Count of book in cart", 200,cartdetails));   	
+		CartItem cartdetails = cartService.IncreaseBooksQuantityInCart(token, bookId,bookQuantityDetails);
+	    return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("increased 1 quantity of book ", 200,cartdetails));   	
 		
 	}
 	
+	@PutMapping("bookstore/v3/cart/decreaseQuantityPrice")
+	public ResponseEntity<Response> descreaseBooksQuantity(@RequestHeader(name="token") String token,@RequestParam("bookId") Long bookId,@RequestBody CartDto bookQuantityDetails) throws Exception {
+		CartItem cartdetails = cartService.descreaseBooksQuantityInCart(token, bookId, bookQuantityDetails);
+		  return ResponseEntity.status(HttpStatus.ACCEPTED).body
+				  (new Response("decreased 1 quantity of book ", 200,cartdetails));	
+		
+ }
 
 }
