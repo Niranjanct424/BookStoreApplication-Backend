@@ -16,7 +16,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
 import com.bridgelabz.bookstore.entity.Book;
-import com.bridgelabz.bookstore.entity.Cart;
+import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.exception.BookAlreadyExist;
 import com.bridgelabz.bookstore.exception.UserException;
@@ -65,7 +65,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (fetchRole.equals("seller") && userRole.equals("admin")) 
+				if (!userRole.equals("user")) 
 				{
 					Book book=repository.fetchbyBookName(information.getBookName());
 					System.out.println("Book name "+information.getBookName());
@@ -169,14 +169,6 @@ public class BookServiceImplementation implements IBookService {
 		return null;
 	}
 	
-	@Transactional
-	@Override
-	public void removefromcart(Long userId, Long bookId) {
-		// CartInformation cart =cartrepository.fetchbyId(bookId);
-		// System.out.println(cart);
-//		cartrepository.deletebyId(bookId);
-	}
-
 	@Transactional
 	@Override
 	public List<Book> sortGetAllBooks() {
