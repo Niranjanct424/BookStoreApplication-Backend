@@ -14,6 +14,9 @@ public interface ICartService {
  
  int getCountOfBooks(String token);
  
- CartItem addBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails);
+ CartItem IncreaseBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails);
+ 
+ CartItem descreaseBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails);
+
  
 }
