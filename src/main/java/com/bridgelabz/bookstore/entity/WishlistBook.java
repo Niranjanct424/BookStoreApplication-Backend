@@ -1,6 +1,7 @@
 package com.bridgelabz.bookstore.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,6 +25,7 @@ public class WishlistBook {
 	private List<Book> booksList;
 	
 	private LocalDateTime wishlistTime;
+
 	
 	
 }
