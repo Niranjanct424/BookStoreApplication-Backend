@@ -11,4 +11,6 @@ public interface ICartService {
  
  boolean removeBooksFromCart(String token, Long bookId);
  
+ int getCountOfBooks(String token);
+ 
 }

@@ -180,4 +180,31 @@ public class CartServiceImplimentation implements ICartService{
 		return false;
 	}
 
+	
+	@Transactional
+	@Override
+	public int getCountOfBooks(String token) {
+		Long id;
+		try {
+			id = (long) generate.parseJWT(token);
+         int countOfBooks=0;
+		Users user = userRepository.findById(id).orElseThrow(null);
+		List<CartItem> cartBooks = user.getCartBooks();
+         for(CartItem cart:cartBooks) {
+        	 if(!cart.getBooksList().isEmpty()) {
+        		 countOfBooks++;
+        	 }
+         }
+		return countOfBooks;
+		} catch (JWTVerificationException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	
 }
