@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.bridgelabz.bookstore.dto.CartDto;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.entity.Quantity;
@@ -205,6 +206,41 @@ public class CartServiceImplimentation implements ICartService{
 		}
 		return 0;
 	}
-	
+
+
+	@Transactional
+	@Override
+	public CartItem addBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails) {
+		Long id;
+		try {
+			id = (long) generate.parseJWT(token);
+			Long quantityId = bookQuantityDetails.getQuantityId();
+			Long quantity = bookQuantityDetails.getQuantityOfBook();
+			// () -> new UserException())
+			Users user = userRepository.findById(id).orElseThrow(null);
+			Book book = bookRepository.findById(bookId).orElseThrow(null);
+			double totalprice = book.getPrice() * (quantity + 1);
+			boolean notExist = false;
+			for (CartItem cartt : user.getCartBooks()) {
+				if (!cartt.getBooksList().isEmpty()) {
+					notExist = cartt.getBooksList().stream().noneMatch(books -> books.getBookId().equals(bookId));
+					if (!notExist) {
+						Quantity quantityDetails = quantityRepository.findById(quantityId).orElseThrow(null);
+						quantityDetails.setQuantityOfBook(quantity + 1);
+						quantityDetails.setTotalprice(totalprice);
+						quantityRepository.save(quantityDetails);
+						return cartt;	}}
+			}
+
+			return null;
+		} catch (JWTVerificationException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }
