@@ -4,17 +4,22 @@ import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bridgelabz.bookstore.entity.Book;
-import com.bridgelabz.bookstore.entity.Cart;
+import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.entity.Quantity;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.repository.BookImple;
+import com.bridgelabz.bookstore.repository.ICartRepository;
 import com.bridgelabz.bookstore.repository.IUserRepository;
+import com.bridgelabz.bookstore.repository.UserRepository;
 import com.bridgelabz.bookstore.response.MailResponse;
 import com.bridgelabz.bookstore.service.ICartService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
@@ -23,51 +28,174 @@ import com.bridgelabz.bookstore.util.JwtGenerator;
 public class CartServiceImplimentation implements ICartService{
 	@Autowired
 	private JwtGenerator generate;
-
+	@Autowired
+	private UserRepository userRepository;
 	@Autowired
 	private MailResponse response;
 	@Autowired
-	private IUserRepository repository;
+	private IUserRepository userRep;
+	@Autowired
+	private ICartRepository cartRepo ;
 	@Autowired
 	private BookImple bookRepository;
 	Users user=new Users();
-	Cart cart =new Cart();
-	 Quantity quanty=new Quantity();
+//	CartItem cartItem =new CartItem();
+//	 Quantity quanty=new Quantity();
+//	@Transactional
+//	@Override
+//	public List<CartItem> addBooktoCart(String token, long bookId) {
+//		Long id;
+//		try {
+//			id = (long) generate.parseJWT(token);
+//		
+//		Users user = userRepository.findById(id).orElse(null);
+//		if(user!= null) 
+//		{	
+//			Book book=bookRepository.fetchbyId(bookId);
+//			System.out.println("--------------------------------------------"+book);
+//			if(book!=null){
+//				System.out.println("-------------------------not equal to null------------");
+//				List<Book> books = null;
+//				for (CartItem d : user.getCartBooks()) {
+//					books = d.getBooksList();
+//					System.out.println("-------------------------"+books);
+//					
+//				}
+//				if(books==null) {
+//					System.out.println("-------------------------equal to null------------");
+//					Users userdetails = this.cartbooks(book,user);
+//					return userRepository.save(userdetails).getCartBooks();
+//				}else {
+//				Users userdetails = this.cartbooks(book,user);
+//				return userRepository.save(userdetails).getCartBooks();
+//				}
+//			
+//			}//book ends
+//			
+//           
+//		}
+//		} catch (JWTVerificationException e) {
+//			e.printStackTrace();
+//		} catch (IllegalArgumentException e) {
+//
+//			e.printStackTrace();
+//		} catch (UnsupportedEncodingException e){ 
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
+//	@Transactional
+//	public Users cartbooks(Book book,Users user) {
+//		long quantity=1;
+//        CartItem cart = new CartItem();
+//		Quantity qunatityofbook = new Quantity();
+//		
+//		ArrayList<Book> booklist = new ArrayList<>();
+//		ArrayList<Quantity> quantitydetails = new ArrayList<Quantity>();
+//		/**
+//		 * adding the book details
+//		 */
+//		booklist.add(book);
+//		// cart.setPlaceTime(LocalDateTime.now());
+//		cart.setBooksList(booklist);
+//		/**
+//		 * adding the quantity to the book
+//		 */
+//		qunatityofbook.setQuantityOfBook(quantity);
+//		qunatityofbook.setTotalprice(22.00);
+//		quantitydetails.add(qunatityofbook);
+//		
+//		cart.setQuantityOfBook(quantitydetails);
+//		/**
+//		 * saving the complete cart in user
+//		 */
+//		user.getCartBooks().add(cart);
+//		//cartRepo.save(cart);
+//		//userRepository.save(user);
+//		return user;
+//	}
+
+	@Transactional
 	@Override
-	public List<Cart> addBooktoCart(String token, long bookId) {
+	public List<CartItem> addBooktoCart(String token, long bookId) {
+		Long id;
 		try {
-			Long id = (long) generate.parseJWT(token);
-			 user= repository.getUserById(id);
-			if(user!=null) {
-		    // this book as to be fetched from approved by adimin fetchid should fetch approved books
-			Book book=bookRepository.fetchbyId(bookId);
-			
-			List<Book> books = null; //intialization of book list ftch all book and checking storing in list of books
-			for (Cart cart :user.getCartBooks()) {
-				books = cart.getBooksList();
-			}
-			//checking for book is null ,adding the book
-			if(book==null) {
-			   List<Book> booklist=new ArrayList<>();
-			   List<Quantity> quantityList=new ArrayList<Quantity>();
-			   booklist.add(book);
-				cart.setBooksList(booklist);
-				quanty.setQuantityOfBook(1);
-				quanty.setTotalprice(100.00);//at present hard coded later bring from book dto
-				quantityList.add(quanty);
-				cart.setQuantityOfBook(quantityList);
-				user.getCartBooks().add(cart);//adding all cart details with product details we are adding to user
-				Users userdetails=repository.save(user);
-			   return userdetails.getCartBooks();
-			}
-			}
-			} catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
+			id = (long) generate.parseJWT(token);
+		
+		
+		Users user = userRepository.findById(id).orElse(null);
+
+		Book book = bookRepository.findById(bookId).orElse(null);
+		/**
+		 * Getting the bookList
+		 */
+		List<Book> books = null;
+		for (CartItem d : user.getCartBooks()) {
+			books = d.getBooksList();
+		}
+		/**
+		 * For the first time adding the book the cartList
+		 */
+		
+		if (books == null) {
+			Users userdetails = this.cartbooks(book,user);
+			return userRepository.save(userdetails).getCartBooks();
+		}
+		/**
+		 * Checking whether book is already present r not
+	     */
+		
+		Optional<Book> cartbook = books.stream().filter(t -> t.getBookId() == bookId).findFirst();
+
+		if (cartbook.isPresent()) {
+			throw null;
+		} else {
+			Users userdetails = this.cartbooks(book,user);
+			return userRepository.save(userdetails).getCartBooks();
+		}
+		
+		} catch (JWTVerificationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
+
 	}
+
 	
-	
+	public Users cartbooks(Book book,Users user) {
+		long quantity=1;
+        CartItem cart =new CartItem();
+		Quantity qunatityofbook = new Quantity();
+		
+		ArrayList<Book> booklist = new ArrayList<>();
+		ArrayList<Quantity> quantitydetails = new ArrayList<Quantity>();
+		/**
+		 * adding the book details
+		 */
+		booklist.add(book);
+		cart.setCreatedTime(LocalDateTime.now());
+		cart.setBooksList(booklist);
+		/**
+		 * adding the quantity to the book
+		 */
+		qunatityofbook.setQuantityOfBook(quantity);
+		qunatityofbook.setTotalprice(book.getPrice());
+		quantitydetails.add(qunatityofbook);
+		
+		cart.setQuantityOfBook(quantitydetails);
+		/**
+		 * saving the complete cart in user
+		 */
+		user.getCartBooks().add(cart);
+		return user;
+	}
 	
 
 
