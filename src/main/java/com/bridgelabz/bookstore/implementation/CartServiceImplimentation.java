@@ -18,11 +18,8 @@ import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.entity.Quantity;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.repository.BookImple;
-import com.bridgelabz.bookstore.repository.ICartRepository;
-import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.repository.QuantityRepository;
 import com.bridgelabz.bookstore.repository.UserRepository;
-import com.bridgelabz.bookstore.response.MailResponse;
 import com.bridgelabz.bookstore.service.ICartService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 
@@ -32,12 +29,6 @@ public class CartServiceImplimentation implements ICartService{
 	private JwtGenerator generate;
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private MailResponse response;
-	@Autowired
-	private IUserRepository userRep;
-	@Autowired
-	private ICartRepository cartRepo ;
 	@Autowired
 	private BookImple bookRepository;
 	@Autowired
@@ -210,7 +201,7 @@ public class CartServiceImplimentation implements ICartService{
 
 	@Transactional
 	@Override
-	public CartItem addBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails) {
+	public CartItem IncreaseBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails) {
 		Long id;
 		try {
 			id = (long) generate.parseJWT(token);
@@ -242,5 +233,48 @@ public class CartServiceImplimentation implements ICartService{
 		}
 		return null;
 	}
+
+
+	@Transactional
+	@Override
+	public CartItem descreaseBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails) {
+		Long id;
+		try {
+			id = (long) generate.parseJWT(token);
+		Long quantityId = bookQuantityDetails.getQuantityId();
+		Long quantity = bookQuantityDetails.getQuantityOfBook();
+
+		Users user = userRepository.findById(id).orElseThrow(null);
+		Book book = bookRepository.findById(bookId).orElseThrow(null);
+		double totalprice=book.getPrice()*(quantity-1);
+		boolean notExist = false;
+		for (CartItem cartt : user.getCartBooks()) {
+			if(!cartt.getBooksList().isEmpty()) {	
+			 notExist = cartt.getBooksList().stream()
+					.noneMatch(books -> books.getBookId().equals(bookId));
+			 if (!notExist) {
+
+					Quantity quantityDetails = quantityRepository.findById(quantityId).orElseThrow(null);
+					quantityDetails.setQuantityOfBook(quantity-1);
+					quantityDetails.setTotalprice(totalprice);
+					quantityRepository.save(quantityDetails);
+					return cartt;
+			
+					}
+
+		       }
+		}
+
+		return null;
+		} catch (JWTVerificationException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;}
+	
+	
 	
 }
