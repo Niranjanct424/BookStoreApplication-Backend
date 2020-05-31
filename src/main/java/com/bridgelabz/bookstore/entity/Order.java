@@ -1,6 +1,7 @@
 
 package com.bridgelabz.bookstore.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,9 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name="order_details")
-public class Order {
+public class Order implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	@Id
 	private Long orderId;
 	@Column(name = "order_placed_time", nullable = false)
