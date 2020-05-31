@@ -14,7 +14,7 @@ public class Quantity
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long quantity_id;
     @Column
-    private Long quantityOfBook;
+	private Long quantityOfBook;
 	@Column
 	private Double totalprice;
 	
