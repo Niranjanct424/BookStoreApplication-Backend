@@ -33,12 +33,13 @@ public class Users {
 		@JoinColumn(name = "userId")
 		private List<Address> address;
 		
-//		@OneToMany
-//		@JoinColumn(name="userId")
-//		private List<CartItem> cartBooks;// refactored dont delete this 
 		@OneToMany(cascade = CascadeType.ALL, targetEntity = CartItem.class)
 		@JoinColumn(name = "userId")
 		private List<CartItem> cartBooks;
+		
+		@OneToMany(cascade = CascadeType.ALL, targetEntity = WishListBook.class)
+		@JoinColumn(name = "userId")
+		private List<WishListBook> wishlistBook;
 
 		@Override
 		public String toString() {

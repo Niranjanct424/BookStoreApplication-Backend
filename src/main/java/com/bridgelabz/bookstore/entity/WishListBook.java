@@ -12,7 +12,7 @@ import javax.persistence.ManyToMany;
 import lombok.Data;
 @Entity
 @Data
-public class WishList {
+public class WishListBook {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long wishlistId;
@@ -20,7 +20,7 @@ public class WishList {
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Book> booksList;
 	
-	
+	private LocalDateTime wishlistTime;
 	
 	
 }
