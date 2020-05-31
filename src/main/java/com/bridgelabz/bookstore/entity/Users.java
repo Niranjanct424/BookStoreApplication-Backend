@@ -33,9 +33,12 @@ public class Users {
 		@JoinColumn(name = "userId")
 		private List<Address> address;
 		
-		@OneToMany
-		@JoinColumn(name="userId")
-		private List<Cart> cartBooks;// refactored dont delete this 
+//		@OneToMany
+//		@JoinColumn(name="userId")
+//		private List<CartItem> cartBooks;// refactored dont delete this 
+		@OneToMany(cascade = CascadeType.ALL, targetEntity = CartItem.class)
+		@JoinColumn(name = "userId")
+		private List<CartItem> cartBooks;
 
 		@Override
 		public String toString() {
