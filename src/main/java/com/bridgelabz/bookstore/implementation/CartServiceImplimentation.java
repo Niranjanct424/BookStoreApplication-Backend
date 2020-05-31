@@ -19,6 +19,7 @@ import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.repository.BookImple;
 import com.bridgelabz.bookstore.repository.ICartRepository;
 import com.bridgelabz.bookstore.repository.IUserRepository;
+import com.bridgelabz.bookstore.repository.QuantityRepository;
 import com.bridgelabz.bookstore.repository.UserRepository;
 import com.bridgelabz.bookstore.response.MailResponse;
 import com.bridgelabz.bookstore.service.ICartService;
@@ -38,6 +39,8 @@ public class CartServiceImplimentation implements ICartService{
 	private ICartRepository cartRepo ;
 	@Autowired
 	private BookImple bookRepository;
+	@Autowired
+	private QuantityRepository quantityRepository;
 	Users user=new Users();
 	@Transactional
 	@Override
@@ -79,13 +82,10 @@ public class CartServiceImplimentation implements ICartService{
 		}
 		
 		} catch (JWTVerificationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -144,5 +144,40 @@ public class CartServiceImplimentation implements ICartService{
 		return null;
 	}
 
+
+	@Transactional
+	@Override
+	public boolean removeBooksFromCart(String token, Long bookId) {
+		Long id;
+		try {
+			id = (long) generate.parseJWT(token);
+			Users user = userRepository.findById(id).orElse(null);
+			Book book = bookRepository.findById(bookId).orElse(null);
+			Quantity quantity = quantityRepository.findById(id).orElseThrow(null);
+			for (CartItem cartt : user.getCartBooks()) {
+				boolean exitsBookInCart = cartt.getBooksList().stream()
+						.noneMatch(books -> books.getBookId().equals(bookId));
+				if (!exitsBookInCart) {
+					userRepository.save(user);
+					cartt.getQuantityOfBook().remove(quantity);
+					cartt.getBooksList().remove(book);
+					cartt.getQuantityOfBook().clear();
+					boolean users = userRepository.save(user).getCartBooks()
+					!= null ? true : false;
+					if (user != null) {
+						return users;
+					}
+				}
+			}
+			return false;
+		} catch (JWTVerificationException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 }
