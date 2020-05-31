@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -26,5 +27,12 @@ public class WishlistController {
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("book is added to wishlist Bag", 200,wishbook));
 	  	}
+	
+	@GetMapping("bookstore/v3/wishlist/getwishbooks")
+	public ResponseEntity<Response> getBooksfromCart(@RequestHeader(name="token")  String token) throws Exception {
+		List<WishlistBook> wishbook = wishbookService.getWishlistBooks(token);
+	    return ResponseEntity.status(HttpStatus.ACCEPTED)
+				.body(new Response("book is added to wishlist Bag", 200,wishbook));
+	}
 
 }
