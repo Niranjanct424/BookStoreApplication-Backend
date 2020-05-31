@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bridgelabz.bookstore.entity.Cart;
+import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.response.Response;
 import com.bridgelabz.bookstore.service.ICartService;
 
@@ -23,9 +23,9 @@ public class CartController {
 	private ICartService cartService;
 	@PostMapping(value="/bookdetails/{bookId}")
 	public ResponseEntity<Response> addBooksToCart(@RequestHeader String token,@PathVariable long bookId) throws Exception {
-	    List<Cart> cart = cartService.addBooktoCart(token,bookId);
+	    List<CartItem> cartItem = cartService.addBooktoCart(token,bookId);
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
-				.body(new Response("book added to cart", 200,cart));
+				.body(new Response("book added to cart", 200,cartItem));
 	  	}
 
 
