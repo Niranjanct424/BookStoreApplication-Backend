@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,8 +35,14 @@ public class CartController {
 	public ResponseEntity<Response> getBooksfromCart(@RequestHeader(name="token")  String token) throws Exception {
 		    List<CartItem> cartdetails = cartService.getBooksfromCart(token);
 		    return ResponseEntity.status(HttpStatus.ACCEPTED)
-					.body(new Response("book added to cart", 200,cartdetails));
+					.body(new Response("books fetched from cart", 200,cartdetails));
 	}
 
+	
+	@DeleteMapping(value="/book/{token}/{bookId}")
+	public ResponseEntity<Response> removeBooksToCart(@PathVariable String token,@PathVariable Long bookId) throws Exception {
+		boolean cartdetails = cartService.removeBooksFromCart(token,bookId);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("book removed from cart", 200,cartdetails));  				
+	}
 
 }
