@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bridgelabz.bookstore.entity.Book;
+import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.entity.WishlistBook;
 import com.bridgelabz.bookstore.repository.BookImple;
@@ -80,6 +81,26 @@ public class WishlistImplementation implements IWishlistService {
 		return user;
 		
 	}
+
+	@Override
+	public List<WishlistBook> getWishlistBooks(String token) {
+		Long id;
+		try {
+			id = (long) generate.parseJWT(token);
+			Users user = userRepository.findById(id).get();
+			if(user!=null) {
+			List<WishlistBook> wishBooks = user.getWishlistBook();
+		     return wishBooks;
+			}
+			//write here exception........
+		} catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	
 	
 	
 	
