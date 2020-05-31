@@ -91,7 +91,7 @@ public class CartServiceImplimentation implements ICartService{
 		Quantity qunatityofbook = new Quantity();
 		
 		ArrayList<Book> booklist = new ArrayList<>();
-		ArrayList<Quantity> quantitydetails = new ArrayList<Quantity>();
+		
 		/**
 		 * adding the book details
 		 */
@@ -101,6 +101,7 @@ public class CartServiceImplimentation implements ICartService{
 		/**
 		 * adding the quantity to the book
 		 */
+		ArrayList<Quantity> quantitydetails = new ArrayList<Quantity>();
 		qunatityofbook.setQuantityOfBook(quantity);
 		qunatityofbook.setTotalprice(book.getPrice());
 		quantitydetails.add(qunatityofbook);
