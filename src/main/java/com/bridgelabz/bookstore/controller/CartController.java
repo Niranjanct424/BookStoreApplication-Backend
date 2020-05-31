@@ -44,5 +44,11 @@ public class CartController {
 		boolean cartdetails = cartService.removeBooksFromCart(token,bookId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("book removed from cart", 200,cartdetails));  				
 	}
+	
+	@GetMapping(value="/bookCount")
+	public ResponseEntity<Response> getBooksCount(@RequestHeader(name="token") String token) throws Exception {
+		    int cartdetails = cartService.getCountOfBooks(token);
+		    return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("Count of book in cart", 200,cartdetails));
+	}
 
 }
