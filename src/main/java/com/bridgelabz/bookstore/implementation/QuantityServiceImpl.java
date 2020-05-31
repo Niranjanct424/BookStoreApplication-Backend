@@ -29,11 +29,7 @@ public class QuantityServiceImpl implements QuantityService{
 	Quantity en = new Quantity();
 	if(book!=null)
 	{
-//		en.setBookquantity(book);
-//		en.setQuantity(Quantity);
-	    repo.create(Quantity,book.getBookId());
-       
-	    bookrepo.save(book);
+
 	}
 	
 	}

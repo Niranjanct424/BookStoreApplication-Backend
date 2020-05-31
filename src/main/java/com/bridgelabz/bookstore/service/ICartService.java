@@ -9,4 +9,6 @@ public interface ICartService {
  
  List<CartItem> getBooksfromCart(String token);
  
+ boolean removeBooksFromCart(String token, Long bookId);
+ 
 }
