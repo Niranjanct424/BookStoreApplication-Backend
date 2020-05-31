@@ -6,5 +6,12 @@ import com.bridgelabz.bookstore.entity.WishlistBook;
 
 public interface IWishlistService {
 	List<WishlistBook> addwishBook(String token,long bookId);
+	
+	List<WishlistBook> getWishlistBooks(String token);
+	
+	
+
+	
+	
 
 }
