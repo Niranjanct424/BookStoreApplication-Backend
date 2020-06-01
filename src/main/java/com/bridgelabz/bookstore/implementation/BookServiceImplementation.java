@@ -16,13 +16,12 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
 import com.bridgelabz.bookstore.entity.Book;
-import com.bridgelabz.bookstore.entity.Cart;
+import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.exception.BookAlreadyExist;
 import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.AddressRepository;
 import com.bridgelabz.bookstore.repository.BookImple;
-import com.bridgelabz.bookstore.repository.CustomerRepository;
 import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.service.IBookService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
@@ -33,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class BookServiceImplementation implements IBookService {
 	private Book bookinformation = new Book();
-	private Cart cartinformation = new Cart();
 	private ModelMapper modelMapper = new ModelMapper();
 //	@Autowired
 //	private ModelMapper modelMapper;
@@ -45,8 +43,7 @@ public class BookServiceImplementation implements IBookService {
 	@Autowired
 	private IUserRepository userRepository;
 
-	@Autowired
-	CustomerRepository customerrep;
+
 	
 	@Autowired
 	AddressRepository addrepository;
@@ -82,8 +79,11 @@ public class BookServiceImplementation implements IBookService {
 						bookinformation.setBookName(information.getBookName());
 						bookinformation.setAuthorName(information.getAuthorName());
 						bookinformation.setPrice(information.getPrice());   
+						bookinformation.setPrice(information.getPrice());
+						bookinformation.setStatus("OnHold");
 						bookinformation.setQuantity(information.getQuantity());
 						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
+					
 						repository.save(bookinformation);
 						return true;
 					}
@@ -191,14 +191,6 @@ public class BookServiceImplementation implements IBookService {
 		return null;
 	}
 	
-	@Transactional
-	@Override
-	public void removefromcart(Long userId, Long bookId) {
-		// CartInformation cart =cartrepository.fetchbyId(bookId);
-		// System.out.println(cart);
-//		cartrepository.deletebyId(bookId);
-	}
-
 	@Transactional
 	@Override
 	public List<Book> sortGetAllBooks() {
@@ -449,12 +441,6 @@ public class BookServiceImplementation implements IBookService {
 		return null;
 	}
 
-	@Override
-
-	public boolean addandupdatecart(Long userId, int quantity, Long bookId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	public List<Book> getAllRejectedBooks(String token) 
 	{
