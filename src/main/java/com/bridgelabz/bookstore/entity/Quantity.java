@@ -12,12 +12,8 @@ import javax.persistence.Table;
 import lombok.Data;
 @Entity
 @Table
-<<<<<<< HEAD
 @Data
-public class Quantity 
-=======
 public class Quantity implements Serializable
->>>>>>> faab57573c2840cd2d51f5809b00a6e6960ed1a0
 {
    
 	private static final long serialVersionUID = 1L;

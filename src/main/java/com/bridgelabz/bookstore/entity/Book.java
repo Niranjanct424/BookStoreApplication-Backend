@@ -15,10 +15,9 @@ import lombok.Data;
 @Entity
 @Table(name = "bookinfo")
 public class Book implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookId;
@@ -31,31 +30,4 @@ public class Book implements Serializable{
 	private LocalDateTime updatedDateAndTime;
 	private String status;
 	private String image;
-
-
-
-<<<<<<< HEAD
-	public Book() {
-		super();
-	}
-	
-	public Book(int bookId, String bookName, int quantity, Double price, String authorName,
-			String bookDetails, String image, LocalDateTime createdDateAndTime) {
-		super();
-		this.bookId = bookId;
-		this.bookName = bookName;
-		this.quantity = quantity;
-		this.price = price;
-		this.authorName = authorName;
-		this.bookDetails = bookDetails;
-		this.image = image;
-		this.createdDateAndTime = createdDateAndTime;
-	}
-=======
-
-	
-	
-
-
->>>>>>> faab57573c2840cd2d51f5809b00a6e6960ed1a0
 }

@@ -58,12 +58,12 @@ public class BookResponse {
 
 	}
 
-	public BookResponse(String response, List<Book> bookList) {
-		super();
-
-		this.response = response;
-		this.bookList = bookList;
-	}
+//	public BookResponse(String response, List<Book> bookList) {
+//		super();
+//
+//		this.response = response;
+//		this.bookList = bookList;
+//	}
 
 	public BookResponse(String response, Object obj) {
 		super();
