@@ -7,15 +7,13 @@ import com.bridgelabz.bookstore.entity.Book;
 
 public interface IBookService {
 	
-	boolean addBooks(BookDto information);
+	boolean addBooks(BookDto information, String token);
 
-	List<Book> getBookInfo();
+	List<Book> getBookInfo(String token);
 	
-	void removefromcart(Long userId, Long bookId);
 
 	List<Book> sortGetAllBooks();
 	
-	boolean addandupdatecart(Long userId, int quantity, Long bookId);
 
 	List<Book> sorting(boolean value);
 
@@ -25,17 +23,17 @@ public interface IBookService {
 	
 	Book getTotalPriceofBook( long bookId, int quantity);
 
-	boolean editBook(EditBookDto information);
+	boolean editBook(EditBookDto information, String token);
 
-	boolean deleteBook(long bookId);
+	boolean deleteBook(long bookId, String token);
 
-	List<Book> getAllAprovedBooks();
+	List<Book> getAllAprovedBooks(String token);
 
-	boolean editStatus(long bookId, String status);
+	boolean editBookStatus(long bookId, String status,String token);
 
-	List<Book> getAllApprovedAndOnHoldBooks();
+	List<Book> getAllOnHoldBooks(String token);
 
-	List<Book> getAllRejectedBooks();
+	List<Book> getAllRejectedBooks(String token);
 
 	
 	
