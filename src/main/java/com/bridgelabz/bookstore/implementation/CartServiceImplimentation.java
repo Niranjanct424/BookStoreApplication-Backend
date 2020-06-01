@@ -45,16 +45,12 @@ public class CartServiceImplimentation implements ICartService{
 		Users user = userRepository.findById(id).orElse(null);
 
 		Book book = bookRepository.findById(bookId).orElse(null);
-		/**
-		 * Getting the bookList
-		 */
+	
 		List<Book> books = null;
 		for (CartItem d : user.getCartBooks()) {
 			books = d.getBooksList();
 		}
-		/**
-		 * For the first time adding the book the cartList
-		 */
+	
 		
 		if (books == null) {
 			Users userdetails = this.cartbooks(book,user);
@@ -92,24 +88,18 @@ public class CartServiceImplimentation implements ICartService{
 		
 		ArrayList<Book> booklist = new ArrayList<>();
 		
-		/**
-		 * adding the book details
-		 */
+	
 		booklist.add(book);
 		cart.setCreatedTime(LocalDateTime.now());
 		cart.setBooksList(booklist);
-		/**
-		 * adding the quantity to the book
-		 */
+
 		ArrayList<Quantity> quantitydetails = new ArrayList<Quantity>();
 		qunatityofbook.setQuantityOfBook(quantity);
 		qunatityofbook.setTotalprice(book.getPrice());
 		quantitydetails.add(qunatityofbook);
 		
 		cart.setQuantityOfBook(quantitydetails);
-		/**
-		 * saving the complete cart in user
-		 */
+	
 		user.getCartBooks().add(cart);
 		return user;
 	}
@@ -121,9 +111,13 @@ public class CartServiceImplimentation implements ICartService{
 		Long id;
 		try {
 			id = (long) generate.parseJWT(token);
-		Users user = userRepository.findById(id).orElse(null);//orElseThrow(() -> new UserException()));
+		Users user = userRepository.findById(id).get();
+		if(user!=null){
 		List<CartItem> cartBooks = user.getCartBooks();
 		return cartBooks;
+		
+		}//user..
+		//user.......
 		} catch (JWTVerificationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -144,8 +138,10 @@ public class CartServiceImplimentation implements ICartService{
 		Long id;
 		try {
 			id = (long) generate.parseJWT(token);
-			Users user = userRepository.findById(id).orElse(null);
-			Book book = bookRepository.findById(bookId).orElse(null);
+			Users user = userRepository.findById(id).get();
+			if(user!=null) {
+			Book book = bookRepository.findById(bookId).get();
+			if(book!=null) {
 			Quantity quantity = quantityRepository.findById(id).orElseThrow(null);
 			for (CartItem cartt : user.getCartBooks()) {
 				boolean exitsBookInCart = cartt.getBooksList().stream()
@@ -161,8 +157,12 @@ public class CartServiceImplimentation implements ICartService{
 						return users;
 					}
 				}
+			
 			}
-			return false;
+			}//book
+			//.book....exception here....
+			}//user
+	
 		} catch (JWTVerificationException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
@@ -181,7 +181,8 @@ public class CartServiceImplimentation implements ICartService{
 		try {
 			id = (long) generate.parseJWT(token);
          int countOfBooks=0;
-		Users user = userRepository.findById(id).orElseThrow(null);
+		Users user = userRepository.findById(id).get();
+		if(user!=null) {
 		List<CartItem> cartBooks = user.getCartBooks();
          for(CartItem cart:cartBooks) {
         	 if(!cart.getBooksList().isEmpty()) {
@@ -189,6 +190,8 @@ public class CartServiceImplimentation implements ICartService{
         	 }
          }
 		return countOfBooks;
+		}//user
+		//....write userwxception
 		} catch (JWTVerificationException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
@@ -208,14 +211,16 @@ public class CartServiceImplimentation implements ICartService{
 			id = (long) generate.parseJWT(token);
 			Long quantityId = bookQuantityDetails.getQuantityId();
 			Long quantity = bookQuantityDetails.getQuantityOfBook();
-			// () -> new UserException())
-			Users user = userRepository.findById(id).orElseThrow(null);
-			Book book = bookRepository.findById(bookId).orElseThrow(null);
+			Users user = userRepository.findById(id).get();
+			if(user!=null) {
+			Book book = bookRepository.findById(bookId).get();
+			if(book!=null) {
 			double totalprice = book.getPrice() * (quantity + 1);
 			boolean notExist = false;
 			for (CartItem cartt : user.getCartBooks()) {
 				if (!cartt.getBooksList().isEmpty()) {
-					notExist = cartt.getBooksList().stream().noneMatch(books -> books.getBookId().equals(bookId));
+					notExist = cartt.getBooksList().stream().
+							noneMatch(books -> books.getBookId().equals(bookId));
 					if (!notExist) {
 						Quantity quantityDetails = quantityRepository.findById(quantityId).orElseThrow(null);
 						quantityDetails.setQuantityOfBook(quantity + 1);
@@ -223,8 +228,9 @@ public class CartServiceImplimentation implements ICartService{
 						quantityRepository.save(quantityDetails);
 						return cartt;	}}
 			}
-
-			return null;
+			}//book 
+			
+			}//user
 		} catch (JWTVerificationException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
@@ -245,8 +251,10 @@ public class CartServiceImplimentation implements ICartService{
 		Long quantityId = bookQuantityDetails.getQuantityId();
 		Long quantity = bookQuantityDetails.getQuantityOfBook();
 
-		Users user = userRepository.findById(id).orElseThrow(null);
-		Book book = bookRepository.findById(bookId).orElseThrow(null);
+		Users user = userRepository.findById(id).get();
+		if(user!=null) {
+		Book book = bookRepository.findById(bookId).get();
+		if(book!=null) {
 		double totalprice=book.getPrice()*(quantity-1);
 		boolean notExist = false;
 		for (CartItem cartt : user.getCartBooks()) {
@@ -265,8 +273,9 @@ public class CartServiceImplimentation implements ICartService{
 
 		       }
 		}
-
-		return null;
+		}//book
+		
+		}//user
 		} catch (JWTVerificationException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
