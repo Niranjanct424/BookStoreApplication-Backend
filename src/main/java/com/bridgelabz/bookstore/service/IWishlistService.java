@@ -9,9 +9,8 @@ public interface IWishlistService {
 	
 	List<WishlistBook> getWishlistBooks(String token);
 	
+	boolean removeWishBook(String token, Long bookId);
 	
-
-	
-	
+	int getCountOfWishlist(String token);
 
 }
