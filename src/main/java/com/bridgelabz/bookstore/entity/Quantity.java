@@ -6,8 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import lombok.Data;
 @Entity
 @Table
+@Data
 public class Quantity 
 {
     @Id
@@ -17,26 +20,5 @@ public class Quantity
     private Long quantityOfBook;
 	@Column
 	private Double totalprice;
-	
-	public long getQuantity_id() {
-		return quantity_id;
-	}
-	public void setQuantity_id(long quantity_id) {
-		this.quantity_id = quantity_id;
-	}
-	public Long getQuantityOfBook() {
-		return quantityOfBook;
-	}
-	public void setQuantityOfBook(long quantityOfBook) {
-		this.quantityOfBook = quantityOfBook;
-	}
-	public Double getTotalprice() {
-		return totalprice;
-	}
-	public void setTotalprice(Double totalprice) {
-		this.totalprice = totalprice;
-	}
-	
-
 
 }
