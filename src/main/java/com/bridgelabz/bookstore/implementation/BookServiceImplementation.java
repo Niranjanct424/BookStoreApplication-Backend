@@ -76,6 +76,7 @@ public class BookServiceImplementation implements IBookService {
 						bookinformation.setBookName(information.getBookName());
 						bookinformation.setAuthorName(information.getAuthorName());
 						bookinformation.setPrice(information.getPrice());
+						bookinformation.setStatus("OnHold");
 						bookinformation.setQuantity(information.getQuantity());
 						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
 					
