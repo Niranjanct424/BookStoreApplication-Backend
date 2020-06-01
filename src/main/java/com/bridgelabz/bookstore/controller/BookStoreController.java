@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
-import com.bridgelabz.bookstore.entity.BookInformation;
+import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.response.BookResponse;
 import com.bridgelabz.bookstore.service.IBookService;
 
@@ -27,55 +28,32 @@ public class BookStoreController {
 	IBookService bookservice;
 
 	@PostMapping("books/addbook")
-	public ResponseEntity<BookResponse> addBook(@RequestBody BookDto information) {
-		bookservice.addBooks(information);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse("The Book details are", information));
+	public ResponseEntity<BookResponse> addBook(@RequestBody BookDto information,@RequestHeader("token") String token) {
+		
+		boolean res=bookservice.addBooks(information,token);
+		if(res)
+			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse("The Book details are", information));
+		else
+			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse(400,"The Book details not added "));
 	}
 	
 	
-	
-	
-//	@GetMapping( value = "books/{bookId}/{quantity}")
-//	public ResponseEntity<BookResponse> getTotalPriceofBookwithDetails( @PathVariable( value = "bookId") long bookId, 
-//			                                                            @PathVariable( value = "quantity") int quantity) {
-//		BookInformation info = bookservice.getTotalPriceofBook(bookId, quantity);
-//		
-//			return ResponseEntity.status(HttpStatus.OK).body( new BookResponse("Book Detail are :", info));
-//	}
-	
-	@GetMapping("books")
-	public ResponseEntity<BookResponse> getBooks() {
-		List<BookInformation> books = bookservice.getBookInfo();
+	@GetMapping("books/getAllBooks")
+	public ResponseEntity<BookResponse> getBooks(@RequestHeader("token") String token) {
+		List<Book> books = bookservice.getBookInfo(token);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Book details are", books ));
  
 	}
 	@GetMapping("books/unsorting")
 	public ResponseEntity<BookResponse> sort(){
-		List<BookInformation> list=bookservice.sortGetAllBooks();
+		List<Book> list=bookservice.sortGetAllBooks();
 		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("all books",list));
 	}
 
-//	@PostMapping("/addandupdatecart")
-//	public ResponseEntity<BookResponse> addtocart(@RequestParam("userId") Long userId,
-//			@RequestHeader("quantity") int quantity, @RequestParam("bookId") Long bookId) {
-//		boolean value = bookservice.addandupdatecart(userId, quantity, bookId);
-//		if (value) {
-//			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Book is added to cart ", quantity));
-//		} else
-//			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new BookResponse("Out of Stock", quantity));
-//
-//	}
-
-//	@PutMapping("/removefromcart")
-//	public ResponseEntity<BookResponse> removelabel(@RequestParam("userId") Long userId, @RequestParam("bookId") Long bookId) {
-//		bookservice.removefromcart(userId,bookId);
-//		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Book has been removed from the cart", bookId));
-//	}
 	
 	@GetMapping("books/sorting")
 	public ResponseEntity<BookResponse> sorting(@RequestParam("value") boolean value){
-		List<BookInformation> list=bookservice.sorting( value);
+		List<Book> list=bookservice.sorting( value);
 		if (value==true) {
 			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("all books",list));
 		} else {
@@ -85,39 +63,69 @@ public class BookStoreController {
 	}
 	@GetMapping( value = "books/pagewise/{pagenumber}")
 	public ResponseEntity<BookResponse> getBookPagewise( @PathVariable( value = "pagenumber") int pagenumber) {
-		List<BookInformation> pageList = bookservice.findAllPageBySize( pagenumber);
+		List<Book> pageList = bookservice.findAllPageBySize( pagenumber);
 	
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("Successfull", pageList));
 	}
 	
 	@GetMapping( value = "books/{bookId}")
  public ResponseEntity<BookResponse> getBookbyId( @PathVariable("bookId") long bookId) {
-		BookInformation info = bookservice.getBookbyId(bookId);	
+		Book info = bookservice.getBookbyId(bookId);	
 			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is",info));
 	}
 	
 	
 	@PutMapping("books/editbook")
-	public ResponseEntity<BookResponse> editBook(@RequestBody EditBookDto information){
-		boolean res =bookservice.editBook(information);
+	public ResponseEntity<BookResponse> editBook(@RequestBody EditBookDto information,@RequestHeader("token") String token){
+		boolean res =bookservice.editBook(information,token);
 		if(res)
 			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse("The Book is Edited", information));
 		return null;
 	}
 	
 	@DeleteMapping("books/deletebook/{bookId}")
-	public ResponseEntity<BookResponse> deleteBook(@PathVariable long bookId){
-		boolean res =bookservice.deleteBook(bookId);
+	public ResponseEntity<BookResponse> deleteBook(@PathVariable long bookId,@RequestHeader("token") String token){
+		boolean res =bookservice.deleteBook(bookId,token);
 		if(res)
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(202,"The Book is Deleted"));
 		return null;
 	}
 	
-	@GetMapping("books/approvedBooks")
-	public ResponseEntity<BookResponse> getAllApprovedBooks() {
-		List<BookInformation> books = bookservice.getAllAprovedBooks();
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved Book details are", books ));
- 
+	
+	@PutMapping("books/editBookStatus/{bookId}/{status}")
+	public ResponseEntity<BookResponse> editBookStatus(@PathVariable long bookId,@PathVariable String status,@RequestHeader("token") String token){
+		boolean res =bookservice.editBookStatus(bookId,status,token);
+		if(res)
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(202,"The Book Status is changed sucessfully.."));
+		else
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"The Book Status is not updated.."));
 	}
+	
+	@GetMapping("books/approvedBooks")
+	public ResponseEntity<BookResponse> getAllApprovedBooks(@RequestHeader("token") String token) {
+	List<Book> books = bookservice.getAllAprovedBooks(token);
+		if(books != null)
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved Book details are", books ));
+		else
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Approved Books available" ));
+	}
+	
+	@GetMapping("books/onHoldBooks")
+	public ResponseEntity<BookResponse> getAllOnHoldBooks(@RequestHeader("token") String token) {
+		List<Book> books = bookservice.getAllOnHoldBooks(token);
+		if(books != null)
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved & OnHold Book details are", books ));
+		else
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Approved & OnHold Books available" ));
+	}
+	
+	@GetMapping("books/rejectedBooks")
+	public ResponseEntity<BookResponse> getAllRejectedBooks(@RequestHeader("token") String token) {
+		List<Book> books = bookservice.getAllRejectedBooks(token);
+		if(books != null)
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Rejected Book details are", books ));
+		else
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Rejected Books available" ));
 
+	}
 }

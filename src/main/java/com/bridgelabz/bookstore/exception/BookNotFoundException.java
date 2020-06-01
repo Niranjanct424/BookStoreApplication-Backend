@@ -1,11 +1,7 @@
 package com.bridgelabz.bookstore.exception;
 
-public class BookAlreadyExist extends RuntimeException {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class BookNotFoundException extends RuntimeException {
+	
 	private String message;
 
 	public String getMessage() {
@@ -16,9 +12,8 @@ public class BookAlreadyExist extends RuntimeException {
 		this.message = message;
 	}
 
-	public BookAlreadyExist(String message) {
+	public BookNotFoundException(String message) {
 		this.message = message;
 
 	}
-
 }

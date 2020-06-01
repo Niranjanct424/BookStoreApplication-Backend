@@ -3,7 +3,7 @@ package com.bridgelabz.bookstore.service;
 import java.util.List;
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
-import com.bridgelabz.bookstore.entity.BookInformation;
+import com.bridgelabz.bookstore.entity.Book;
 
 public interface IBookService {
 
@@ -16,8 +16,16 @@ public interface IBookService {
 	List<BookInformation> sortGetAllBooks();
 
 	boolean addandupdatecart(Long userId, int quantity, Long bookId);
+	
+	boolean addBooks(BookDto information, String token);
 
-	List<BookInformation> sorting(boolean value);
+	List<Book> getBookInfo(String token);
+	
+
+	List<Book> sortGetAllBooks();
+	
+
+	List<Book> sorting(boolean value);
 
 	List<BookInformation> findAllPageBySize(int pagenumber);
 
@@ -27,12 +35,23 @@ public interface IBookService {
 	
 	public void deleteBook(int bookId);
 	BookInformation getTotalPriceofBook( long bookId, int quantity);
+    List<Book> findAllPageBySize( int pagenumber);
+	
+	Book getBookbyId( long bookId);
+	
+	Book getTotalPriceofBook( long bookId, int quantity);
 
-	boolean editBook(EditBookDto information);
+	boolean editBook(EditBookDto information, String token);
 
-	boolean deleteBook(long bookId);
+	boolean deleteBook(long bookId, String token);
 
-	List<BookInformation> getAllAprovedBooks();
+	List<Book> getAllAprovedBooks(String token);
+
+	boolean editBookStatus(long bookId, String status,String token);
+
+	List<Book> getAllOnHoldBooks(String token);
+
+	List<Book> getAllRejectedBooks(String token);
 
 	
 	
