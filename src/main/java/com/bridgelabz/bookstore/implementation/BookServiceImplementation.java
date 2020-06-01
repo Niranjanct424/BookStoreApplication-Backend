@@ -69,7 +69,6 @@ public class BookServiceImplementation implements IBookService {
 				{
 					Book book=repository.fetchbyBookName(information.getBookName());
 					System.out.println("Book name "+information.getBookName());
-					
 					if(book ==null)
 					{
 						bookinformation = modelMapper.map(information, Book.class);
