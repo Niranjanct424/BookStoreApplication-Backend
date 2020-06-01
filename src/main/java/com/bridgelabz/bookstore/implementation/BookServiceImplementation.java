@@ -433,15 +433,6 @@ public class BookServiceImplementation implements IBookService {
 		return null;
 	}
 
-<<<<<<< HEAD
-	@Override
-
-	public boolean addandupdatecart(Long userId, int quantity, Long bookId) {
-		return false;
-	}
-=======
->>>>>>> faab57573c2840cd2d51f5809b00a6e6960ed1a0
-
 	public List<Book> getAllRejectedBooks(String token) 
 	{
 		Long id;

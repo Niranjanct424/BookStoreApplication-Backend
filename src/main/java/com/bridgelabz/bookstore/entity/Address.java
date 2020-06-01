@@ -16,11 +16,11 @@ import lombok.Data;
 <<<<<<< HEAD
 @Data
 public class Address {
-=======
+
 public class Address implements Serializable {
 
 	private static final long serialVersionUID = 1L;
->>>>>>> faab57573c2840cd2d51f5809b00a6e6960ed1a0
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
