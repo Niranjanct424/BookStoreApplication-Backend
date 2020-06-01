@@ -12,8 +12,10 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
+import lombok.Data;
 
+@Entity
+@Data
 public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,34 +26,4 @@ public class Cart {
 	
 	@OneToMany
 	private List<Quantity> quantityOfBook;
-
-	public List<Book> getBooksList() {
-		return booksList;
-	}
-
-	public void setBooksList(List<Book> booksList) {
-		this.booksList = booksList;
-	}
-
-
-	
-
-	public List<Quantity> getQuantityOfBook() {
-		return quantityOfBook;
-	}
-
-	public void setQuantityOfBook(List<Quantity> quantityOfBook) {
-		this.quantityOfBook = quantityOfBook;
-	}
-
-	public long getCartId() {
-		return cartId;
-	}
-
-	public void setCartId(long cartId) {
-		this.cartId = cartId;
-	}
-
-	
-
 }

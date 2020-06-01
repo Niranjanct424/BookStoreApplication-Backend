@@ -27,6 +27,9 @@ import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.service.IBookService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class BookServiceImplementation implements IBookService {
 	private Book bookinformation = new Book();
@@ -78,7 +81,7 @@ public class BookServiceImplementation implements IBookService {
 						bookinformation = modelMapper.map(information, Book.class);
 						bookinformation.setBookName(information.getBookName());
 						bookinformation.setAuthorName(information.getAuthorName());
-						bookinformation.setPrice(information.getPrice());
+						bookinformation.setPrice(information.getPrice());   
 						bookinformation.setQuantity(information.getQuantity());
 						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
 						repository.save(bookinformation);
@@ -341,6 +344,7 @@ public class BookServiceImplementation implements IBookService {
 			{			
 				String userRole = userInfo.getRole();
 				System.out.println("actual Role is " + userRole);
+				log.info("Actual ");
 				String fetchRole = userRole;
 				
 				if (fetchRole.equals("seller") || userRole.equals("admin")) 
@@ -400,6 +404,7 @@ public class BookServiceImplementation implements IBookService {
 		{
 			id = (long) generate.parseJWT(token);
 			Users userInfo = userRepository.getUserById(id);
+			log.info("");
 			if(userInfo != null) 
 			{
 				Book info =repository.fetchbyId(bookId);

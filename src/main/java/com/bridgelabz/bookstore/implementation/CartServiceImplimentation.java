@@ -53,6 +53,7 @@ public class CartServiceImplimentation implements ICartService{
 			   booklist.add(book);
 				cart.setBooksList(booklist);
 				quanty.setQuantityOfBook(1);
+				quanty.setQuantityOfBook(1);
 				quanty.setTotalprice(100.00);//at present hard coded later bring from book dto
 				quantityList.add(quanty);
 				cart.setQuantityOfBook(quantityList);
