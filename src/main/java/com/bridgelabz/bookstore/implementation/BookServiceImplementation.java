@@ -65,7 +65,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (!userRole.equals("user")) 
+				if (fetchRole.equals("seller") || userRole.equals("admin")) 
 				{
 					Book book=repository.fetchbyBookName(information.getBookName());
 					System.out.println("Book name "+information.getBookName());
@@ -105,10 +105,27 @@ public class BookServiceImplementation implements IBookService {
 
 	@Transactional
 	@Override
-	public List<Book> getBookInfo() 
+	public List<Book> getBookInfo(String token) 
 	{
-		List<Book> users = repository.getAllBooks();
-		return users;
+		Long id;
+		try 
+		{
+			id = (long) generate.parseJWT(token);
+			Users userInfo = userRepository.getUserById(id);
+			if(userInfo != null) 
+			{
+				List<Book> users = repository.getAllBooks();
+				return users;
+			}
+			else 
+			{
+				throw new UserException("User doesn't exist");
+			}
+		} 
+		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
 	
 	
@@ -269,7 +286,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (fetchRole.equals("seller") && !userRole.equals("admin")) 
+				if (fetchRole.equals("seller") || userRole.equals("admin")) 
 				{
 					Book info =repository.fetchbyId(information.getBookId());
 					if(info!=null) 
@@ -316,7 +333,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (fetchRole.equals("seller") && !userRole.equals("admin")) 
+				if (fetchRole.equals("seller") || userRole.equals("admin")) 
 				{
 					Book info =repository.fetchbyId(bookId);
 					if(info!=null)
@@ -342,36 +359,103 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public List<Book> getAllAprovedBooks() {
-		List<Book> approvedBooks=repository.getAllApprovedBooks();
-		return approvedBooks;
+	public List<Book> getAllAprovedBooks(String token) 
+	{
+		Long id;
+		try 
+		{
+			id = (long) generate.parseJWT(token);
+			Users userInfo = userRepository.getUserById(id);
+			if(userInfo != null) 
+			{
+				List<Book> approvedBooks=repository.getAllApprovedBooks();
+				return approvedBooks;
+			}
+			else 
+			{
+				throw new UserException("User doesn't exist");
+			}
+		} 
+		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
 	
 	@Transactional
 	@Override
-	public boolean editStatus(long bookId, String status) {
-		Book info =repository.fetchbyId(bookId);
-		if(info != null) {
-			repository.updateBookStatusByBookId(status, bookId);
-			return true;
+	public boolean editBookStatus(long bookId, String status,String token) {
+		Long id;
+		try 
+		{
+			id = (long) generate.parseJWT(token);
+			Users userInfo = userRepository.getUserById(id);
+			if(userInfo != null) 
+			{
+				Book info =repository.fetchbyId(bookId);
+				if(info != null) {
+					repository.updateBookStatusByBookId(status, bookId);
+					return true;
+				}
+			}
+			else 
+			{
+				throw new UserException("User doesn't exist");
+			}
+		} 
+		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
+			System.out.println(e.getMessage());
 		}
 		return false;
 	}
+	
+	
 	@Transactional
 	@Override
-	public List<Book> getAllApprovedAndOnHoldBooks() {
-		List<Book> approvedOnHoldBooks=repository.getAllApprovedOnHoldBooks();
-		return approvedOnHoldBooks;
+	public List<Book> getAllOnHoldBooks(String token) {
+		Long id;
+		try 
+		{
+			id = (long) generate.parseJWT(token);
+			Users userInfo = userRepository.getUserById(id);
+			if(userInfo != null) 
+			{
+				List<Book> approvedOnHoldBooks=repository.getAllOnHoldBooks();
+				return approvedOnHoldBooks;
+			}
+			else 
+			{
+				throw new UserException("User doesn't exist");
+			}
+		} 
+		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
 
 
-	public List<Book> getAllRejectedBooks() {
-		List<Book> rejectedBooks=repository.getAllRejectedBooks();
-		return rejectedBooks;
+	public List<Book> getAllRejectedBooks(String token) 
+	{
+		Long id;
+		try 
+		{
+			id = (long) generate.parseJWT(token);
+			Users userInfo = userRepository.getUserById(id);
+			if(userInfo != null) 
+			{
+				List<Book> rejectedBooks=repository.getAllRejectedBooks();
+				return rejectedBooks;
+			}
+			else 
+			{
+				throw new UserException("User doesn't exist");
+			}
+		} 
+		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
 	}
-
-	
-
-	
 
 }
