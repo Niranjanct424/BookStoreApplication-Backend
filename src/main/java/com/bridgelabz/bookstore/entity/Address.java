@@ -1,5 +1,7 @@
 package com.bridgelabz.bookstore.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +13,14 @@ import lombok.Data;
 
 @Entity
 @Table(name = "Address")
+<<<<<<< HEAD
 @Data
 public class Address {
+=======
+public class Address implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+>>>>>>> faab57573c2840cd2d51f5809b00a6e6960ed1a0
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +41,27 @@ public class Address {
 
 	@Column(name = "customer_landmark")
 	private String Landmark;
+	
+	@Column(name = "country")
+    private String country;
+	
+	@Column(name = "address_type")
+    private String addressType;
+	
+	public String getCountry() {
+		return country;
+	}
 
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getAddressType() {
+		return addressType;
+	}
+
+	public void setAddressType(String addressType) {
+		this.addressType = addressType;
+	}
 
 }
