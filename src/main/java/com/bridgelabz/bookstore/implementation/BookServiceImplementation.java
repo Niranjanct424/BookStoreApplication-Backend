@@ -175,9 +175,8 @@ public class BookServiceImplementation implements IBookService {
 //		return "";
 //
 //	}
-
 //}
-	
+
 	@Override
 	public List<Book> sorting(boolean value){
 		List<Book> list = repository.findAll();
@@ -270,7 +269,6 @@ public class BookServiceImplementation implements IBookService {
 	@Override
 
 	public boolean addandupdatecart(Long userId, int quantity, Long bookId) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -278,9 +276,5 @@ public class BookServiceImplementation implements IBookService {
 		List<Book> rejectedBooks=repository.getAllRejectedBooks();
 		return rejectedBooks;
 	}
-
-	
-
-	
 
 }

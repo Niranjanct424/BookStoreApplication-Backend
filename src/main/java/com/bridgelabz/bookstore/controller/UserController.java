@@ -56,7 +56,7 @@ public class UserController {
 		if (users!=null) {
 			String token=generate.jwtToken(users.getUserId());
 			return ResponseEntity.status(HttpStatus.ACCEPTED).header("login successfull", information.getEmail())
-					.body(new UsersDetailRes(token, 200, information));
+					.body(new UsersDetailRes(token, 200, users));
 		}
 		else {
 			throw new UserException(" Invalide credentials");

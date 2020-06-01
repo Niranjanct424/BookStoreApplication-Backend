@@ -10,10 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-
 public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +29,7 @@ public class Cart {
 	public void setBooksList(List<Book> booksList) {
 		this.booksList = booksList;
 	}
-
-
 	
-
 	public List<Quantity> getQuantityOfBook() {
 		return quantityOfBook;
 	}
@@ -51,7 +45,4 @@ public class Cart {
 	public void setCartId(long cartId) {
 		this.cartId = cartId;
 	}
-
-	
-
 }
