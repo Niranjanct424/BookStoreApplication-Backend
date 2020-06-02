@@ -14,6 +14,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+
 @Data
 @Entity
 @Table(name = "bookinfo")
@@ -26,7 +27,10 @@ public class Book implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookId;
 	private String bookName;
-	private int noOfBooks;
+
+	
+
+	private Long noOfBooks;
 	private Double price;
 	private String authorName;
 	private String bookDetails;
@@ -34,6 +38,7 @@ public class Book implements Serializable{
 	private LocalDateTime updatedDateAndTime;
 	private String status;
 	private String image;
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Rating> reviewRating;
 

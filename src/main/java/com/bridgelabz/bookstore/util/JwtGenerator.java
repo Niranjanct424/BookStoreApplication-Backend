@@ -26,13 +26,28 @@ public class JwtGenerator {
 		return token;
 	}
 
-	public Long parseJWT(String jwt)
-		throws JWTVerificationException, IllegalArgumentException, UnsupportedEncodingException {
+	public Long parseJWT(String jwt) {
 		Long userId = (long) 0;
+		try {
 		if (jwt != null) {
 			userId = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwt).getClaim("id").asLong();
+			return userId;
 		}
-		return userId;
+		
+		} catch (JWTVerificationException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		return userId; 
+          
 	}
 
-}
+	}
+	
+
+	
+	
+	
+
+
