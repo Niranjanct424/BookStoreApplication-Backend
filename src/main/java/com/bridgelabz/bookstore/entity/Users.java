@@ -35,6 +35,7 @@ public class Users implements Serializable {
 		@JoinColumn(name = "userId")
 		private List<Address> address;
 		
+
 		@OneToMany(cascade = CascadeType.ALL, targetEntity = CartItem.class)
 		@JoinColumn(name = "userId")
 		private List<CartItem> cartBooks;
@@ -50,7 +51,5 @@ public class Users implements Serializable {
 					+ ", role=" + role + ", address=" + address + ", cartBooks=" + cartBooks + "]";
 		}
 		
-	
-		
-		
+
 }
