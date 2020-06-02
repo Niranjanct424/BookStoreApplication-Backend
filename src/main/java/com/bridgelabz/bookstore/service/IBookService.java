@@ -21,7 +21,7 @@ public interface IBookService {
 	
 	Book getBookbyId( long bookId);
 	
-	Book getTotalPriceofBook( long bookId, int quantity);
+	Book getTotalPriceofBook( long bookId, long quantity);
 
 	boolean editBook(EditBookDto information, String token);
 

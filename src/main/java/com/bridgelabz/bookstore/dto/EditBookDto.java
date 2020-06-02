@@ -11,7 +11,7 @@ import lombok.Data;
 public class EditBookDto {
 	private long bookId;
 	private String bookName;
-	private int quantity;
+	private Long noOfBooks;
 	private Double price;
 	private String authorName;
 	private String image;

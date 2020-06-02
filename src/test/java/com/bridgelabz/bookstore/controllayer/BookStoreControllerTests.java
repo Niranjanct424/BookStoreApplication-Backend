@@ -93,7 +93,7 @@ class BookStoreControllerTests {
 		info.setBookName("Java");
 		info.setImage("Birds");
 		info.setPrice(1000.00);
-		info.setQuantity(2);
+		info.setNoOfBooks((long) 2);
 		ObjectMapper object = new ObjectMapper();
 		String bookdto = object.writeValueAsString(info);
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/books/addbook", info).content(bookdto).contentType(MediaType.APPLICATION_JSON);

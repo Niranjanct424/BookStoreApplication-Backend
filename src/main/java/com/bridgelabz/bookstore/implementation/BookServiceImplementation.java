@@ -81,7 +81,7 @@ public class BookServiceImplementation implements IBookService {
 						bookinformation.setPrice(information.getPrice());   
 						bookinformation.setPrice(information.getPrice());
 						bookinformation.setStatus("OnHold");
-						bookinformation.setQuantity(information.getQuantity());
+						bookinformation.setNoOfBooks(information.getNoOfBooks());
 						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
 					
 						repository.save(bookinformation);
@@ -161,28 +161,28 @@ public class BookServiceImplementation implements IBookService {
 //
 //	}
 
-	public double getOriginalPrice(double price, int quantity) {
+	public double getOriginalPrice(double price, long quantity) {
 		long result = (long) (price / quantity);
 		return result;
 	}
 
 	@Override
-	public Book getTotalPriceofBook(long bookId, int quantity) {
+	public Book getTotalPriceofBook(long bookId, long quantity) {
 		Book bookinfo = repository.fetchbyId(bookId);
 		double Price = bookinfo.getPrice();
-		int Quantity = quantity;
-		if (Quantity <= bookinfo.getQuantity() || Quantity >= bookinfo.getQuantity()) {
+		long Quantity = quantity;
+		if (Quantity <= bookinfo.getNoOfBooks() || Quantity >= bookinfo.getNoOfBooks()) {
 			if (bookinfo != null && quantity > 0) {
-				double price = getOriginalPrice(Price, bookinfo.getQuantity());
+				double price = getOriginalPrice(Price, bookinfo.getNoOfBooks());
 				double totalPrice = (price * Quantity);
-				bookinfo.setQuantity(quantity);
+				bookinfo.setNoOfBooks(quantity); 
 				bookinfo.setPrice(totalPrice);
 				repository.save(bookinfo);
 				return bookinfo;
 			} else if (bookinfo != null && quantity < 1) {
-				double price = getOriginalPrice(Price, bookinfo.getQuantity());
+				double price = getOriginalPrice(Price, bookinfo.getNoOfBooks());
 				double totalPrice = (price * 1);
-				bookinfo.setQuantity(quantity);
+				bookinfo.setNoOfBooks(quantity);
 				bookinfo.setPrice(totalPrice);
 				repository.save(bookinfo);
 				return bookinfo;
@@ -298,7 +298,7 @@ public class BookServiceImplementation implements IBookService {
 					{
 						info.setBookId(information.getBookId());
 						info.setBookName(information.getBookName());
-						info.setQuantity(information.getQuantity());
+						info.setNoOfBooks(information.getNoOfBooks());
 						info.setPrice(information.getPrice());
 						info.setAuthorName(information.getAuthorName());
 						info.setBookDetails(information.getBookDetails());

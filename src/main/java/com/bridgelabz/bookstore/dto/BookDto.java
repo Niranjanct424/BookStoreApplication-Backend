@@ -8,7 +8,7 @@ import lombok.Data;
 @Component
 public class BookDto {
 	private String bookName;
-	private int quantity;
+	private Long noOfBooks;
 	private Double price;
 	private String authorName;
 	private String image;
