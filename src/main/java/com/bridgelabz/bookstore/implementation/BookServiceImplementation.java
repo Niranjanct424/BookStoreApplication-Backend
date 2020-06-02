@@ -77,7 +77,7 @@ public class BookServiceImplementation implements IBookService {
 						bookinformation.setAuthorName(information.getAuthorName());
 						bookinformation.setPrice(information.getPrice());
 						bookinformation.setStatus("OnHold");
-						bookinformation.setQuantity(information.getQuantity());
+						bookinformation.setNoOfBooks(information.getQuantity());
 						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
 					
 						repository.save(bookinformation);
@@ -167,18 +167,18 @@ public class BookServiceImplementation implements IBookService {
 		Book bookinfo = repository.fetchbyId(bookId);
 		double Price = bookinfo.getPrice();
 		int Quantity = quantity;
-		if (Quantity <= bookinfo.getQuantity() || Quantity >= bookinfo.getQuantity()) {
+		if (Quantity <= bookinfo.getNoOfBooks() || Quantity >= bookinfo.getNoOfBooks()) {
 			if (bookinfo != null && quantity > 0) {
-				double price = getOriginalPrice(Price, bookinfo.getQuantity());
+				double price = getOriginalPrice(Price, bookinfo.getNoOfBooks());
 				double totalPrice = (price * Quantity);
-				bookinfo.setQuantity(quantity);
+				bookinfo.setNoOfBooks(quantity);
 				bookinfo.setPrice(totalPrice);
 				repository.save(bookinfo);
 				return bookinfo;
 			} else if (bookinfo != null && quantity < 1) {
-				double price = getOriginalPrice(Price, bookinfo.getQuantity());
+				double price = getOriginalPrice(Price, bookinfo.getNoOfBooks());
 				double totalPrice = (price * 1);
-				bookinfo.setQuantity(quantity);
+				bookinfo.setNoOfBooks(quantity);
 				bookinfo.setPrice(totalPrice);
 				repository.save(bookinfo);
 				return bookinfo;
@@ -287,27 +287,27 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (fetchRole.equals("seller") || userRole.equals("admin")) 
-				{
-					Book info =repository.fetchbyId(information.getBookId());
-					if(info!=null) 
-					{
-						info.setBookId(information.getBookId());
-						info.setBookName(information.getBookName());
-						info.setQuantity(information.getQuantity());
-						info.setPrice(information.getPrice());
-						info.setAuthorName(information.getAuthorName());
-						info.setBookDetails(information.getBookDetails());
-						info.setImage(information.getImage());
-						info.setUpdatedDateAndTime(information.getUpdatedAt());
-						repository.save(info);
-						return true;
-					}
-				}
-				else 
-				{
-					throw new UserException("Your are not Authorized User");
-				}
+//				if (fetchRole.equals("seller") || userRole.equals("admin")) 
+//				{
+//					Book info =repository.fetchbyId(information.getBookId());
+//					if(info!=null) 
+//					{
+//						info.setBookId(information.getBookId());
+//						info.setBookName(information.getBookName());
+//						info.setNoOfBooks(information. ());
+//						info.setPrice(information.getPrice());
+//						info.setAuthorName(information.getAuthorName());
+//						info.setBookDetails(information.getBookDetails());
+//						info.setImage(information.getImage());
+//						info.setUpdatedDateAndTime(information.getUpdatedAt());
+//						repository.save(info);
+//						return true;
+//					}
+//				}
+//				else 
+//				{
+//					throw new UserException("Your are not Authorized User");
+//				}
 			}
 			else 
 			{
