@@ -15,8 +15,11 @@ import com.bridgelabz.bookstore.entity.Quantity;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.repository.BookImple;
 import com.bridgelabz.bookstore.repository.UserRepository;
+import com.bridgelabz.bookstore.response.EmailData;
 import com.bridgelabz.bookstore.service.IOrderServices;
+import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
+import com.bridgelabz.bookstore.util.MailServiceProvider;
 import com.bridgelabz.bookstore.util.RandomNumberGenerator;
 @Service
 public class OrderServiceImp implements IOrderServices{
@@ -28,6 +31,11 @@ public class OrderServiceImp implements IOrderServices{
  	private BookImple bookRepository;
      @Autowired
      private RandomNumberGenerator randomNumber;  
+     @Autowired
+ 	private EmailProviderService em;
+     @Autowired
+ 	private EmailData emailData;
+     
      @Transactional
  	@Override
  	public Order confrimOrder(String token) {
@@ -80,10 +88,19 @@ public class OrderServiceImp implements IOrderServices{
  		
  		String data = "";
  		for(String dt:details) {
- 			data+=dt+"\n"+"=========>"+"\n";		
+ 			data+=dt+"\n";		
  		}
  		
- 		this.sendMail(userdetails, data);
+        
+ 		String body="@"+userdetails.getEmail()+" "+"order details"+" "+data;
+		emailData.setEmail(userdetails.getEmail());
+
+		emailData.setSubject("your Order is succefully placed");
+
+		emailData.setBody(body);
+
+		em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+ 		
  		
  		userdetails.getCartBooks().clear();
 
