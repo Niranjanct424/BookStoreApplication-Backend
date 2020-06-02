@@ -24,10 +24,8 @@ public class Order implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	private Long orderId;
-	@Column(name = "order_placed_time", nullable = false)
+	@Column(name = "order_placed_time")
 	private LocalDateTime orderPlaceTime;
-	
-	//private Double totalPrice;
 	
 	@OneToMany
 	(cascade = CascadeType.ALL, targetEntity = Quantity.class)
