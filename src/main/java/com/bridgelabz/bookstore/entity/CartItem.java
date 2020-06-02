@@ -39,4 +39,49 @@ public class CartItem implements Serializable{
 	
 	private LocalDateTime createdTime;
 
+
+	public Long getCartId() {
+		return cartId;
+	}
+
+
+	public void setCartId(Long cartId) {
+		this.cartId = cartId;
+	}
+
+
+	public List<Book> getBooksList() {
+		return booksList;
+	}
+
+
+	public void setBooksList(List<Book> booksList) {
+		this.booksList = booksList;
+	}
+
+
+	public List<Quantity> getQuantityOfBook() {
+		return quantityOfBook;
+	}
+
+
+	public void setQuantityOfBook(List<Quantity> quantityOfBook) {
+		this.quantityOfBook = quantityOfBook;
+	}
+
+
+	public LocalDateTime getCreatedTime() {
+		return createdTime;
+	}
+
+
+	public void setCreatedTime(LocalDateTime createdTime) {
+		this.createdTime = createdTime;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

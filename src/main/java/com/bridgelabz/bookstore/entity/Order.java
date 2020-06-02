@@ -37,5 +37,41 @@ public class Order implements Serializable{
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Book> BooksList;
 
+	public Long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
+
+	public LocalDateTime getOrderPlaceTime() {
+		return orderPlaceTime;
+	}
+
+	public void setOrderPlaceTime(LocalDateTime orderPlaceTime) {
+		this.orderPlaceTime = orderPlaceTime;
+	}
+
+	public List<Quantity> getQuantityOfBooks() {
+		return QuantityOfBooks;
+	}
+
+	public void setQuantityOfBooks(List<Quantity> quantityOfBooks) {
+		QuantityOfBooks = quantityOfBooks;
+	}
+
+	public List<Book> getBooksList() {
+		return BooksList;
+	}
+
+	public void setBooksList(List<Book> booksList) {
+		BooksList = booksList;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 
 }

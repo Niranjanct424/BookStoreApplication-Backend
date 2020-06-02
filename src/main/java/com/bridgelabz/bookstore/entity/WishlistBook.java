@@ -26,6 +26,30 @@ public class WishlistBook {
 	
 	private LocalDateTime wishlistTime;
 
+	public long getWishlistId() {
+		return wishlistId;
+	}
+
+	public void setWishlistId(long wishlistId) {
+		this.wishlistId = wishlistId;
+	}
+
+	public List<Book> getBooksList() {
+		return booksList;
+	}
+
+	public void setBooksList(List<Book> booksList) {
+		this.booksList = booksList;
+	}
+
+	public LocalDateTime getWishlistTime() {
+		return wishlistTime;
+	}
+
+	public void setWishlistTime(LocalDateTime wishlistTime) {
+		this.wishlistTime = wishlistTime;
+	}
+
 	
 	
 }
