@@ -32,6 +32,7 @@ public class Users  {
 		@JoinColumn(name = "userId")
 		private List<Address> address;
 		
+
 		@OneToMany(cascade = CascadeType.ALL, targetEntity = CartItem.class)
 		@JoinColumn(name = "userId")
 		private List<CartItem> cartBooks;
