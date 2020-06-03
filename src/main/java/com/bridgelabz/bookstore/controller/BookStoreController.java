@@ -104,8 +104,8 @@ public class BookStoreController {
 	}
 	
 	@GetMapping("books/approvedBooks")
-	public ResponseEntity<BookResponse> getAllApprovedBooks(@RequestHeader("token") String token) {
-	List<Book> books = bookservice.getAllAprovedBooks(token);
+	public ResponseEntity<BookResponse> getAllApprovedBook() {
+	List<Book> books = bookservice.getAllAprovedBook();
 		if(books != null)
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved Book details are", books ));
 		else

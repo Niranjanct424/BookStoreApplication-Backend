@@ -363,30 +363,6 @@ public class BookServiceImplementation implements IBookService {
 		return false;
 	}
 
-	@Override
-	public List<Book> getAllAprovedBooks(String token) 
-	{
-		Long id;
-		try 
-		{
-			id = (long) generate.parseJWT(token);
-			Users userInfo = userRepository.getUserById(id);
-			if(userInfo != null) 
-			{
-				List<Book> approvedBooks=repository.getAllApprovedBooks();
-				return approvedBooks;
-			}
-			else 
-			{
-				throw new UserException("User doesn't exist");
-			}
-		} 
-		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
-	}
-	
 	@Transactional
 	@Override
 	public boolean editBookStatus(long bookId, String status,String token) {
@@ -461,6 +437,12 @@ public class BookServiceImplementation implements IBookService {
 			System.out.println(e.getMessage());
 		}
 		return null;
+	}
+
+	@Override
+	public List<Book> getAllAprovedBook() {
+		List<Book> approvedBooks=repository.getAllApprovedBooks();
+		return approvedBooks;
 	}
 
 }
