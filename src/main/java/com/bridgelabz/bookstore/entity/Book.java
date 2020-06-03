@@ -19,10 +19,9 @@ import lombok.Data;
 @Entity
 @Table(name = "bookinfo")
 public class Book implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookId;
@@ -35,9 +34,5 @@ public class Book implements Serializable{
 	private LocalDateTime updatedDateAndTime;
 	private String status;
 	private String image;
-
-	@ManyToMany(cascade = CascadeType.ALL)
-	private List<Rating> reviewRating;
-
 
 }

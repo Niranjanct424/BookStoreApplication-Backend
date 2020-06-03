@@ -12,10 +12,7 @@ import javax.persistence.Table;
 import lombok.Data;
 @Entity
 @Table
-
 @Data
-
-
 public class Quantity implements Serializable
 {
    
@@ -28,5 +25,5 @@ public class Quantity implements Serializable
 	private Long quantityOfBook;
 	@Column
 	private Double totalprice;
-	
+
 }

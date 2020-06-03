@@ -30,7 +30,7 @@ public class OrderServiceImp implements IOrderServices{
      @Autowired
  	private BookImple bookRepository;
      @Autowired
-     private RandomNumberGenerator randomNumber;  
+     private RandomNumberGenerator randomOrderNumber;  
      @Autowired
  	private EmailProviderService em;
      @Autowired
@@ -46,7 +46,7 @@ public class OrderServiceImp implements IOrderServices{
  		Order orderDetails = new Order();
  		Random random = new Random();
  		ArrayList<Book> list = new ArrayList<>();
- 		ArrayList<Quantity> quantitydetails = new ArrayList<>();
+ 		ArrayList<Quantity> quantitydetails = new ArrayList<>(); 
  		ArrayList<String> details = new ArrayList<>();
  		userdetails.getCartBooks().forEach((cart) -> {
 
@@ -91,15 +91,15 @@ public class OrderServiceImp implements IOrderServices{
  			data+=dt+"\n";		
  		}
  		
-        
- 		String body="@"+userdetails.getEmail()+" "+"order details"+" "+data;
-		emailData.setEmail(userdetails.getEmail());
-
-		emailData.setSubject("your Order is succefully placed");
-
-		emailData.setBody(body);
-
-		em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+//        
+// 		String body="@"+userdetails.getEmail()+" "+"order details"+" "+data;
+//		emailData.setEmail(userdetails.getEmail());
+//
+//		emailData.setSubject("your Order is succefully placed");
+//
+//		emailData.setBody(body);
+//
+//		em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
  		
  		
  		userdetails.getCartBooks().clear();
@@ -113,5 +113,20 @@ public class OrderServiceImp implements IOrderServices{
 
  	}
 
+	@Override
+	public boolean confirmBooktoOrder(String token, Long bookId) {
+		Long id = generate.parseJWT(token);
+		Users userdetails = userRepo.findById(id)
+				.orElseThrow(null);
+
+		for (Order order : userdetails.getOrderBookDetails()) {
+			boolean notExist = order.getBooksList().stream().noneMatch(books -> books.getBookId().equals(bookId));
+
+			if (!notExist) {
+				return true;
+			}
+	}
+		return false;
+	}
 
 }

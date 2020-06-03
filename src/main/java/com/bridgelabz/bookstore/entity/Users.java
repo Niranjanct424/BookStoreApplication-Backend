@@ -1,7 +1,6 @@
 
 package com.bridgelabz.bookstore.entity;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +15,9 @@ import javax.persistence.OneToMany;
 
 import lombok.Data;
 
-@Entity
 @Data
-public class Users implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+@Entity
+public class Users  {
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private long userId;
@@ -59,5 +56,4 @@ public class Users implements Serializable {
 
 		
 		
-
 }

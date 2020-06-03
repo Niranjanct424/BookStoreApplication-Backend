@@ -16,10 +16,7 @@ import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.request.PasswordUpdate;
 
-/**
- * @author HP
- *
- */
+
 @Repository
 public class UserRepositoryImplementation implements IUserRepository {
 	
@@ -80,6 +77,7 @@ public class UserRepositoryImplementation implements IUserRepository {
 			return false;
 		}
 	}
+	
 	/**
 	 * Getting the userInformation based on there Id
 	 * @return user details
