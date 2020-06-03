@@ -2,6 +2,7 @@
 package com.bridgelabz.bookstore.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -40,6 +41,11 @@ public class Users  {
 		@OneToMany(cascade = CascadeType.ALL, targetEntity = WishlistBook.class)
 		@JoinColumn(name = "userId")
 		private List<WishlistBook> wishlistBook;
+		
+		
+		@OneToMany(cascade = CascadeType.ALL, targetEntity = Order.class)
+		@JoinColumn(name = "userId")
+		private List<Order> orderBookDetails;
 
 		@Override
 		public String toString() {
@@ -47,5 +53,7 @@ public class Users  {
 					+ ", mobileNumber=" + mobileNumber + ", createdDate=" + createdDate + ", isVerified=" + isVerified
 					+ ", role=" + role + ", address=" + address + ", cartBooks=" + cartBooks + "]";
 		}
+
+		
 		
 }
