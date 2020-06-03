@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 @Component
 public class EditBookDto {
-	private long bookId;
 	private String bookName;
 	private Long noOfBooks;
 	private Double price;
