@@ -1,8 +1,8 @@
 
 package com.bridgelabz.bookstore.entity;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,11 +15,9 @@ import javax.persistence.OneToMany;
 
 import lombok.Data;
 
-@Entity
 @Data
-public class Users implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+@Entity
+public class Users  {
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private long userId;
@@ -43,6 +41,11 @@ public class Users implements Serializable {
 		@OneToMany(cascade = CascadeType.ALL, targetEntity = WishlistBook.class)
 		@JoinColumn(name = "userId")
 		private List<WishlistBook> wishlistBook;
+		
+		
+		@OneToMany(cascade = CascadeType.ALL, targetEntity = Order.class)
+		@JoinColumn(name = "userId")
+		private List<Order> orderBookDetails;
 
 		@Override
 		public String toString() {
@@ -50,6 +53,7 @@ public class Users implements Serializable {
 					+ ", mobileNumber=" + mobileNumber + ", createdDate=" + createdDate + ", isVerified=" + isVerified
 					+ ", role=" + role + ", address=" + address + ", cartBooks=" + cartBooks + "]";
 		}
-		
 
+		
+		
 }

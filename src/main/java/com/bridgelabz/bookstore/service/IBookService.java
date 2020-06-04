@@ -27,7 +27,7 @@ public interface IBookService {
 
 	boolean deleteBook(long bookId, String token);
 
-	List<Book> getAllAprovedBooks(String token);
+	List<Book> getAllAprovedBook();
 
 	boolean editBookStatus(long bookId, String status,String token);
 

@@ -1,6 +1,5 @@
 package com.bridgelabz.bookstore.implementation;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -12,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
 import com.bridgelabz.bookstore.entity.Book;
-import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.exception.BookAlreadyExist;
 import com.bridgelabz.bookstore.exception.UserException;
@@ -33,33 +30,25 @@ import lombok.extern.slf4j.Slf4j;
 public class BookServiceImplementation implements IBookService {
 	private Book bookinformation = new Book();
 	private ModelMapper modelMapper = new ModelMapper();
-//	@Autowired
-//	private ModelMapper modelMapper;
-//	@Autowired
-//	private IBook repository;
+
 	@Autowired
 	private BookImple repository;
 	
 	@Autowired
 	private IUserRepository userRepository;
-
-
-	
 	@Autowired
 	AddressRepository addrepository;
 	
 	@Autowired
 	private JwtGenerator generate;
-//	@Autowired
-//	private CartImple cartrepository;
+
 
 	@Transactional
 	@Override
 	public boolean addBooks(BookDto information,String token)
 	{	
 		Long id;
-		try 
-		{
+	
 			id = (long) generate.parseJWT(token);
 			Users userInfo = userRepository.getUserById(id);
 			if(userInfo != null) 
@@ -81,7 +70,9 @@ public class BookServiceImplementation implements IBookService {
 						bookinformation.setPrice(information.getPrice());   
 						bookinformation.setPrice(information.getPrice());
 						bookinformation.setStatus("OnHold");
+
 						bookinformation.setNoOfBooks(information.getNoOfBooks());
+
 						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
 					
 						repository.save(bookinformation);
@@ -101,11 +92,7 @@ public class BookServiceImplementation implements IBookService {
 			{
 				throw new UserException("User doesn't exist");
 			}
-		} 
-		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-			System.out.println(e.getMessage());
-		}
-		return false;	
+		
 	}
 
 	@Transactional
@@ -113,8 +100,7 @@ public class BookServiceImplementation implements IBookService {
 	public List<Book> getBookInfo(String token) 
 	{
 		Long id;
-		try 
-		{
+	
 			id = (long) generate.parseJWT(token);
 			Users userInfo = userRepository.getUserById(id);
 			if(userInfo != null) 
@@ -126,40 +112,11 @@ public class BookServiceImplementation implements IBookService {
 			{
 				throw new UserException("User doesn't exist");
 			}
-		} 
-		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
+	
 	}
 	
 	
 
-//	@Transactional
-//	@Override
-//	public boolean addandupdatecart(Long userId, int quantity, Long bookId) {
-//		Book book = repository.fetchbyId(bookId);
-//		Cart cart = cartrepository.fetchbyId(bookId);
-//		if (cart != null) {
-////			cart.getQuantity()
-//			int updatedquantity =   quantity;
-//			System.out.println(updatedquantity);
-//			if (book.getQuantity() >= updatedquantity) {
-//
-//				cartrepository.verifyTheUser(updatedquantity, bookId);
-//				return true;
-//			} else
-//				return false;
-//		} else if (book.getQuantity() >= quantity) {
-////			cartinformation.setUserId(userId);
-////			cartinformation.setQuantity(quantity);
-////			cartinformation.setBookId(bookId);
-//			cartrepository.save(cartinformation);
-//			return true;
-//		}
-//		return false;
-//
-//	}
 
 	public double getOriginalPrice(double price, long quantity) {
 		long result = (long) (price / quantity);
@@ -170,12 +127,17 @@ public class BookServiceImplementation implements IBookService {
 	public Book getTotalPriceofBook(long bookId, long quantity) {
 		Book bookinfo = repository.fetchbyId(bookId);
 		double Price = bookinfo.getPrice();
+
 		long Quantity = quantity;
+
 		if (Quantity <= bookinfo.getNoOfBooks() || Quantity >= bookinfo.getNoOfBooks()) {
 			if (bookinfo != null && quantity > 0) {
 				double price = getOriginalPrice(Price, bookinfo.getNoOfBooks());
 				double totalPrice = (price * Quantity);
+				bookinfo.setNoOfBooks(quantity);
+
 				bookinfo.setNoOfBooks(quantity); 
+
 				bookinfo.setPrice(totalPrice);
 				repository.save(bookinfo);
 				return bookinfo;
@@ -199,47 +161,8 @@ public class BookServiceImplementation implements IBookService {
 		return list;
 	}
 
-//	@Transactional
-//	@Override
-//	public boolean addandupdatecart(Long userId, int quantity, Long bookId) {
-//		BookInformation book = repository.fetchbyId(bookId);
-//		CartInformation cart = cartrepository.fetchbyId(bookId);
-//		//Session session=new Session();
-//		if (cart != null) {
-//			int updatedquantity = cart.getQuantity() + quantity;
-//			System.out.println(updatedquantity);
-//			if (book.getQuantity() >= updatedquantity) {
-//				cartrepository.verifyTheUser(updatedquantity, bookId);
-//				return true;
-//			} else
-//				return false;
-//		} else if (book.getQuantity() >= quantity) {
-//			cartinformation.setUserId(userId);
-//			cartinformation.setQuantity(quantity);
-//			cartinformation.setBookId(bookId);
-//			cartrepository.save(cartinformation);
-//			return true;
-//		}
-//		return false;
-//
-//	}
-//	@Transactional
-//	@Override
-//	public String setPurchasingQuantity(Long userId, int quantity, Long bookId) {
-//		BookInformation bookid = repository.fetchbyId(bookId);
-//		System.out.println("bookid"+bookId);
-//		if(bookid.getQuantity()>=quantity) {
-//			cartinformation.setQuantity(bookid.getQuantity()-quantity);
-//			System.out.println(bookid.getQuantity()-quantity);
-//			cartrepository.save(cartinformation);
-//		}else {
-//		}
-//		return "";
-//
-//	}
 
-//}
-	
+
 	@Override
 	public List<Book> sorting(boolean value){
 		List<Book> list = repository.findAll();
@@ -281,8 +204,7 @@ public class BookServiceImplementation implements IBookService {
 	public boolean editBook(long bookId,EditBookDto information,String token) {
 		
 		Long id;
-		try 
-		{
+	
 			id = (long) generate.parseJWT(token);
 			Users userInfo = userRepository.getUserById(id);
 			if(userInfo != null) 
@@ -290,7 +212,7 @@ public class BookServiceImplementation implements IBookService {
 				String userRole = userInfo.getRole();
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
-				
+
 				if (fetchRole.equals("seller") || userRole.equals("admin")) 
 				{
 					Book info =repository.fetchbyId(bookId);
@@ -308,19 +230,12 @@ public class BookServiceImplementation implements IBookService {
 						return true;
 					}
 				}
-				else 
-				{
-					throw new UserException("Your are not Authorized User");
-				}
 			}
 			else 
 			{
 				throw new UserException("User doesn't exist");
 			}
-		} 
-		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-			System.out.println(e.getMessage());
-		}
+		
 		return false;
 	}
 
@@ -328,8 +243,7 @@ public class BookServiceImplementation implements IBookService {
 	@Override
 	public boolean deleteBook(long bookId,String token) {
 		Long id;
-		try 
-		{
+	
 			id = (long) generate.parseJWT(token);
 			Users userInfo = userRepository.getUserById(id);
 			if(userInfo != null) 
@@ -357,43 +271,35 @@ public class BookServiceImplementation implements IBookService {
 			{
 				throw new UserException("User doesn't exist");
 			}
-		} 
-		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-			System.out.println(e.getMessage());
-		}
+	
 		return false;
 	}
 
-	@Override
-	public List<Book> getAllAprovedBooks(String token) 
-	{
-		Long id;
-		try 
-		{
-			id = (long) generate.parseJWT(token);
-			Users userInfo = userRepository.getUserById(id);
-			if(userInfo != null) 
-			{
-				List<Book> approvedBooks=repository.getAllApprovedBooks();
-				return approvedBooks;
-			}
-			else 
-			{
-				throw new UserException("User doesn't exist");
-			}
-		} 
-		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
-	}
+
+//	@Override
+//	public List<Book> getAllAprovedBooks(String token) 
+//	{
+//		Long id;
+//		
+//			id = (long) generate.parseJWT(token);
+//			Users userInfo = userRepository.getUserById(id);
+//			if(userInfo != null) 
+//			{
+//				List<Book> approvedBooks=repository.getAllApprovedBooks();
+//				return approvedBooks;
+//			}
+//			else 
+//			{
+//				throw new UserException("User doesn't exist");
+//			}
+//	
+//	}
 	
 	@Transactional
 	@Override
 	public boolean editBookStatus(long bookId, String status,String token) {
 		Long id;
-		try 
-		{
+	
 			id = (long) generate.parseJWT(token);
 			Users userInfo = userRepository.getUserById(id);
 			log.info("");
@@ -409,10 +315,7 @@ public class BookServiceImplementation implements IBookService {
 			{
 				throw new UserException("User doesn't exist");
 			}
-		} 
-		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-			System.out.println(e.getMessage());
-		}
+		
 		return false;
 	}
 	
@@ -421,8 +324,7 @@ public class BookServiceImplementation implements IBookService {
 	@Override
 	public List<Book> getAllOnHoldBooks(String token) {
 		Long id;
-		try 
-		{
+		
 			id = (long) generate.parseJWT(token);
 			Users userInfo = userRepository.getUserById(id);
 			if(userInfo != null) 
@@ -434,19 +336,13 @@ public class BookServiceImplementation implements IBookService {
 			{
 				throw new UserException("User doesn't exist");
 			}
-		} 
-		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
+	
 	}
-
 
 	public List<Book> getAllRejectedBooks(String token) 
 	{
 		Long id;
-		try 
-		{
+
 			id = (long) generate.parseJWT(token);
 			Users userInfo = userRepository.getUserById(id);
 			if(userInfo != null) 
@@ -458,11 +354,14 @@ public class BookServiceImplementation implements IBookService {
 			{
 				throw new UserException("User doesn't exist");
 			}
-		} 
-		catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
+		
+		
+	}
+
+	@Override
+	public List<Book> getAllAprovedBook() {
+		List<Book> approvedBooks=repository.getAllApprovedBooks();
+		return approvedBooks;
 	}
 
 }

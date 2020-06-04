@@ -36,19 +36,11 @@ public class AdminServiceImpl implements IAdminService {
 
 		long userid = 0;
 		Users user = null;
-		try {
 			userid = jwt.parseJWT(token);
 			System.out.println("user id:" + userid);
 			user = userRepo.getCustomerDetailsbyId(userid);
 			System.out.println("user:" + user);
-		} catch (JWTVerificationException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-
+	
 		if (user != null) {
 			Book book = bookRepository.fetchbyId(bookId);
 			if (book != null) {
@@ -70,22 +62,13 @@ public class AdminServiceImpl implements IAdminService {
 
 		long userid = 0;
 		Users user = null;
-		try {
+	
 			userid = jwt.parseJWT(token);
 			System.out.println("user id:" + userid);
 			user = userRepo.getCustomerDetailsbyId(userid);
 			System.out.println("Admin " + user);
 			System.out.println("user:" + user);
-		} catch (JWTVerificationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 
 		if (user != null) {
 			Book book = bookRepository.fetchbyId(bookId);
@@ -146,18 +129,12 @@ public class AdminServiceImpl implements IAdminService {
 
 long userid = 0;
 		Users user = null;
-		try {
+
 			userid = jwt.parseJWT(token);
 			System.out.println("user id:" + userid);
 			user = userRepo.getCustomerDetailsbyId(userid);
 			System.out.println("user:" + user);
-		} catch (JWTVerificationException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+	
 
 		if (user != null) {
 			return bookRepository.getAllonHoldBooks();

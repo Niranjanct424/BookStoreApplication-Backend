@@ -1,6 +1,5 @@
 package com.bridgelabz.bookstore.implementation;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bridgelabz.bookstore.dto.CartDto;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.CartItem;
@@ -38,7 +36,7 @@ public class CartServiceImplimentation implements ICartService{
 	@Override
 	public List<CartItem> addBooktoCart(String token, long bookId) {
 		Long id;
-		try {
+	
 			id = (long) generate.parseJWT(token);
 		
 		
@@ -69,14 +67,8 @@ public class CartServiceImplimentation implements ICartService{
 			return userRepository.save(userdetails).getCartBooks();
 		}
 		
-		} catch (JWTVerificationException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return null;
+		
+		
 
 	}
 
@@ -109,25 +101,14 @@ public class CartServiceImplimentation implements ICartService{
 	@Override
 	public List<CartItem> getBooksfromCart(String token) {
 		Long id;
-		try {
 			id = (long) generate.parseJWT(token);
 		Users user = userRepository.findById(id).get();
 		if(user!=null){
 		List<CartItem> cartBooks = user.getCartBooks();
 		return cartBooks;
 		
-		}//user..
-		//user.......
-		} catch (JWTVerificationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		}//user.
+		
 		return null;
 	}
 
@@ -136,7 +117,7 @@ public class CartServiceImplimentation implements ICartService{
 	@Override
 	public boolean removeBooksFromCart(String token, Long bookId) {
 		Long id;
-		try {
+	
 			id = (long) generate.parseJWT(token);
 			Users user = userRepository.findById(id).get();
 			if(user!=null) {
@@ -162,15 +143,9 @@ public class CartServiceImplimentation implements ICartService{
 			}//book
 			//.book....exception here....
 			}//user
+			return false;
 	
-		} catch (JWTVerificationException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return false;
+		
 	}
 
 	
@@ -178,7 +153,7 @@ public class CartServiceImplimentation implements ICartService{
 	@Override
 	public int getCountOfBooks(String token) {
 		Long id;
-		try {
+	
 			id = (long) generate.parseJWT(token);
          int countOfBooks=0;
 		Users user = userRepository.findById(id).get();
@@ -192,13 +167,7 @@ public class CartServiceImplimentation implements ICartService{
 		return countOfBooks;
 		}//user
 		//....write userwxception
-		} catch (JWTVerificationException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		
 		return 0;
 	}
 
@@ -207,7 +176,6 @@ public class CartServiceImplimentation implements ICartService{
 	@Override
 	public CartItem IncreaseBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails) {
 		Long id;
-		try {
 			id = (long) generate.parseJWT(token);
 			Long quantityId = bookQuantityDetails.getQuantityId();
 			Long quantity = bookQuantityDetails.getQuantityOfBook();
@@ -231,13 +199,7 @@ public class CartServiceImplimentation implements ICartService{
 			}//book 
 			
 			}//user
-		} catch (JWTVerificationException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		
 		return null;
 	}
 
@@ -246,7 +208,7 @@ public class CartServiceImplimentation implements ICartService{
 	@Override
 	public CartItem descreaseBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails) {
 		Long id;
-		try {
+	
 			id = (long) generate.parseJWT(token);
 		Long quantityId = bookQuantityDetails.getQuantityId();
 		Long quantity = bookQuantityDetails.getQuantityOfBook();
@@ -276,14 +238,9 @@ public class CartServiceImplimentation implements ICartService{
 		}//book
 		
 		}//user
-		} catch (JWTVerificationException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+		
+		return null;
 		}
-		return null;}
 	
 	
 	

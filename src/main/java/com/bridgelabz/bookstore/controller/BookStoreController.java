@@ -1,6 +1,7 @@
 package com.bridgelabz.bookstore.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
 import com.bridgelabz.bookstore.entity.Book;
@@ -102,8 +104,8 @@ public class BookStoreController {
 	}
 	
 	@GetMapping("books/approvedBooks")
-	public ResponseEntity<BookResponse> getAllApprovedBooks(@RequestHeader("token") String token) {
-	List<Book> books = bookservice.getAllAprovedBooks(token);
+	public ResponseEntity<BookResponse> getAllApprovedBook() {
+	List<Book> books = bookservice.getAllAprovedBook();
 		if(books != null)
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Approved Book details are", books ));
 		else
