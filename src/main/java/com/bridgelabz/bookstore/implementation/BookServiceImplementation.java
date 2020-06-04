@@ -279,7 +279,7 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	public boolean editBook(EditBookDto information) {
-		BookInformation info =repository.fetchbyId(information.getBookId());
+		Book info =repository.fetchbyId(information.getBookId());
 		if(info!=null) {
 			info.setBookId(information.getBookId());
 			info.setBookName(information.getBookName());
@@ -290,7 +290,9 @@ public class BookServiceImplementation implements IBookService {
 			info.setImage(information.getImage());
 			info.setUpdatedDateAndTime(information.getUpdatedAt());
 			repository.save(info);
+		}
 			return true;
+		}
 	public boolean editBook(EditBookDto information,String token) {
 		
 		Long id;
@@ -475,5 +477,7 @@ public class BookServiceImplementation implements IBookService {
 		}
 		return null;
 	}
+
+	
 
 }

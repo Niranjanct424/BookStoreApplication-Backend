@@ -7,15 +7,6 @@ import com.bridgelabz.bookstore.entity.Book;
 
 public interface IBookService {
 
-	boolean addBooks(BookDto information);
-
-	List<BookInformation> getBookInfo();
-
-	void removefromcart(Long userId, Long bookId);
-
-	List<BookInformation> sortGetAllBooks();
-
-	boolean addandupdatecart(Long userId, int quantity, Long bookId);
 	
 	boolean addBooks(BookDto information, String token);
 
@@ -27,14 +18,10 @@ public interface IBookService {
 
 	List<Book> sorting(boolean value);
 
-	List<BookInformation> findAllPageBySize(int pagenumber);
 
-	BookInformation getBookbyId(long bookId);
 
-	//BookInformation getTotalPriceofBook(long bookId, int quantity);
 	
 	public void deleteBook(int bookId);
-	BookInformation getTotalPriceofBook( long bookId, int quantity);
     List<Book> findAllPageBySize( int pagenumber);
 	
 	Book getBookbyId( long bookId);
@@ -52,29 +39,6 @@ public interface IBookService {
 	List<Book> getAllOnHoldBooks(String token);
 
 	List<Book> getAllRejectedBooks(String token);
-
-	
-	
-	/*
-	 * 
-	 * public void addBook(BookDto information);
-	 * 
-	 * public void updateBook(BookDto information, Long bookId);
-	 * 
-	 * public void deleteBook(Long bookId);
-	 * 
-	 * List<BookInformation> getBooks(Integer pageNo);
-	 * 
-	 * List<BookInformation> getBooksSortedByPriceLow();
-	 * 
-	 * List<BookInformation> getBooksSortedByPriceHigh();
-	 * 
-	 * List<BookInformation> getBooksSortedByArrival();
-	 * 
-	 * List<BookInformation> getBookByNameAndAuthor(String text);
-	 * 
-	 * List<BookInformation> getAllBooks();
-	 * 
-	 * List<BookInformation> VerifyBook(Long bookId);
-	 */
 }
+	
+	
