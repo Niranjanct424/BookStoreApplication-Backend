@@ -70,9 +70,15 @@ public class BookStoreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("Successfull", pageList));
 	}
 	
+	@GetMapping( value = "books/approval/{pagenumber}")
+	public ResponseEntity<BookResponse> getBookAprovalBookByPagewise( @PathVariable( value = "pagenumber") int pagenumber) {
+		List<Book> pageList = bookservice.findAllPageBySize( pagenumber);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("Successfull", pageList));
+	}
+	
 	@GetMapping( value = "books/{bookId}")
- public ResponseEntity<BookResponse> getBookbyId( @PathVariable("bookId") long bookId) {
-		Book info = bookservice.getBookbyId(bookId);	
+		public ResponseEntity<BookResponse> getBookbyId( @PathVariable("bookId") long bookId) {
+			Book info = bookservice.getBookbyId(bookId);	
 			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is",info));
 	}
 	
