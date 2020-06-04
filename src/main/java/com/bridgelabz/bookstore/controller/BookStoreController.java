@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
 import com.bridgelabz.bookstore.entity.Book;
-import com.bridgelabz.bookstore.repository.BookImple;
 import com.bridgelabz.bookstore.response.BookResponse;
 import com.bridgelabz.bookstore.service.IBookService;
 
