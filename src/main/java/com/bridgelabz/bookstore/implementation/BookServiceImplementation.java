@@ -201,7 +201,7 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public boolean editBook(EditBookDto information,String token) {
+	public boolean editBook(long bookId,EditBookDto information,String token) {
 		
 		Long id;
 	
@@ -215,16 +215,16 @@ public class BookServiceImplementation implements IBookService {
 
 				if (fetchRole.equals("seller") || userRole.equals("admin")) 
 				{
-					Book info =repository.fetchbyId(information.getBookId());
+					Book info =repository.fetchbyId(bookId);
 					if(info!=null) 
 					{
-						info.setBookId(information.getBookId());
+						info.setBookId(bookId);
 						info.setBookName(information.getBookName());
 						info.setNoOfBooks(information.getNoOfBooks());
 						info.setPrice(information.getPrice());
 						info.setAuthorName(information.getAuthorName());
 						info.setBookDetails(information.getBookDetails());
-						info.setImage(information.getImage());
+						//info.setImage(information.getImage());
 						info.setUpdatedDateAndTime(information.getUpdatedAt());
 						repository.save(info);
 						return true;
