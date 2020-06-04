@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
@@ -130,4 +131,14 @@ public class BookStoreController {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse(400,"No Rejected Books available" ));
 
 	}
+	@PostMapping("books/addBookImage/{bookId}")
+	public ResponseEntity<BookResponse> uploadImage(@RequestParam("imageFile") MultipartFile file,@RequestHeader String token,@PathVariable long bookId)  {
+		String imageName=file.getOriginalFilename();
+	    boolean res=bookservice.uploadBookImage(bookId,imageName,token);
+	     if(res)
+	    	 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse(202, "Image Uploaded Succesfully"));
+	     else
+	    	 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new BookResponse(203,"error")); 
+	}
+	
 }

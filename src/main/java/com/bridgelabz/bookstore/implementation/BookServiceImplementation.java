@@ -364,4 +364,36 @@ public class BookServiceImplementation implements IBookService {
 		return approvedBooks;
 	}
 
+	@Transactional
+	@Override
+	public boolean uploadBookImage(long bookId, String imageName, String token) {
+		Long id;
+		
+		id = (long) generate.parseJWT(token);
+		Users userInfo = userRepository.getUserById(id);
+		if(userInfo != null) 
+		{			
+			String userRole = userInfo.getRole();
+			System.out.println("actual Role is " + userRole);
+			String fetchRole = userRole;
+
+			if (fetchRole.equals("seller") || userRole.equals("admin")) 
+			{
+				Book info =repository.fetchbyId(bookId);
+				if(info!=null) 
+				{
+					info.setImage(imageName);
+					repository.save(info);
+					return true;
+				}
+			}
+		}
+		else 
+		{
+			throw new UserException("User doesn't exist");
+		}
+	
+	return false;
+	}
+
 }

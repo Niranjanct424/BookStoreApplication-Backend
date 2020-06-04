@@ -35,6 +35,8 @@ public interface IBookService {
 
 	List<Book> getAllRejectedBooks(String token);
 
+	boolean uploadBookImage(long bookId, String imageName, String token);
+
 	
 	
 }
