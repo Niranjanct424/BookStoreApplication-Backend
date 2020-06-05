@@ -17,5 +17,4 @@ public class EditBookDto {
 	private String image;
 	private String bookDetails;
 	private LocalDateTime updatedAt;
-	
 }
