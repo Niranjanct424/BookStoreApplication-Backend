@@ -30,7 +30,7 @@ public class BookStoreController {
 
 	@Autowired
 	IBookService bookservice;
-	
+
 	@PostMapping("books/addbook")
 	public ResponseEntity<BookResponse> addBook(@RequestBody BookDto information,
 			@RequestHeader("token") String token) {
@@ -49,18 +49,20 @@ public class BookStoreController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Book details are", books));
 
 	}
-	
+
 	/**
-	 * This controller is for getting 12 approval books per page! it can search book based on there autherName
-	 * it can sort the book by anything like price, book_name, book_id etc,   
-	 * it can order the book both asc and desc order default will be desc order
-	 * it can return the book based on there passing url paramater
+	 * This controller is for getting 12 approval books per page! it can search book
+	 * based on there autherName it can sort the book by anything like price,
+	 * book_name, book_id etc, it can order the book both asc and desc order default
+	 * will be desc order it can return the book based on there passing url
+	 * paramater
 	 * 
 	 * @param searchByBooKName example (" ", book name, raju, etc)
-	 * @param page Example (" ", 1,2,3,4.........)
-	 * @param sortBy example (" ", book_id, price, created_date_and_time etc)
-	 * @param order (" ", asc,desc,)
-	 * @return 12 books and number of page and everything 
+	 * @param page             Example (" ", 1,2,3,4.........)
+	 * @param sortBy           example (" ", book_id, price, created_date_and_time
+	 *                         etc)
+	 * @param order            (" ", asc,desc,)
+	 * @return 12 books and number of page and everything
 	 */
 
 	@GetMapping("books/approved")
@@ -82,12 +84,13 @@ public class BookStoreController {
 		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is", info));
 	}
 
-	@PutMapping("books/editbook")
-	public ResponseEntity<BookResponse> editBook(@RequestBody EditBookDto information,
-			@RequestHeader("token") String token) {
-		boolean res = bookservice.editBook(information, token);
+	@PutMapping("books/editbook/{bookId}")
+	public ResponseEntity<BookResponse> editBook(@PathVariable("bookId") long bookId,
+			@RequestBody EditBookDto information, @RequestHeader("token") String token) {
+		boolean res = bookservice.editBook(bookId, information, token);
 		if (res)
-			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse("The Book is Edited", information));
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(new BookResponse(200, "The Book is Updated Successfully"));
 		return null;
 	}
 

@@ -184,7 +184,7 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public boolean editBook(EditBookDto information, String token) {
+	public boolean editBook(long bookId, EditBookDto information, String token) {
 
 		Long id;
 
@@ -196,15 +196,15 @@ public class BookServiceImplementation implements IBookService {
 			String fetchRole = userRole;
 
 			if (fetchRole.equals("seller") || userRole.equals("admin")) {
-				Book info = repository.fetchbyId(information.getBookId());
+				Book info = repository.fetchbyId(bookId);
 				if (info != null) {
-					info.setBookId(information.getBookId());
+					info.setBookId(bookId);
 					info.setBookName(information.getBookName());
 					info.setNoOfBooks(information.getNoOfBooks());
 					info.setPrice(information.getPrice());
 					info.setAuthorName(information.getAuthorName());
 					info.setBookDetails(information.getBookDetails());
-					info.setImage(information.getImage());
+					// info.setImage(information.getImage());
 					info.setUpdatedDateAndTime(information.getUpdatedAt());
 					repository.save(info);
 					return true;
@@ -315,26 +315,28 @@ public class BookServiceImplementation implements IBookService {
 		}
 
 	}
-	
+
 	/**
-	 * This controller is for getting 12 approval books per page! it can search book based on there autherName
-	 * it can sort the book by anything like price, book_name, book_id etc,   
-	 * it can order the book both asc and desc order default will be desc order
-	 * it can return the book based on there passing url paramater
+	 * This controller is for getting 12 approval books per page! it can search book
+	 * based on there autherName it can sort the book by anything like price,
+	 * book_name, book_id etc, it can order the book both asc and desc order default
+	 * will be desc order it can return the book based on there passing url
+	 * paramater
 	 * 
 	 * @param searchByBooKName example (" ", book name, raju, etc)
-	 * @param page Example (" ", 1,2,3,4.........)
-	 * @param sortBy example (" ", book_id, price, created_date_and_time etc)
-	 * @param order (" ", asc,desc,)
-	 * @return 12 books and number of page and everything 
+	 * @param page             Example (" ", 1,2,3,4.........)
+	 * @param sortBy           example (" ", book_id, price, created_date_and_time
+	 *                         etc)
+	 * @param order            (" ", asc,desc,)
+	 * @return 12 books and number of page and everything
 	 */
 	@Override
 	public Page<Book> getBookAproval(Optional<String> searchBy, Optional<Integer> page, Optional<String> sortBy,
 			Optional<String> order) {
-		if(order.equals(Optional.ofNullable("asc"))){
+		if (order.equals(Optional.ofNullable("asc"))) {
 			return repository.findByBookName(searchBy.orElse("_"),
 					PageRequest.of(page.orElse(0), 12, Sort.Direction.ASC, sortBy.orElse("book_id")));
-		}else {
+		} else {
 			return repository.findByBookName(searchBy.orElse("_"),
 					PageRequest.of(page.orElse(0), 12, Sort.Direction.DESC, sortBy.orElse("book_id")));
 		}
@@ -344,6 +346,33 @@ public class BookServiceImplementation implements IBookService {
 	public List<Book> getAllAprovedBook() {
 		List<Book> approvedBooks = repository.getAllApprovedBooks();
 		return approvedBooks;
+	}
+
+	@Transactional
+	@Override
+	public boolean uploadBookImage(long bookId, String imageName, String token) {
+		Long id;
+
+		id = (long) generate.parseJWT(token);
+		Users userInfo = userRepository.getUserById(id);
+		if (userInfo != null) {
+			String userRole = userInfo.getRole();
+			System.out.println("actual Role is " + userRole);
+			String fetchRole = userRole;
+
+			if (fetchRole.equals("seller") || userRole.equals("admin")) {
+				Book info = repository.fetchbyId(bookId);
+				if (info != null) {
+					info.setImage(imageName);
+					repository.save(info);
+					return true;
+				}
+			}
+		} else {
+			throw new UserException("User doesn't exist");
+		}
+
+		return false;
 	}
 
 }

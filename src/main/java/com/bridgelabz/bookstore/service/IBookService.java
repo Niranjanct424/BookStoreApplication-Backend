@@ -27,7 +27,7 @@ public interface IBookService {
 	
 	Book getTotalPriceofBook( long bookId, long quantity);
 
-	boolean editBook(EditBookDto information, String token);
+	boolean editBook(long bookId,EditBookDto information, String token);
 
 	boolean deleteBook(long bookId, String token);
 
@@ -39,8 +39,8 @@ public interface IBookService {
 
 	List<Book> getAllRejectedBooks(String token);
 
+
 	Page<Book> getBookAproval(Optional<String> searchBy, Optional<Integer> page, Optional<String> sortBy, Optional<String> order);
 
-	
-	
+	boolean uploadBookImage(long bookId, String imageName, String token);
 }
