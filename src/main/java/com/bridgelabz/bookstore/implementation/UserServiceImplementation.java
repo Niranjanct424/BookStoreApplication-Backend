@@ -19,17 +19,12 @@ import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.request.LoginInformation;
 import com.bridgelabz.bookstore.request.PasswordUpdate;
-import com.bridgelabz.bookstore.response.EmailData;
 import com.bridgelabz.bookstore.response.MailResponse;
 import com.bridgelabz.bookstore.service.UserServices;
-import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 import com.bridgelabz.bookstore.util.MailServiceProvider;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class UserServiceImplementation implements UserServices {
 	private Users users = new Users();
 	@Autowired
@@ -42,11 +37,9 @@ public class UserServiceImplementation implements UserServices {
 
 	@Autowired
 	private JwtGenerator generate;
-	  @Autowired
-	  private EmailProviderService em;
-	  
-	  @Autowired
-	 private EmailData emailData;
+
+	@Autowired
+	private MailResponse response;
 
 	@Override
 	@Transactional
@@ -62,12 +55,10 @@ public class UserServiceImplementation implements UserServices {
 			users.setVerified(false);
 			// calling the save method
 			users = repository.save(users);
-			
-	 		String body="http://localhost:8081/user/verify/"+generate.jwtToken(users.getUserId());
-			emailData.setEmail(user.getEmail());
-			emailData.setSubject("u have been Register succesfully ");
-			emailData.setBody(body);
-			em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+			String mailResponse = response.formMessage("http://localhost:8081/user/verify",
+					generate.jwtToken(users.getUserId()));
+			// setting the data to mail
+			System.out.println(mailResponse);
 			return true;
 		} else {
 			throw new UserException("user already exist with the same mail id");
@@ -138,9 +129,9 @@ public class UserServiceImplementation implements UserServices {
 				throw new UserException("Invalid password");
 			}
 		} else {
-//			String mailResponse = response.formMessage("http://localhost:8080/user/verify",
-//					generate.jwtToken(user.getUserId()));
-//			MailServiceProvider.sendEmail(information.getEmail(), "verification", mailResponse);
+			String mailResponse = response.formMessage("http://localhost:8080/user/verify",
+					generate.jwtToken(user.getUserId()));
+			MailServiceProvider.sendEmail(information.getEmail(), "verification", mailResponse);
 			throw new UserException("Please verify Your email id");
 		}
 	}
@@ -173,12 +164,10 @@ public class UserServiceImplementation implements UserServices {
 		try {
 			Users user = repository.getUser(email);
 			if (user.isVerified() == true) {
-				String body="http://localhost:8080/update-password/"+generate.jwtToken(users.getUserId());
-				emailData.setEmail(user.getEmail());
-				emailData.setSubject("Reset ur password click below link......");
-				emailData.setBody(body);
-				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
-				log.info("--"+body);
+				String mailResponse = response.formMessage("http://localhost:8080/update-password",
+						generate.jwtToken(user.getUserId()));
+				System.out.println(mailResponse);
+				MailServiceProvider.sendEmail(user.getEmail(), "Reset Your Password", mailResponse);
 				return true;
 			} else {
 				return false;
