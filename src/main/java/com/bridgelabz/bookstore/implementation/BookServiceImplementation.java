@@ -45,7 +45,7 @@ public class BookServiceImplementation implements IBookService {
 
 	@Transactional
 	@Override
-	public boolean addBooks(BookDto information,String token)
+	public boolean addBooks(String imageName,BookDto information,String token)
 	{	
 		Long id;
 	
@@ -67,9 +67,9 @@ public class BookServiceImplementation implements IBookService {
 						bookinformation = modelMapper.map(information, Book.class);
 						bookinformation.setBookName(information.getBookName());
 						bookinformation.setAuthorName(information.getAuthorName());
-						bookinformation.setPrice(information.getPrice());   
-						bookinformation.setPrice(information.getPrice());
-						bookinformation.setStatus("OnHold");
+						bookinformation.setPrice(information.getPrice());  
+						bookinformation.setImage(imageName);
+//						bookinformation.setStatus("OnHold");
 
 						bookinformation.setNoOfBooks(information.getNoOfBooks());
 
@@ -201,7 +201,7 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public boolean editBook(long bookId,EditBookDto information,String token) {
+	public boolean editBook(long bookId,String imageName,EditBookDto information,String token) {
 		
 		Long id;
 	
@@ -224,7 +224,7 @@ public class BookServiceImplementation implements IBookService {
 						info.setPrice(information.getPrice());
 						info.setAuthorName(information.getAuthorName());
 						info.setBookDetails(information.getBookDetails());
-						//info.setImage(information.getImage());
+						info.setImage(imageName);
 						info.setUpdatedDateAndTime(information.getUpdatedAt());
 						repository.save(info);
 						return true;
