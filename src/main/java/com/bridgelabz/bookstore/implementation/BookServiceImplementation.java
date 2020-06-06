@@ -48,40 +48,50 @@ public class BookServiceImplementation implements IBookService {
 
 	@Transactional
 	@Override
-	public boolean addBooks(BookDto information, String token) {
+
+	public boolean addBooks(String imageName,BookDto information,String token)
+	{	
 		Long id;
+	
+			id = (long) generate.parseJWT(token);
+			Users userInfo = userRepository.getUserById(id);
+			if(userInfo != null) 
+			{			
+				String userRole = userInfo.getRole();
+				System.out.println("actual Role is " + userRole);
+				String fetchRole = userRole;
+				
+				if (fetchRole.equals("seller") || userRole.equals("admin")) 
+				{
+					Book book=repository.fetchbyBookName(information.getBookName());
+					System.out.println("Book name "+information.getBookName());
+					
+					if(book ==null)
+					{
+						bookinformation = modelMapper.map(information, Book.class);
+						bookinformation.setBookName(information.getBookName());
+						bookinformation.setAuthorName(information.getAuthorName());
+						bookinformation.setPrice(information.getPrice());  
+						bookinformation.setImage(imageName);
+//						bookinformation.setStatus("OnHold");
 
-		id = (long) generate.parseJWT(token);
-		Users userInfo = userRepository.getUserById(id);
-		if (userInfo != null) {
-			String userRole = userInfo.getRole();
-			System.out.println("actual Role is " + userRole);
-			String fetchRole = userRole;
+						bookinformation.setNoOfBooks(information.getNoOfBooks());
 
-			if (fetchRole.equals("seller") || userRole.equals("admin")) {
-				Book book = repository.fetchbyBookName(information.getBookName());
-				System.out.println("Book name " + information.getBookName());
-
-				if (book == null) {
-					bookinformation = modelMapper.map(information, Book.class);
-					bookinformation.setBookName(information.getBookName());
-					bookinformation.setAuthorName(information.getAuthorName());
-					bookinformation.setPrice(information.getPrice());
-					bookinformation.setPrice(information.getPrice());
-					bookinformation.setStatus("OnHold");
-
-					bookinformation.setNoOfBooks(information.getNoOfBooks());
-
-					bookinformation.setCreatedDateAndTime(LocalDateTime.now());
-
-					repository.save(bookinformation);
-					return true;
-				} else {
-					throw new BookAlreadyExist("Book is already exist Exception..");
+						bookinformation.setCreatedDateAndTime(LocalDateTime.now());
+					
+						repository.save(bookinformation);
+						return true;
+					}
+					else
+					{
+						throw new BookAlreadyExist("Book is already exist Exception..");
+					}
 				}
-			} else {
-				throw new UserException("Your are not Authorized User");
-			}
+				else 
+				{
+					throw new UserException("Your are not Authorized User");
+				}
+			
 		} else {
 			throw new UserException("User doesn't exist");
 		}
@@ -184,33 +194,42 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public boolean editBook(long bookId, EditBookDto information, String token) {
 
+	public boolean editBook(long bookId,String imageName,EditBookDto information,String token) {
+		
 		Long id;
+	
+			id = (long) generate.parseJWT(token);
+			Users userInfo = userRepository.getUserById(id);
+			if(userInfo != null) 
+			{			
+				String userRole = userInfo.getRole();
+				System.out.println("actual Role is " + userRole);
+				String fetchRole = userRole;
 
-		id = (long) generate.parseJWT(token);
-		Users userInfo = userRepository.getUserById(id);
-		if (userInfo != null) {
-			String userRole = userInfo.getRole();
-			System.out.println("actual Role is " + userRole);
-			String fetchRole = userRole;
-
-			if (fetchRole.equals("seller") || userRole.equals("admin")) {
-				Book info = repository.fetchbyId(bookId);
-				if (info != null) {
-					info.setBookId(bookId);
-					info.setBookName(information.getBookName());
-					info.setNoOfBooks(information.getNoOfBooks());
-					info.setPrice(information.getPrice());
-					info.setAuthorName(information.getAuthorName());
-					info.setBookDetails(information.getBookDetails());
-					// info.setImage(information.getImage());
-					info.setUpdatedDateAndTime(information.getUpdatedAt());
-					repository.save(info);
-					return true;
+				if (fetchRole.equals("seller") || userRole.equals("admin")) 
+				{
+					Book info =repository.fetchbyId(bookId);
+					if(info!=null) 
+					{
+						info.setBookId(bookId);
+						info.setBookName(information.getBookName());
+						info.setNoOfBooks(information.getNoOfBooks());
+						info.setPrice(information.getPrice());
+						info.setAuthorName(information.getAuthorName());
+						info.setBookDetails(information.getBookDetails());
+						info.setImage(imageName);
+						info.setUpdatedDateAndTime(information.getUpdatedAt());
+						repository.save(info);
+						return true;
+					}
+				}
+				else 
+				{
+					throw new UserException("Your are not Authorized User");
 				}
 			}
-		} else {
+		 else {
 			throw new UserException("User doesn't exist");
 		}
 
