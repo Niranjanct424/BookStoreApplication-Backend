@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookResponse {
 	Book book;
+
 	private Object obj;
+	double rate;
+	
 
 	public Object getObj() {
 		return obj;
