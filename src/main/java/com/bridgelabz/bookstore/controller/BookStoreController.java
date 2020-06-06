@@ -31,14 +31,12 @@ public class BookStoreController {
 	@Autowired
 	IBookService bookservice;
 
-	@PostMapping("books/addbook")
-	public ResponseEntity<BookResponse> addBook(@RequestBody BookDto information,
-			@RequestHeader("token") String token) {
-
-		boolean res = bookservice.addBooks(information, token);
-		if (res)
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new BookResponse("The Book details are", information));
+	@PostMapping("books/addbook/{imageName}")
+	public ResponseEntity<BookResponse> addBook(@PathVariable String imageName, @RequestBody BookDto information,@RequestHeader("token") String token) {
+		
+		boolean res=bookservice.addBooks(imageName,information,token);
+		if(res)
+			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse(200, "Book Added Successfully.."));
 		else
 			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse(400, "The Book details not added "));
 	}
@@ -84,13 +82,13 @@ public class BookStoreController {
 		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is", info));
 	}
 
-	@PutMapping("books/editbook/{bookId}")
-	public ResponseEntity<BookResponse> editBook(@PathVariable("bookId") long bookId,
-			@RequestBody EditBookDto information, @RequestHeader("token") String token) {
-		boolean res = bookservice.editBook(bookId, information, token);
-		if (res)
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new BookResponse(200, "The Book is Updated Successfully"));
+	
+	
+	@PutMapping("books/editbook/{bookId}/{imageName}")
+	public ResponseEntity<BookResponse> editBook(@PathVariable("bookId") long bookId,@PathVariable String imageName,@RequestBody EditBookDto information,@RequestHeader("token") String token){
+		boolean res =bookservice.editBook(bookId,imageName,information,token);
+		if(res)
+			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse(200, "The Book is Updated Successfully"));
 		return null;
 	}
 
