@@ -43,17 +43,7 @@ public class Users implements Serializable {
 		@JoinColumn(name = "userId")
 		private List<WishlistBook> wishlistBook;
 		
-		@OneToMany(cascade = CascadeType.ALL, targetEntity = Order.class)
-		@JoinColumn(name = "userId")
-		private List<Order> orders;
 
-		public List<Order> getOrders() {
-			return orders;
-		}
-
-		public void setOrders(List<Order> orders) {
-			this.orders = orders;
-		}
 
 		public long getUserId() {
 			return userId;
