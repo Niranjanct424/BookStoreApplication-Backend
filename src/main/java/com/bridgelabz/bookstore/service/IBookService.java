@@ -1,6 +1,9 @@
 package com.bridgelabz.bookstore.service;
 
 import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
 
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
@@ -10,7 +13,7 @@ import com.bridgelabz.bookstore.entity.ReviewAndRating;
 
 public interface IBookService {
 	
-	boolean addBooks(BookDto information, String token);
+	boolean addBooks(String imageName,BookDto information, String token);
 
 	List<Book> getBookInfo(String token);
 	
@@ -26,7 +29,7 @@ public interface IBookService {
 	
 	Book getTotalPriceofBook( long bookId, long quantity);
 
-	boolean editBook(EditBookDto information, String token);
+	boolean editBook(long bookId,String imageName,EditBookDto information, String token);
 
 	boolean deleteBook(long bookId, String token);
 
@@ -46,6 +49,8 @@ public interface IBookService {
 
 	double avgRatingOfBook(Long bookId);
 
-	
-	
+
+	Page<Book> getBookAproval(Optional<String> searchBy, Optional<Integer> page, Optional<String> sortBy, Optional<String> order);
+
+	boolean uploadBookImage(long bookId, String imageName, String token);
 }

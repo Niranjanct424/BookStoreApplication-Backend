@@ -2,6 +2,7 @@ package com.bridgelabz.bookstore.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -28,6 +29,9 @@ public interface BookImple extends JpaRepository<Book, Long> {
 	
 	@Query( value = "select * from bookinfo where  status='approved'", nativeQuery = true)
     List<Book> getApprovedBooks();
+	
+	@Query( value = "select * from bookinfo where book_name like %?1% AND status='approved'", nativeQuery = true)
+    Page<Book> findByBookName(String name, Pageable pageable);
 	
 	@Query( value = "select * from bookinfo where status='OnHold'", nativeQuery = true)
     List<Book> getAllonHoldBooks();

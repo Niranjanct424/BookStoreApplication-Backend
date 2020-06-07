@@ -68,7 +68,5 @@ public class CartController {
 		CartItem cartdetails = cartService.descreaseBooksQuantityInCart(token, bookId, bookQuantityDetails);
 		  return ResponseEntity.status(HttpStatus.ACCEPTED).body
 				  (new Response("decreased 1 quantity of book ", 200,cartdetails));	
-		
  }
-
 }

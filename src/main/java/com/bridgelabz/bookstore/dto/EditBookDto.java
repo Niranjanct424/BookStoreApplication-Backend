@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 @Component
 public class EditBookDto {
-	private long bookId;
 	private String bookName;
 	private Long quantity;
 	private Long noOfBooks;
@@ -18,5 +17,4 @@ public class EditBookDto {
 	private String image;
 	private String bookDetails;
 	private LocalDateTime updatedAt;
-	
 }
