@@ -20,9 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
+import com.bridgelabz.bookstore.dto.RatingReviewDTO;
 import com.bridgelabz.bookstore.entity.Book;
+import com.bridgelabz.bookstore.entity.ReviewAndRating;
 import com.bridgelabz.bookstore.response.BookResponse;
 import com.bridgelabz.bookstore.service.IBookService;
+
+
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @CrossOrigin
@@ -144,4 +149,39 @@ public class BookStoreController {
 			return ResponseEntity.status(HttpStatus.ACCEPTED)
 					.body(new BookResponse(400, "No Rejected Books available"));
 	}
+	@ApiOperation(value = "get all rating and reviews of the book ")
+	@GetMapping("books/getratereviews")
+	public ResponseEntity<BookResponse> getBookRatingAndReview(@RequestParam Long bookId){
+		List<ReviewAndRating> rr = bookservice.getRatingsOfBook(bookId);
+		if(rr != null)
+		 return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("Ratings and review", rr ));
+		else
+			 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new BookResponse("Ratings and review not found", rr ));	
+	}
+	
+	@ApiOperation(value = "Get verified Books Count")
+	@GetMapping("books/count")
+	public ResponseEntity<BookResponse> getBooksCount(){
+		int bookcount = bookservice.getBooksCount();
+			 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Ratings and review", bookcount ));
+			
+	}
+	@ApiOperation(value = "Write Review of the book")
+	@PutMapping("books/ratingreview")
+	public ResponseEntity<BookResponse> writeReview(@RequestBody RatingReviewDTO rrDto,@RequestHeader(name="token") String token, @RequestParam Long bookId){
+		bookservice.writeReviewAndRating(token, rrDto, bookId);
+		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", 200 ));			
+	}
+	
+	@ApiOperation(value = "Average rating of the book")
+	@GetMapping("books/avgrate")
+	public ResponseEntity<BookResponse> avgRatingOfBook(@RequestParam long bookId){
+		double rate = bookservice.avgRatingOfBook(bookId);
+		if(rate>0.0)
+		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", rate ));
+		else
+			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", 0 ));
+				
+	}
+
 }
