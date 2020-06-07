@@ -17,13 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
+import com.bridgelabz.bookstore.dto.RatingReviewDTO;
 import com.bridgelabz.bookstore.entity.Book;
+import com.bridgelabz.bookstore.entity.ReviewAndRating;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.exception.BookAlreadyExist;
 import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.AddressRepository;
 import com.bridgelabz.bookstore.repository.BookImple;
 import com.bridgelabz.bookstore.repository.IUserRepository;
+import com.bridgelabz.bookstore.repository.ReviewRatingRepository;
 import com.bridgelabz.bookstore.service.IBookService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 
@@ -45,6 +48,11 @@ public class BookServiceImplementation implements IBookService {
 
 	@Autowired
 	private JwtGenerator generate;
+
+	
+	@Autowired
+	private ReviewRatingRepository rrRepository;
+
 
 	@Transactional
 	@Override
@@ -367,6 +375,48 @@ public class BookServiceImplementation implements IBookService {
 		return approvedBooks;
 	}
 
+
+	@Override
+	public void writeReviewAndRating(String token, RatingReviewDTO rrDTO, Long bookId) {
+		Long uId = generate.parseJWT(token);
+		Users user = userRepository.getUserById(uId);
+		Book book = repository.fetchbyId(bookId);
+		boolean notExist =  book.getReviewRating().stream().noneMatch(rr -> rr.getUser().getUserId()==uId);
+		if(notExist) {
+			ReviewAndRating rr = new ReviewAndRating(rrDTO);
+			rr.setUser(user);
+			book.getReviewRating().add(rr);
+			rrRepository.save(rr);
+			repository.save(book);
+		}
+		else {
+			ReviewAndRating rr = book.getReviewRating().stream().filter(r -> r.getUser().getUserId()==uId).findFirst().orElseThrow(() -> new BookAlreadyExist("Review doesnot exist"));
+			rr.setRating(rrDTO.getRating());
+			rr.setReview(rrDTO.getReview());
+			rrRepository.save(rr);
+			repository.save(book);
+
+		}
+	}//		Book book = repository.fetchbyId(bookId);
+
+	@Override
+	public List<ReviewAndRating> getRatingsOfBook(Long bookId) {
+		System.out.println("review "+repository.reviews(bookId));
+		return repository.reviews(bookId);
+	}
+	
+	@Override
+	public double avgRatingOfBook(Long bookId) {
+		double rate = repository.avgRateOfBook(bookId);
+		return rate;
+	}
+
+	@Override
+	public Integer getBooksCount() {
+		
+		return repository.getAllApprovedBooks().size();
+	}
+	
 	@Transactional
 	@Override
 	public boolean uploadBookImage(long bookId, String imageName, String token) {
