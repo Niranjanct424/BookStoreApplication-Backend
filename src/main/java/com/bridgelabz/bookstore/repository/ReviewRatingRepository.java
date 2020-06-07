@@ -13,5 +13,4 @@ public interface ReviewRatingRepository extends JpaRepository<ReviewAndRating, L
 	
 	@Query( value = "select * from review_and_rating where ", nativeQuery = true)
     List<ReviewAndRating> getreviews(Long id);
-
 }
