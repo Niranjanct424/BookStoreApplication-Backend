@@ -82,7 +82,7 @@ public class BookStoreController {
 	}
 
 	@GetMapping(value = "books/{bookId}")
-	public ResponseEntity<BookResponse> getBookbyId(@PathVariable("bookId") long bookId , @RequestHeader("token") String token) {
+	public ResponseEntity<BookResponse> getBookbyId(@PathVariable("bookId") long bookId ) {
 		Book info = bookservice.getBookbyId(bookId);
 		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is", info));
 	}
