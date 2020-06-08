@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.request.PasswordUpdate;
@@ -39,6 +40,7 @@ public class UserRepositoryImplementation implements IUserRepository {
 		q.setParameter("email", email);
 		return (Users) q.uniqueResult();
 	}
+
 
 	@Override
 	public boolean verify(Long id) {
