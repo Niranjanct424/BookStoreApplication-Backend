@@ -25,7 +25,7 @@ public class Order implements Serializable{
 	@Id
 	private Long orderId;
 	@Column(name = "order_placed_time")
-	private LocalDateTime orderPlaceTime;
+	private LocalDateTime orderPlacedTime;
 	
 	private String orderStatus;
 	
@@ -38,6 +38,20 @@ public class Order implements Serializable{
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Book> BooksList;
+	 public Order() {
+		 
+	 }
+	
+
+	public Order(Long orderId, LocalDateTime orderPlacedTime, List<Quantity> quantityOfBooks,
+			List<Book> booksList) {
+		super();
+		this.orderId = orderId;
+		this.orderPlacedTime = orderPlacedTime;
+		QuantityOfBooks = quantityOfBooks;
+		BooksList = booksList;
+	}
+
 
 
 }

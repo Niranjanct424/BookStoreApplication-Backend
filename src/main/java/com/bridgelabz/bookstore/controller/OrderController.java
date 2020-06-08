@@ -40,18 +40,36 @@ public class OrderController {
 	public ResponseEntity<Response> confirmBooktoOrder(@RequestHeader(name= "token") String token,@PathVariable("bookId") long bookId) throws Exception {	
 		boolean userdetails = orderService.confirmBooktoOrder(token, bookId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("order is placed", 200, userdetails));
+	
 		
 	}
 	
-	@ApiOperation(value = "Getting the OrderList")
-	@GetMapping(value = "bookstore/orderedbooks")
-	public ResponseEntity<Response> getOrderlist(@RequestHeader("token") String token) throws Exception {
+	
+	
+	@GetMapping(value = "/books/{token}")
+	public ResponseEntity<Response> getOrderlist(@PathVariable("token") String token) throws Exception {
 		
 		List<Order> orderdetails = orderService.getOrderList(token);
-		System.out.println("orderList "+orderdetails);
-			return ResponseEntity.status(200).body(new Response("order list ",200,orderdetails));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("placed orderlist", 200, orderdetails));
 		
 	}
+	@GetMapping(value = "/books_count/{token}")
+	public ResponseEntity<Response> getBooksCount(@PathVariable("token") String token) throws Exception {
+		
+		int userdetails = orderService.getCountOfBooks(token);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("count of books", 200, userdetails));
+		
+	}
+	
+//	@ApiOperation(value = "Getting the OrderList")
+//	@GetMapping(value = "bookstore/orderedbooks")
+//	public ResponseEntity<Response> getOrderlist(@RequestHeader("token") String token) throws Exception {
+//		
+//		List<Order> orderdetails = orderService.getOrderList(token);
+//		System.out.println("orderList "+orderdetails);
+//			return ResponseEntity.status(200).body(new Response("order list ",200,orderdetails));
+//		
+//	}
 	
 	@ApiOperation(value = "Change Order Status")
 	@PutMapping(value = "bookstore/orderstatus")
@@ -66,5 +84,6 @@ public class OrderController {
 //	@PutMapping("books/editBookStatus/{bookId}/{status}")
 //	public ResponseEntity<BookResponse> editBookStatus(@PathVariable long bookId, @PathVariable String status,
 //			@RequestHeader("token") String token)
+
 
 }

@@ -27,6 +27,7 @@ import com.bridgelabz.bookstore.util.RandomNumberGenerator;
 public class OrderServiceImp implements IOrderServices {
 	@Autowired
 	private JwtGenerator generate;
+
 	@Autowired
 	private UserRepository userRepo;
 	@Autowired
@@ -41,59 +42,117 @@ public class OrderServiceImp implements IOrderServices {
 	@Autowired
 	OrderRepository orderRepository;
 
-	@Transactional
-	@Override
-	public Order confrimOrder(String token) {
-		Long id = generate.parseJWT(token);
-		Users userdetails = userRepo.findById(id).orElseThrow(null);
+//	@Transactional
+//	@Override
+//	public Order confrimOrder(String token) {
+//		Long id = generate.parseJWT(token);
+//		Users userdetails = userRepo.findById(id).orElseThrow(null);
+//
+//		Order orderDetails = new Order();
+//		Random random = new Random();
+//		ArrayList<Book> list = new ArrayList<>();
+//		ArrayList<Quantity> quantitydetails = new ArrayList<>();
+//		ArrayList<String> details = new ArrayList<>();
+//		userdetails.getCartBooks().forEach((cart) -> {
+//
+//			cart.getBooksList().forEach(book -> {
+//				long orderId;
+//				/**
+//				 * If order is confrim decreasing the numberOfBooks in BookList
+//				 */
+//				for (Quantity qt : cart.getQuantityOfBook()) {
+//
+//					Long noOfBooks = book.getNoOfBooks() - qt.getQuantityOfBook();
+//					book.setNoOfBooks(noOfBooks);
+//					Book bb = bookRepository.save(book);
+//
+//					try {
+//						list.add(bb);
+//						orderId = random.nextInt(1000000);
+//						if (orderId < 0) {
+//							orderId = orderId * -1;
+//						}
+//						quantitydetails.add(qt);
+//						orderDetails.setOrderId(orderId);
+//						orderDetails.setQuantityOfBooks(quantitydetails);
+//						orderDetails.setOrderPlaceTime(LocalDateTime.now());
+//						orderDetails.setBooksList(list);
+//						details.add("orderId:" + orderId + " " + "BookName:" + book.getBookName() + " " + "Quantity:"
+//								+ qt.getQuantityOfBook() + " " + "TotalPrice:" + qt.getTotalprice());
+//
+//					} catch (Exception e) {
+//						throw null;// new UserException();
+//					}
+//
+//				}
+//			});
+//
+//		});
+//
+//		userdetails.getOrderBookDetails().add(orderDetails);
+//
+//		String data = "";
+//		for (String dt : details) {
+//			data += dt + "\n";
+//		}
 
-		Order orderDetails = new Order();
-		Random random = new Random();
-		ArrayList<Book> list = new ArrayList<>();
-		ArrayList<Quantity> quantitydetails = new ArrayList<>();
-		ArrayList<String> details = new ArrayList<>();
-		userdetails.getCartBooks().forEach((cart) -> {
 
-			cart.getBooksList().forEach(book -> {
-				long orderId;
-				/**
-				 * If order is confrim decreasing the numberOfBooks in BookList
-				 */
-				for (Quantity qt : cart.getQuantityOfBook()) {
+     
+     @Transactional
+ 	@Override
+ 	public Order confrimOrder(String token) {
+ 		Long id = generate.parseJWT(token);
+ 		Users userdetails = userRepo.findById(id)
+ 				.orElseThrow(null);
 
-					Long noOfBooks = book.getNoOfBooks() - qt.getQuantityOfBook();
-					book.setNoOfBooks(noOfBooks);
-					Book bb = bookRepository.save(book);
+ 		Order orderDetails = new Order();
+ 		Random random = new Random();
+ 		ArrayList<Book> list = new ArrayList<>();
+ 		ArrayList<Quantity> quantitydetails = new ArrayList<>(); 
+ 		ArrayList<String> details = new ArrayList<>();
+ 		userdetails.getCartBooks().forEach((cart) -> {
 
-					try {
-						list.add(bb);
-						orderId = random.nextInt(1000000);
-						if (orderId < 0) {
-							orderId = orderId * -1;
-						}
-						quantitydetails.add(qt);
-						orderDetails.setOrderId(orderId);
-						orderDetails.setQuantityOfBooks(quantitydetails);
-						orderDetails.setOrderPlaceTime(LocalDateTime.now());
-						orderDetails.setBooksList(list);
-						details.add("orderId:" + orderId + " " + "BookName:" + book.getBookName() + " " + "Quantity:"
-								+ qt.getQuantityOfBook() + " " + "TotalPrice:" + qt.getTotalprice());
+ 			cart.getBooksList().forEach(book -> {
+ 				long orderId;
+ 				/**
+ 				 * If order is confrim decreasing the numberOfBooks in BookList
+ 				 */
+ 				for (Quantity qt : cart.getQuantityOfBook()) {
 
-					} catch (Exception e) {
-						throw null;// new UserException();
-					}
+ 					Long noOfBooks = book.getNoOfBooks() - qt.getQuantityOfBook();
+ 					book.setNoOfBooks(noOfBooks);
+ 					Book bb = bookRepository.save(book);
 
-				}
-			});
+ 					try {
+ 						list.add(bb);
+ 						orderId = random.nextInt(1000000);
+ 						if (orderId < 0) {
+ 							orderId = orderId * -1;
+ 						}
+ 						quantitydetails.add(qt);
+ 						orderDetails.setOrderId(orderId);
+ 						orderDetails.setQuantityOfBooks(quantitydetails);
+ 						//orderDetails.setOrderPlaceTime(LocalDateTime.now());
+ 						orderDetails.setBooksList(list);
+ 						details.add("orderId:"+orderId+" "+"BookName:"+book.getBookName()+
+ 					    " "+"Quantity:"+qt.getQuantityOfBook()+" "+"TotalPrice:"+qt.getTotalprice());
+                         
+ 					} catch (Exception e) {
+ 						throw  null ;//new UserException();
+ 					}
+ 
+ 				}
+ 			});
 
-		});
-
-		userdetails.getOrderBookDetails().add(orderDetails);
-
-		String data = "";
-		for (String dt : details) {
-			data += dt + "\n";
-		}
+ 		});
+ 		
+ 		userdetails.getOrderBookDetails().add(orderDetails);
+ 		
+ 		String data = "";
+ 		for(String dt:details) {
+ 			data+=dt+"\n";		
+ 		}
+ 		
 
 //        
 // 		String body="@"+userdetails.getEmail()+" "+"order details"+" "+data;
@@ -104,6 +163,11 @@ public class OrderServiceImp implements IOrderServices {
 //		emailData.setBody(body);
 //
 //		em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+
+ 		
+ 		userdetails.getCartBooks().clear();
+ 		//userRepo.save(userdetails);
+
 
 		userdetails.getCartBooks().clear();
 
@@ -130,16 +194,50 @@ public class OrderServiceImp implements IOrderServices {
 		}
 		return false;
 	}
+	
+	
+	
+	
+	@Transactional
+	@Override
+	public int getCountOfBooks(String token) {
+ 		Long id = generate.parseJWT(token);
+		int countOfBooks = 0;
+		Users userdetails = userRepo.findById(id)
+				.orElseThrow(null);
 
+		List<Order> books = userdetails.getOrderBookDetails();
+		for (Order cart : books) {
+			if (!cart.getBooksList().isEmpty()) {
+
+				countOfBooks++;
+			}
+		}
+		return countOfBooks;
+	}
+	
+	
+	
 	@Transactional
 	@Override
 	public List<Order> getOrderList(String token) {
 		Long id = generate.parseJWT(token);
-		Users userdetails = userRepo.findById(id).orElseThrow(null);
+		Users userdetails = userRepo.findById(id)
+				.orElseThrow(null);
 
 		return userdetails.getOrderBookDetails();
 
 	}
+
+//	@Transactional
+//	@Override
+//	public List<Order> getOrderList(String token) {
+//		Long id = generate.parseJWT(token);
+//		Users userdetails = userRepo.findById(id).orElseThrow(null);
+//
+//		return userdetails.getOrderBookDetails();
+//
+//	}
 
 	@Transactional
 	@Override

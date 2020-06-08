@@ -2,7 +2,9 @@ package com.bridgelabz.bookstore.service;
 
 
 import java.util.List;
+
 import com.bridgelabz.bookstore.entity.Order;
+
 
 public interface IOrderServices {
 	
@@ -10,9 +12,14 @@ public interface IOrderServices {
     
 	Order  confrimOrder(String token);
 	
-	List<Order> getOrderList(String orderStatus);
+//	List<Order> getOrderList(String orderStatus);
 
 	int changeOrderStatus(String orderStatus, Long orderId);
 	
+
+	int getCountOfBooks(String token);
+	
+	 List<Order> getOrderList(String token);
+
 	
 }
