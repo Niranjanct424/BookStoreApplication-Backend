@@ -81,7 +81,6 @@ public class BookStoreController {
 		Book info = bookservice.getBookbyId(bookId);
 		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is", info));
 	}
-
 	
 	
 	@PutMapping("books/editbook/{bookId}/{imageName}")
