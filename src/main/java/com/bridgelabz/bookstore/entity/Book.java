@@ -15,15 +15,15 @@ import lombok.Data;
 @Entity
 @Table(name = "bookinfo")
 public class Book implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bookId;
 	private String bookName;
-	private int quantity;
+	
+	private Long noOfBooks;
 	private Double price;
 	private String authorName;
 	private String bookDetails;
@@ -43,12 +43,7 @@ public class Book implements Serializable{
 	public void setBookName(String bookName) {
 		this.bookName = bookName;
 	}
-	public int getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+
 	public Double getPrice() {
 		return price;
 	}
@@ -94,12 +89,5 @@ public class Book implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
-
-
-
-	
-	
-
 
 }

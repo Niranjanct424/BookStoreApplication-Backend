@@ -1,7 +1,6 @@
 
 package com.bridgelabz.bookstore.entity;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,11 +14,11 @@ import javax.persistence.OneToMany;
 
 import lombok.Data;
 
-@Entity
+
+
 @Data
-public class Users implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+@Entity
+public class Users  {
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private long userId;
@@ -35,6 +34,7 @@ public class Users implements Serializable {
 		@JoinColumn(name = "userId")
 		private List<Address> address;
 		
+
 		@OneToMany(cascade = CascadeType.ALL, targetEntity = CartItem.class)
 		@JoinColumn(name = "userId")
 		private List<CartItem> cartBooks;
@@ -43,6 +43,7 @@ public class Users implements Serializable {
 		@JoinColumn(name = "userId")
 		private List<WishlistBook> wishlistBook;
 		
+
 
 
 		public long getUserId() {
@@ -133,9 +134,15 @@ public class Users implements Serializable {
 			this.wishlistBook = wishlistBook;
 		}
 
-		public static long getSerialversionuid() {
-			return serialVersionUID;
-		}
+//		public static long getSerialversionuid() {
+//			return serialVersionUID;
+//		}
+
+		
+		@OneToMany(cascade = CascadeType.ALL, targetEntity = Order.class)
+		@JoinColumn(name = "userId")
+		private List<Order> orderBookDetails;
+
 
 		@Override
 		public String toString() {
@@ -143,8 +150,7 @@ public class Users implements Serializable {
 					+ ", mobileNumber=" + mobileNumber + ", createdDate=" + createdDate + ", isVerified=" + isVerified
 					+ ", role=" + role + ", address=" + address + ", cartBooks=" + cartBooks + "]";
 		}
-		
-	
+
 		
 		
 }

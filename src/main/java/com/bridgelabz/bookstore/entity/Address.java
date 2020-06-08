@@ -9,10 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "Address")
 public class Address implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -56,55 +58,5 @@ public class Address implements Serializable {
 	public void setAddressType(String addressType) {
 		this.addressType = addressType;
 	}
-
-	public long getAddressId() {
-		return addressId;
-	}
-
-	public void setAddressId(long addressId) {
-		this.addressId = addressId;
-	}
-
-	public long getPincode() {
-		return Pincode;
-	}
-
-	public void setPincode(long pincode) {
-		Pincode = pincode;
-	}
-
-	public String getLocality() {
-		return Locality;
-	}
-
-	public void setLocality(String locality) {
-		Locality = locality;
-	}
-
-	public String getAddress() {
-		return Address;
-	}
-
-	public void setAddress(String address) {
-		Address = address;
-	}
-
-	public String getCity() {
-		return City;
-	}
-
-	public void setCity(String city) {
-		City = city;
-	}
-
-	public String getLandmark() {
-		return Landmark;
-	}
-
-	public void setLandmark(String landmark) {
-		Landmark = landmark;
-	}
-
-
 
 }
