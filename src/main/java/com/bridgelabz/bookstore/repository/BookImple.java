@@ -60,4 +60,6 @@ public interface BookImple extends JpaRepository<Book, Long> {
 
 	@Query("from Book where book_name=:name")
 	Book fetchbyBookName(String name);
+	
+
 }
