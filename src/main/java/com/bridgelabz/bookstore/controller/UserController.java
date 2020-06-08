@@ -42,6 +42,9 @@ public class UserController {
 		if (result) {
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new Response("registration successfull", 200, information));
+			
+			
+			
 		} else {
 			return ResponseEntity.status(HttpStatus.ALREADY_REPORTED)
 					.body(new Response("User Already Exist", 400, information));
