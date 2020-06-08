@@ -2,6 +2,7 @@ package com.bridgelabz.bookstore.implementation;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.transaction.Transactional;
@@ -70,7 +71,7 @@ public class OrderServiceImp implements IOrderServices{
  						quantitydetails.add(qt);
  						orderDetails.setOrderId(orderId);
  						orderDetails.setQuantityOfBooks(quantitydetails);
- 						orderDetails.setOrderPlaceTime(LocalDateTime.now());
+ 						//orderDetails.setOrderPlaceTime(LocalDateTime.now());
  						orderDetails.setBooksList(list);
  						details.add("orderId:"+orderId+" "+"BookName:"+book.getBookName()+
  					    " "+"Quantity:"+qt.getQuantityOfBook()+" "+"TotalPrice:"+qt.getTotalprice());
@@ -128,6 +129,40 @@ public class OrderServiceImp implements IOrderServices{
 			}
 	}
 		return false;
+	}
+	
+	
+	
+	
+	@Transactional
+	@Override
+	public int getCountOfBooks(String token) {
+ 		Long id = generate.parseJWT(token);
+		int countOfBooks = 0;
+		Users userdetails = userRepo.findById(id)
+				.orElseThrow(null);
+
+		List<Order> books = userdetails.getOrderBookDetails();
+		for (Order cart : books) {
+			if (!cart.getBooksList().isEmpty()) {
+
+				countOfBooks++;
+			}
+		}
+		return countOfBooks;
+	}
+	
+	
+	
+	@Transactional
+	@Override
+	public List<Order> getOrderList(String token) {
+		Long id = generate.parseJWT(token);
+		Users userdetails = userRepo.findById(id)
+				.orElseThrow(null);
+
+		return userdetails.getOrderBookDetails();
+
 	}
 
 }

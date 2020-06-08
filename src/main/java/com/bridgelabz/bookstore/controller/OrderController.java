@@ -1,5 +1,7 @@
 package com.bridgelabz.bookstore.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,26 @@ public class OrderController {
 	public ResponseEntity<Response> confirmBooktoOrder(@RequestHeader(name= "token") String token,@PathVariable("bookId") long bookId) throws Exception {	
 		boolean userdetails = orderService.confirmBooktoOrder(token, bookId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("order is placed", 200, userdetails));
+	
 		
 	}
+	
+	
+	
+	@GetMapping(value = "/books/{token}")
+	public ResponseEntity<Response> getOrderlist(@PathVariable("token") String token) throws Exception {
+		
+		List<Order> orderdetails = orderService.getOrderList(token);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("placed orderlist", 200, orderdetails));
+		
+	}
+	@GetMapping(value = "/books_count/{token}")
+	public ResponseEntity<Response> getBooksCount(@PathVariable("token") String token) throws Exception {
+		
+		int userdetails = orderService.getCountOfBooks(token);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("count of books", 200, userdetails));
+		
+	}
+
 
 }
