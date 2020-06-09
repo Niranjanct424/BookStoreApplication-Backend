@@ -27,6 +27,10 @@ public class Order implements Serializable{
 	@Column(name = "order_placed_time")
 	private LocalDateTime orderPlacedTime;
 	
+	private String orderStatus;
+	
+	private Double totalPrice;
+	
 	@OneToMany
 	(cascade = CascadeType.ALL, targetEntity = Quantity.class)
 	@JoinColumn(name = "orderId")

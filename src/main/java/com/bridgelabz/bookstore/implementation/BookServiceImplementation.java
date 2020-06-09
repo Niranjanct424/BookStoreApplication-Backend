@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
@@ -128,7 +127,7 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public Book getTotalPriceofBook(long bookId, long quantity) {
+	public Book getTotalPriceofBook(Long bookId, long quantity) {
 		Book bookinfo = repository.fetchbyId(bookId);
 		double Price = bookinfo.getPrice();
 
@@ -193,7 +192,7 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public Book getBookbyId(long bookId) {
+	public Book getBookbyId(Long bookId) {
 		Book info = repository.fetchbyId(bookId);
 		if (info != null) {
 			return info;
