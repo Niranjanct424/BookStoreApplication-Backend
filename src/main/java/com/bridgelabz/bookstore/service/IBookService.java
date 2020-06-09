@@ -24,9 +24,9 @@ public interface IBookService {
 
     List<Book> findAllPageBySize( int pagenumber);
 	
-	Book getBookbyId( long bookId);
+	Book getBookbyId( Long bookId);
 	
-	Book getTotalPriceofBook( long bookId, long quantity);
+	Book getTotalPriceofBook( Long bookId, long quantity);
 
 	boolean editBook(long bookId,String imageName,EditBookDto information, String token);
 

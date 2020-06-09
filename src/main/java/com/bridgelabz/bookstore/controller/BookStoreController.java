@@ -26,7 +26,6 @@ import com.bridgelabz.bookstore.entity.ReviewAndRating;
 import com.bridgelabz.bookstore.response.BookResponse;
 import com.bridgelabz.bookstore.service.IBookService;
 
-
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -82,12 +81,11 @@ public class BookStoreController {
 	}
 	
 
-	@GetMapping( value = "books/{bookId}")
-	 public ResponseEntity<BookResponse> getBookbyId( @PathVariable("bookId") long bookId) {
-		System.out.println("book controller called" + bookId);
-			Book info = bookservice.getBookbyId(bookId);
-			
-				return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is",info));
+
+	@GetMapping(value = "books/getbook/{bookId}")
+	public ResponseEntity<BookResponse> getBookbyId(@PathVariable("bookId") Long bookId) {
+		Book info = bookservice.getBookbyId(bookId);
+		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is", info));
 	}
 	
 	@PutMapping("books/editbook/{bookId}/{imageName}")

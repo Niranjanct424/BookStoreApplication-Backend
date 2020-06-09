@@ -4,6 +4,7 @@
 package com.bridgelabz.bookstore.util;
 
 import java.util.Properties;
+
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
@@ -11,10 +12,13 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Component;
 
 import com.bridgelabz.bookstore.response.MailObject;
 
+@Component
 public class MailServiceProvider {
 	public static void sendEmail(String toEmail, String subject, String body) {
 
@@ -53,10 +57,7 @@ public class MailServiceProvider {
 	
 	@RabbitListener(queues = "rmq.rube.queue")
 	public void recievedMessage(MailObject user) {
-	
 		sendEmail(user.getEmail(),user.getSubject(),user.getMessage());
 		System.out.println("Recieved Message From RabbitMQ: " + user);
 	}
-	
-	
 }

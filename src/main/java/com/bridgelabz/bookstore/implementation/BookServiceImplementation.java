@@ -127,7 +127,7 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public Book getTotalPriceofBook(long bookId, long quantity) {
+	public Book getTotalPriceofBook(Long bookId, long quantity) {
 		Book bookinfo = repository.fetchbyId(bookId);
 		double Price = bookinfo.getPrice();
 
@@ -192,7 +192,7 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public Book getBookbyId(long bookId) {
+	public Book getBookbyId(Long bookId) {
 		Book info = repository.fetchbyId(bookId);
 		if (info != null) {
 			return info;

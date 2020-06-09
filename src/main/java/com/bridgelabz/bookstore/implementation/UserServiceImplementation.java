@@ -19,10 +19,12 @@ import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.request.LoginInformation;
 import com.bridgelabz.bookstore.request.PasswordUpdate;
+import com.bridgelabz.bookstore.response.MailObject;
 import com.bridgelabz.bookstore.response.MailResponse;
 import com.bridgelabz.bookstore.service.UserServices;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 import com.bridgelabz.bookstore.util.MailServiceProvider;
+import com.bridgelabz.bookstore.util.RabbitMQSender;
 
 @Service
 public class UserServiceImplementation implements UserServices {
@@ -40,6 +42,13 @@ public class UserServiceImplementation implements UserServices {
 
 	@Autowired
 	private MailResponse response;
+	
+	@Autowired
+	private RabbitMQSender rabbitMQSender;
+
+	@Autowired
+	private MailObject mailObject;
+
 
 	@Override
 	@Transactional
@@ -58,6 +67,11 @@ public class UserServiceImplementation implements UserServices {
 			String mailResponse = response.formMessage("http://localhost:8081/user/verify",
 					generate.jwtToken(users.getUserId()));
 			// setting the data to mail
+			mailObject.setEmail(information.getEmail());
+			mailObject.setMessage(mailResponse);
+			mailObject.setSubject("Verification");
+			rabbitMQSender.send(mailObject);
+			
 			System.out.println(mailResponse);
 			return true;
 		} else {

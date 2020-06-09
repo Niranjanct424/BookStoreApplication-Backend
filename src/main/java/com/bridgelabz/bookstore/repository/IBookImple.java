@@ -27,7 +27,6 @@ public class IBookImple implements IBook {
 		Session currentSession = entityManager.unwrap(Session.class);
 		List BookList = currentSession.createQuery("from Book").getResultList();
 		return BookList;
-
 	}
 
 }
