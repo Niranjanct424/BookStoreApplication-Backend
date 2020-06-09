@@ -54,6 +54,4 @@ public class WishlistController {
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("no of wishbooks", 200,wishbookCount));
 	}
-	
-	
 }

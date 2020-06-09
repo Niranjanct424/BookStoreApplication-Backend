@@ -42,9 +42,6 @@ public class UserController {
 		if (result) {
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new Response("registration successfull", 200, information));
-			
-			
-			
 		} else {
 			return ResponseEntity.status(HttpStatus.ALREADY_REPORTED)
 					.body(new Response("User Already Exist", 400, information));
@@ -72,7 +69,6 @@ public class UserController {
 	 * @return response as success and fail
 	 * @throws Exception
 	 */
-
 	@GetMapping("/user/verify/{token}")
 	public ResponseEntity<Response> userVerification(@PathVariable("token") String token) throws Exception {
 		System.out.println("token for verification" + token);
@@ -90,7 +86,6 @@ public class UserController {
 	 * @param token
 	 * @return response
 	 */
-
 	@PostMapping("user/forgotpassword")
 	public ResponseEntity<Response> forgogPassword(@RequestBody PasswordReset passwordReset) {
 	
@@ -104,7 +99,6 @@ public class UserController {
 	
 	@PutMapping("user/update/{token}")
 	public ResponseEntity<Response> update(@PathVariable("token") String token, @RequestBody PasswordUpdate update) {
-		
 		System.out.println("inside controller  " +token);
 		boolean result = service.update(update, token);
 		if (result) {
@@ -138,10 +132,4 @@ public class UserController {
 				.body(new Response("user is", 200, user));
 	}
 	
-	@GetMapping("user/getAllUser")
-	public ResponseEntity<Response> getAllUser(@RequestHeader("token") String token){
-	Users user=service.getSingleUser(token);
-		return ResponseEntity.status(HttpStatus.ACCEPTED)
-				.body(new Response("user is", 200, user));
-	}
 }

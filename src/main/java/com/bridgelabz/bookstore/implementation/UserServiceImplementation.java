@@ -73,10 +73,10 @@ public class UserServiceImplementation implements UserServices {
 		if (user != null) {
 			String userRole = information.getRole();
 			String fetchRole = user.getRole();
-			if (fetchRole.equals("admin")) {
+			if (fetchRole.equals(userRole)) {
 				Users userInfo = verifyPassword(user, information);
 				return userInfo;
-			} else if (fetchRole.equals("seller") && !userRole.equals("admin")) {
+			} else if (fetchRole.equals(userRole)) {
 				Users userInfo = verifyPassword(user, information);
 				return userInfo;
 			} else if (fetchRole.equals(userRole)) {

@@ -80,14 +80,15 @@ public class BookStoreController {
 			return ResponseEntity.status(HttpStatus.ACCEPTED)
 					.body(new BookResponse(400, "No Approved Books available"));
 	}
-
-	@GetMapping(value = "books/{bookId}")
-	public ResponseEntity<BookResponse> getBookbyId(@PathVariable("bookId") long bookId ) {
-		Book info = bookservice.getBookbyId(bookId);
-		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is", info));
-	}
-
 	
+
+	@GetMapping( value = "books/{bookId}")
+	 public ResponseEntity<BookResponse> getBookbyId( @PathVariable("bookId") long bookId) {
+		System.out.println("book controller called" + bookId);
+			Book info = bookservice.getBookbyId(bookId);
+			
+				return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is",info));
+	}
 	
 	@PutMapping("books/editbook/{bookId}/{imageName}")
 	public ResponseEntity<BookResponse> editBook(@PathVariable("bookId") long bookId,@PathVariable String imageName,@RequestBody EditBookDto information,@RequestHeader("token") String token){
