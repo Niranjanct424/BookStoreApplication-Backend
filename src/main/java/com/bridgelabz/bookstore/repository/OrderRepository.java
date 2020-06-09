@@ -18,8 +18,9 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 
 	
 	@Modifying
-	@Query("update Order set order_status='in progress' where order_id=:orderId")
-	int OrderStatusdefault(long orderId);
+	@Query("update Order set order_status=:status where order_id=:orderId")
+	int OrderStatusdefault(String status,long orderId);
+	
 	
 
 	@Query( value = "select * from order_details ", nativeQuery = true)

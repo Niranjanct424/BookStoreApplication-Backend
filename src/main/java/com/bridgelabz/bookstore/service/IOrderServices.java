@@ -10,7 +10,7 @@ public interface IOrderServices {
 	
     boolean confirmBooktoOrder(String token, Long bookId);
     
-	Order  confrimOrder(String token);
+	Order  placeOrder(String token ,Long bookId);
 	
 //	List<Order> getOrderList(String orderStatus);
 
@@ -25,7 +25,7 @@ public interface IOrderServices {
 	
 	List<Order> getallOrders();
 
-	int changeOrderStatus(Long orderId);
+	int changeOrderStatus(String status,long orderId);
 
 	
 }
