@@ -397,12 +397,13 @@ public class BookServiceImplementation implements IBookService {
 			repository.save(book);
 
 		}
-	}//		Book book = repository.fetchbyId(bookId);
+	}
 
 	@Override
 	public List<ReviewAndRating> getRatingsOfBook(Long bookId) {
-		System.out.println("review "+repository.reviews(bookId));
-		return repository.reviews(bookId);
+
+		Book book = repository.fetchbyId(bookId);
+		return book.getReviewRating();
 	}
 	
 	@Override
