@@ -29,6 +29,10 @@
 			<artifactId>javax.persistence-api</artifactId>
 
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -40,11 +44,14 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.10</version>
+    <scope>provided</scope>
+</dependency>
+		
 
 
 		<dependency>
@@ -114,12 +121,12 @@
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
 
-		
-		 <dependency>
-        <groupId>org.hibernate.validator</groupId>
-        <artifactId>hibernate-validator</artifactId>
-     
-    </dependency>
+
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+
+		</dependency>
 
 
 
@@ -162,7 +169,7 @@
 
 
 
-	
+
 	</dependencies>
 
 	<build>
