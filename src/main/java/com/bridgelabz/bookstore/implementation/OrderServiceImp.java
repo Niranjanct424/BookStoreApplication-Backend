@@ -221,7 +221,7 @@ public class OrderServiceImp implements IOrderServices {
 	@Transactional
 	@Override
 	public List<Order> getOrderList(String token) {
-		Long id = generate.parseJWT(token);
+		long id = generate.parseJWT(token);
 		Users userdetails = userRepo.findById(id)
 				.orElseThrow(null);
 
@@ -241,10 +241,26 @@ public class OrderServiceImp implements IOrderServices {
 
 	@Transactional
 	@Override
-	public int changeOrderStatus(String orderStatus, Long orderId) {
+	public int changeOrderStatus(Long orderId) {
 
-		int changedOrderStatus = orderRepository.OrderStatus(orderStatus,orderId);
+		int changedOrderStatus = orderRepository.OrderStatusdefault(orderId);
 		return changedOrderStatus;
 	}
+	
 
+	public String getstatusresult()
+	{
+		return null;
+		
+	}
+	
+	@Transactional
+	@Override
+	public List<Order> getallOrders() {
+
+		List<Order> orderIds = orderRepository.getorder();
+		return orderIds;
+	}
+
+	
 }
