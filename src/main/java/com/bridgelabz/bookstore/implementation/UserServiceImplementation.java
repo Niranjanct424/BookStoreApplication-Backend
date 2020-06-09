@@ -26,7 +26,10 @@ import com.bridgelabz.bookstore.util.JwtGenerator;
 import com.bridgelabz.bookstore.util.MailServiceProvider;
 import com.bridgelabz.bookstore.util.RabbitMQSender;
 
+import lombok.extern.log4j.Log4j2;
+
 @Service
+@Log4j2
 public class UserServiceImplementation implements UserServices {
 	private Users users = new Users();
 	@Autowired
@@ -89,12 +92,15 @@ public class UserServiceImplementation implements UserServices {
 			String fetchRole = user.getRole();
 			if (fetchRole.equals(userRole)) {
 				Users userInfo = verifyPassword(user, information);
+				log.info("you logged in as " + userRole);
 				return userInfo;
 			} else if (fetchRole.equals(userRole)) {
 				Users userInfo = verifyPassword(user, information);
+				log.info("you logged in as " + userRole);
 				return userInfo;
 			} else if (fetchRole.equals(userRole)) {
 				Users userInfo = verifyPassword(user, information);
+				log.info("you logged in as " + userRole);
 				return userInfo;
 			} else {
 				throw new UserException("Your are not Authorized person");
