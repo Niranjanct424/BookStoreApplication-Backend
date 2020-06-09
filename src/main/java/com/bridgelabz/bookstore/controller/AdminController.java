@@ -30,7 +30,6 @@ public class AdminController {
 					.body(new BookResponse("This Seller book is approved by Admin", HttpStatus.ACCEPTED));
 		}
 		return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new BookResponse(406,"book not approved"));
-
 	}
 
 	@PutMapping("admin/rejectBook/{bookId}")
