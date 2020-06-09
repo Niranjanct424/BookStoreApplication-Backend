@@ -64,7 +64,9 @@ public class UserServiceImplementation implements UserServices {
 			users.setVerified(false);
 			// calling the save method
 			users = repository.save(users);
-			String mailResponse = response.formMessage("http://localhost:8081/user/verify",
+			String mailResponse = response.formMessage(
+					"please click on below link to verify your email " +
+					"http://localhost:8080/user/verify",
 					generate.jwtToken(users.getUserId()));
 			// setting the data to mail
 			mailObject.setEmail(information.getEmail());
