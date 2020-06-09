@@ -30,10 +30,10 @@ public class OrderController {
 	@Autowired
 	OrderServiceImp orderServiceimpl;
 	
-	@PostMapping("bookstore/confirmOrder/{token}")
-	public ResponseEntity<Response> confrimOrder(@PathVariable String token) throws Exception {
-		Order orderdetails = orderService.confrimOrder(token);
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("order is placed", 200, orderdetails));
+	@PostMapping("bookstore/placeOrder/{token}")
+	public ResponseEntity<Response> placeOrder(@PathVariable String token,@RequestParam Long bookId) throws Exception {
+		Order orderdetails = orderService.placeOrder(token, bookId);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(" CHECK YOUR MAIL  ORDER IS SUCCESSFULLY PLACED", 200, orderdetails));
 	}
 	
 	@GetMapping(value = "bookstore/confirmBook/{bookId}")
@@ -60,16 +60,7 @@ public class OrderController {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("count of books", 200, userdetails));
 		
 	}
-	
-//	@ApiOperation(value = "Getting the OrderList")
-//	@GetMapping(value = "bookstore/orderedbooks")
-//	public ResponseEntity<Response> getOrderlist(@RequestHeader("token") String token) throws Exception {
-//		
-//		List<Order> orderdetails = orderService.getOrderList(token);
-//		System.out.println("orderList "+orderdetails);
-//			return ResponseEntity.status(200).body(new Response("order list ",200,orderdetails));
-//		
-//	}
+
 	
 	@ApiOperation(value = "Change Order Status")
 	@PutMapping(value = "bookstore/orderstatus")
