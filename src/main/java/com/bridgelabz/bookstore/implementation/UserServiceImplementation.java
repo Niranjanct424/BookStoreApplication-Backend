@@ -76,9 +76,7 @@ public class UserServiceImplementation implements UserServices {
 			return true;
 		} else {
 			throw new UserException("user already exist with the same mail id");
-
 		}
-
 	}
 
 	@Override
