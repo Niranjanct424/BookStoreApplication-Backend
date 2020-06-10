@@ -13,7 +13,4 @@ public class EmailData implements Serializable{
 	private String subject;
 	private String body;
 
-	
-	
-
 }

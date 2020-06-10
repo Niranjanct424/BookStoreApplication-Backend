@@ -9,4 +9,4 @@ public class RatingReviewDTO {
 	
 	private String review;
 	
-	}
+}

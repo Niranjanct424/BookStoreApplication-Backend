@@ -51,4 +51,6 @@ public interface IBookService {
 	Page<Book> getBookAproval(Optional<String> searchBy, Optional<Integer> page, Optional<String> sortBy, Optional<String> order);
 
 	boolean uploadBookImage(long bookId, String imageName, String token);
+	
+	List<Book> sortBookByRate();
 }

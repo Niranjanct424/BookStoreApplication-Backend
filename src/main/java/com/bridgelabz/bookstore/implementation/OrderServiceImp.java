@@ -24,7 +24,6 @@ import com.bridgelabz.bookstore.service.ICartService;
 import com.bridgelabz.bookstore.service.IOrderServices;
 import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
-import com.bridgelabz.bookstore.util.RandomNumberGenerator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -128,11 +127,7 @@ public class OrderServiceImp implements IOrderServices {
 			for(String dt:details) {
 				data=data+dt+"\n";	
 				log.info("\n "+dt);
-			}
-			
-	
-			
-	        
+			}    
 	 		String body="@"+userdetails.getEmail()+" \n"+"order details"+" \n"+data+"\n"+"please rate us below link"+"\n"
 	 		+"http://localhost:8081/books/ratingreview";
 			emailData.setEmail(userdetails.getEmail());
@@ -171,8 +166,6 @@ public class OrderServiceImp implements IOrderServices {
 	}
 	
 	
-	
-	
 	@Transactional
 	@Override
 	public int getCountOfBooks(String token) {
@@ -190,22 +183,68 @@ public class OrderServiceImp implements IOrderServices {
 		}
 		return countOfBooks;
 	}
-
+	
+	
+	
+	@Transactional
 	@Override
+	public List<Order> getOrderList(String token) {
+		long id = generate.parseJWT(token);
+		Users userdetails = userRepo.findById(id)
+				.orElseThrow(null);
+
+		return userdetails.getOrderBookDetails();
+
+	}
+
+//	@Transactional
+//	@Override
+//	public List<Order> getOrderList(String token) {
+//		Long id = generate.parseJWT(token);
+//		Users userdetails = userRepo.findById(id).orElseThrow(null);
+//
+//		return userdetails.getOrderBookDetails();
+//
+//	}
+
+	@Transactional
+	@Override
+	public int changeOrderStatus(String status,long orderId) {
+
+		int changedOrderStatus = orderRepository.OrderStatusdefault(status,orderId);
+		return changedOrderStatus;
+	}
+	
+
+	public String getstatusresult()
+	{
+		return null;
+		
+	}
+
+	public List<Order> getallOrders() {
+
+		List<Order> orderIds = orderRepository.getorder();
+		return orderIds;
+	}
+
 	public int changeOrderStatus(String orderStatus, Long orderId) {
 		// TODO Auto-generated method stub
 		return 0;
+
 	}
 
-	@Override
-	public List<Order> getOrderList(String token) {
-		
-		return null;
-	}
+//	@Override
+//	public List<Order> getOrderList(String token) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	
 	
 	
 
 
 
+
+	
 }

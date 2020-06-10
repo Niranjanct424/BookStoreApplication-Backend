@@ -76,15 +76,7 @@ public class AddressController {
 	}
 
 
-	@GetMapping("/address/getAddress")
-	public ResponseEntity<Response> getAddress(@RequestParam String type,@RequestHeader String token) {
-		Address add = addressService.getAddress(type,token);
-		if (add != null) {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("added adress", 200, add));
-		}
-		return null;
-		
-	}
+
 	@GetMapping( "/address/users")
 	public ResponseEntity<Response> getAddressByUserId(@RequestHeader String token) {
 		List<Address> result = addressService.getAddressByUserId(token);

@@ -77,21 +77,15 @@ public class CartServiceImplimentation implements ICartService{
 		long quantity=1;
         CartItem cart =new CartItem();
 		Quantity qunatityofbook = new Quantity();
-		
 		ArrayList<Book> booklist = new ArrayList<>();
-		
-	
 		booklist.add(book);
 		cart.setCreatedTime(LocalDateTime.now());
 		cart.setBooksList(booklist);
-
 		ArrayList<Quantity> quantitydetails = new ArrayList<Quantity>();
 		qunatityofbook.setQuantityOfBook(quantity);
 		qunatityofbook.setTotalprice(book.getPrice());
 		quantitydetails.add(qunatityofbook);
-		
 		cart.setQuantityOfBook(quantitydetails);
-	
 		user.getCartBooks().add(cart);
 		return user;
 	}
