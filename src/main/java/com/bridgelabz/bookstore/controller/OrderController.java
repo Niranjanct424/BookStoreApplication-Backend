@@ -1,3 +1,4 @@
+
 package com.bridgelabz.bookstore.controller;
 
 import java.util.List;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.bookstore.entity.Order;
 import com.bridgelabz.bookstore.implementation.OrderServiceImp;
-import com.bridgelabz.bookstore.response.BookResponse;
 import com.bridgelabz.bookstore.response.Response;
 import com.bridgelabz.bookstore.service.IOrderServices;
 
@@ -73,10 +73,5 @@ public class OrderController {
 			return ResponseEntity.status(200).body(new Response(orderId+" order status updated ",200,orderStatusResult));
 		
 	}
-	
-//	@PutMapping("books/editBookStatus/{bookId}/{status}")
-//	public ResponseEntity<BookResponse> editBookStatus(@PathVariable long bookId, @PathVariable String status,
-//			@RequestHeader("token") String token)
-
-
 }
+

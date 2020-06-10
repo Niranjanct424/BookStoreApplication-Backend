@@ -1,4 +1,3 @@
-
 package com.bridgelabz.bookstore.configuration;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
