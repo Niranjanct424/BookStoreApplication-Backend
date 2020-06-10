@@ -172,6 +172,21 @@ public class BookStoreController {
 		if(rate>0.0)
 		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", rate ));
 		else
-			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", 0 ));			
-	}	
+
+			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", 0 ));
+				
+	}
+	
+	@ApiOperation(value = "Books sorted by rating")
+	@GetMapping("books/sortbyrate")
+	public ResponseEntity<BookResponse> sortBookByRate(){
+		List<Book> books = bookservice.sortBookByRate();
+		if(books!=null)
+		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("books fetched", books ));
+		else
+			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("books not fetched" , books));
+				
+	}
+
+
 }
