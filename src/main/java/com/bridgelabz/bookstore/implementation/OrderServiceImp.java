@@ -96,9 +96,15 @@ public class OrderServiceImp implements IOrderServices {
 								if (orderId < 0) {
 									orderId = orderId * -1;
 								}
+								
+								double totalprice = book.getPrice() * (bookquantity.getQuantityOfBook());
+								log.info("-----------------------QUantity-------------2--"+bookquantity.getQuantityOfBook());
+								orderDetails.setTotalPrice(totalprice);
+								
 								quantitydetails.add(bookquantity);
 								orderDetails.setOrderId(orderId);
 								orderDetails.setQuantityOfBooks(quantitydetails);
+		
 								orderDetails.setOrderPlacedTime(LocalDateTime.now());
 								orderDetails.setBooksList(list);
 								details.add("orderId:" + orderId + "\n" + "BookName:" + book.getBookName() + "\n"
@@ -215,9 +221,7 @@ public class OrderServiceImp implements IOrderServices {
 		return null;
 		
 	}
-	
-	@Transactional
-	@Override
+
 	public List<Order> getallOrders() {
 
 		List<Order> orderIds = orderRepository.getorder();
@@ -227,6 +231,7 @@ public class OrderServiceImp implements IOrderServices {
 	public int changeOrderStatus(String orderStatus, Long orderId) {
 		// TODO Auto-generated method stub
 		return 0;
+
 	}
 
 //	@Override

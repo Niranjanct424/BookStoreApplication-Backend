@@ -45,11 +45,11 @@ public class AddressController {
 	}
 	
 	@PutMapping
-	("/update/{token}")
-	public ResponseEntity<Response> updateAddress(@PathVariable("token") String token,@RequestBody UpdateAddressDto address)
+	("/address/updateAddress")
+	public ResponseEntity<Response> updateAddress(@RequestHeader String token,@RequestBody UpdateAddressDto address)
 	{
 
-		Optional<Address> addres=addressService.updateAddress(address,token);
+		Address addres=addressService.updateAddress(address,token);
 		if (addres != null) {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("added adress", 200, addres));
 		}
@@ -57,10 +57,9 @@ public class AddressController {
 
 	}
 
-	@DeleteMapping("/delete")
+	@DeleteMapping("/address/delete")
 	public ResponseEntity<Response> deleteAddress(@RequestParam Long addressId,@RequestHeader String token )
 	{
-		System.out.println("####");
 		Users message= addressService.deleteAddress(token, addressId);
 		System.out.println("==="+message);
 		if (message != null) {
@@ -69,35 +68,21 @@ public class AddressController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("added adress", 200, message));		
 	}
 	
-	@GetMapping("/getAllAddress")
+	@GetMapping("/address/getAllAddress")
 	public List<Address> getAllAddress()
 	{
 		return addressService.getAllAddress();
 
 	}
 
-	@GetMapping(value = "/getAddress/{id}")
-	public ResponseEntity<Response> getAddress(@PathVariable Long id) {
-		Address add = addressService.getAddress(id);
-		if (add != null) {
-		}
-		return null;	
-	}
-	@GetMapping(value = "/getAddress/{type}")
-	public ResponseEntity<Response> getAddress(@PathVariable String type,@RequestHeader String token) {
-		Address add = addressService.getAddress(type,token);
-		if (add != null) {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("added adress", 200, add));
-		}
-		return null;
-		
-	}
-	@GetMapping(value = "/users/{token}")
-	public List<Address> getAddressByUserId(@PathVariable String token) {
+
+
+	@GetMapping( "/address/users") 
+	public ResponseEntity<Response> getAddressByUserId(@RequestHeader String token) {
 		List<Address> result = addressService.getAddressByUserId(token);
 		System.out.println("-----------result"+result);
 		if (result != null) {
-			 return result;
+			return  ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("added adress", 200, result));
 		}
 		return null;
 	}

@@ -27,6 +27,8 @@ public class ReviewAndRating {
 	@Column(name = "review", nullable = false)
 	private String review;
 	
+	
+	
 	@OneToOne
 	@JoinTable(name="rating_review_user", joinColumns = @JoinColumn(name="ratingReviewId"),
 	inverseJoinColumns = @JoinColumn(name="user_id"))

@@ -401,13 +401,17 @@ public class BookServiceImplementation implements IBookService {
 	@Override
 	public List<ReviewAndRating> getRatingsOfBook(Long bookId) {
 
-		Book book = repository.fetchbyId(bookId);
+		Book book=repository.fetchbyId(bookId);
+
 		return book.getReviewRating();
 	}
 	
 	@Override
 	public double avgRatingOfBook(Long bookId) {
-		double rate=0.0;
+
+		double rate = repository.avgRateOfBook(bookId);
+		
+
 		try {
 		rate = repository.avgRateOfBook(bookId);
 		System.out.println("rate getted:"+rate);
