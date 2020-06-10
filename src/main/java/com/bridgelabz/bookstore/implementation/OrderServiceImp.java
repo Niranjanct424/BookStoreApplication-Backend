@@ -24,7 +24,6 @@ import com.bridgelabz.bookstore.service.ICartService;
 import com.bridgelabz.bookstore.service.IOrderServices;
 import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
-import com.bridgelabz.bookstore.util.RandomNumberGenerator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -122,11 +121,7 @@ public class OrderServiceImp implements IOrderServices {
 			for(String dt:details) {
 				data=data+dt+"\n";	
 				log.info("\n "+dt);
-			}
-			
-	
-			
-	        
+			}    
 	 		String body="@"+userdetails.getEmail()+" \n"+"order details"+" \n"+data+"\n"+"please rate us below link"+"\n"
 	 		+"http://localhost:8081/books/ratingreview";
 			emailData.setEmail(userdetails.getEmail());
@@ -163,8 +158,6 @@ public class OrderServiceImp implements IOrderServices {
 		}
 		return false;
 	}
-	
-	
 	
 	
 	@Transactional

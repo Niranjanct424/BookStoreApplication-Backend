@@ -1,5 +1,4 @@
 package com.bridgelabz.bookstore.implementation;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.entity.WishlistBook;

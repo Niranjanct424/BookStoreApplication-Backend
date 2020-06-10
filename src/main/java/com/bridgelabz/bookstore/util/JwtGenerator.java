@@ -3,8 +3,6 @@
  */
 package com.bridgelabz.bookstore.util;
 
-import java.io.UnsupportedEncodingException;
-
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;

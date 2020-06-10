@@ -20,7 +20,6 @@ public interface IBookService {
 
 	List<Book> sortGetAllBooks();
 	
-
 	List<Book> sorting(boolean value);
 
     List<Book> findAllPageBySize( int pagenumber);

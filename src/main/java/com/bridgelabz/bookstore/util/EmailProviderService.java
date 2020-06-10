@@ -53,7 +53,7 @@ public class EmailProviderService{
 
 			mimeMessage.addHeader("Content-Transfer-Encoding", "8bit");
 
-			mimeMessage.setFrom(new InternetAddress(fromEmail,"Mr.Sandeep"));
+			mimeMessage.setFrom(new InternetAddress(fromEmail,"Bookstore"));
 
 			mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(emailContact));
 
@@ -64,7 +64,6 @@ public class EmailProviderService{
 			mimeMessage.setText(body);
 
 			Transport.send(mimeMessage);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("exception occured while sending mail");
