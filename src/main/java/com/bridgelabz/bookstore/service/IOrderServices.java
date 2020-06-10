@@ -14,12 +14,18 @@ public interface IOrderServices {
 	
 //	List<Order> getOrderList(String orderStatus);
 
-	int changeOrderStatus(String orderStatus, Long orderId);
+//	int changeOrderStatus(String orderStatus, Long orderId);
 	
 
 	int getCountOfBooks(String token);
 	
 	 List<Order> getOrderList(String token);
+
+	
+	
+	List<Order> getallOrders();
+
+	int changeOrderStatus(String status,long orderId);
 
 	
 }
