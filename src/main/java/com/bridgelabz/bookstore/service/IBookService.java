@@ -17,10 +17,8 @@ public interface IBookService {
 
 	List<Book> getBookInfo(String token);
 	
-
 	List<Book> sortGetAllBooks();
 	
-
 	List<Book> sorting(boolean value);
 
     List<Book> findAllPageBySize( int pagenumber);
