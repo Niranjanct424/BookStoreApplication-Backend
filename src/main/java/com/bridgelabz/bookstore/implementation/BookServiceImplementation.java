@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -13,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
@@ -127,7 +127,7 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public Book getTotalPriceofBook(long bookId, long quantity) {
+	public Book getTotalPriceofBook(Long bookId, long quantity) {
 		Book bookinfo = repository.fetchbyId(bookId);
 		double Price = bookinfo.getPrice();
 
@@ -192,7 +192,7 @@ public class BookServiceImplementation implements IBookService {
 	}
 
 	@Override
-	public Book getBookbyId(long bookId) {
+	public Book getBookbyId(Long bookId) {
 		Book info = repository.fetchbyId(bookId);
 		if (info != null) {
 			return info;
@@ -408,7 +408,14 @@ public class BookServiceImplementation implements IBookService {
 	
 	@Override
 	public double avgRatingOfBook(Long bookId) {
-		double rate = repository.avgRateOfBook(bookId);
+		double rate=0.0;
+		try {
+		rate = repository.avgRateOfBook(bookId);
+		System.out.println("rate getted:"+rate);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return rate;
 	}
 
@@ -449,7 +456,11 @@ public class BookServiceImplementation implements IBookService {
 	@Override
 	public List<Book> sortBookByRate() {
 		
-		return null;
+		List<Book> books = repository.getAllApprovedBooks();
+		System.out.println("Approved books:"+books);
+		List<Book> sortBook = books.stream().sorted((book1,book2)->(avgRatingOfBook(book1.getBookId())<avgRatingOfBook(book2.getBookId()))?1:(avgRatingOfBook(book1.getBookId())>avgRatingOfBook(book2.getBookId()))?-1:0).collect(Collectors.toList());
+		System.out.println("After sorting:"+sortBook);
+		return sortBook;
 	}
 
 }

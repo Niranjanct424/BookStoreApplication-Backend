@@ -81,8 +81,8 @@ public class BookStoreController {
 					.body(new BookResponse(400, "No Approved Books available"));
 	}
 
-	@GetMapping(value = "books/{bookId}")
-	public ResponseEntity<BookResponse> getBookbyId(@PathVariable("bookId") long bookId) {
+	@GetMapping(value = "books/getbook/{bookId}")
+	public ResponseEntity<BookResponse> getBookbyId(@PathVariable("bookId") Long bookId) {
 		Book info = bookservice.getBookbyId(bookId);
 		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is", info));
 	}
