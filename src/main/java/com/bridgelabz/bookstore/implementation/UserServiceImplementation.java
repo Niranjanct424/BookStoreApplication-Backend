@@ -20,13 +20,11 @@ import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.request.LoginInformation;
 import com.bridgelabz.bookstore.request.PasswordUpdate;
 import com.bridgelabz.bookstore.response.EmailData;
-import com.bridgelabz.bookstore.response.MailObject;
 import com.bridgelabz.bookstore.response.MailResponse;
 import com.bridgelabz.bookstore.service.UserServices;
 import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 import com.bridgelabz.bookstore.util.MailServiceProvider;
-import com.bridgelabz.bookstore.util.RabbitMQSender;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -79,7 +77,7 @@ public class UserServiceImplementation implements UserServices {
 			// setting the data to mail
 					emailData.setEmail(users.getEmail());
 					
-					emailData.setSubject("your Order is succefully placed");
+					emailData.setSubject("your Registration is successful");
 			
 					emailData.setBody(mailResponse);
 			
