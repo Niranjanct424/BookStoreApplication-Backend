@@ -25,7 +25,7 @@ public class RabbitmqConfig {
 	 public Queue rubeQueue() {
 	  return new Queue("rmq.rube.queue", true);
 	 }
-
+	 
 	 @Bean
 	 Binding rubeExchangeBinding(DirectExchange rubeExchange, Queue rubeQueue) {
 	  return BindingBuilder.bind(rubeQueue).to(rubeExchange).with("rube.key");

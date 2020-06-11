@@ -100,6 +100,7 @@ public class OrderServiceImp implements IOrderServices {
 								orderDetails.setOrderId(orderId);
 								orderDetails.setQuantityOfBooks(quantitydetails);
 								orderDetails.setOrderPlacedTime(LocalDateTime.now());
+								orderDetails.setOrderStatus("Pending");
 								orderDetails.setBooksList(list);
 								details.add("orderId:" + orderId + "\n" + "BookName:" + book.getBookName() + "\n"
 										+ "Quantity:" + bookquantity.getQuantityOfBook() + "\n" + "TotalPrice:"

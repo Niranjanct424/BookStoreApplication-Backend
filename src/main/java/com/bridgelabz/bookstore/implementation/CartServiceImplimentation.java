@@ -100,7 +100,6 @@ public class CartServiceImplimentation implements ICartService{
 		if(user!=null){
 		List<CartItem> cartBooks = user.getCartBooks();
 		return cartBooks;
-		
 		}//user.
 		
 		return null;

@@ -75,8 +75,7 @@ public class UserServiceImplementation implements UserServices {
 			mailObject.setEmail(information.getEmail());
 			mailObject.setMessage(mailResponse);
 			mailObject.setSubject("Verification");
-			rabbitMQSender.send(mailObject);
-			
+			rabbitMQSender.send(mailObject);	
 			System.out.println(mailResponse);
 			return true;
 		} else {

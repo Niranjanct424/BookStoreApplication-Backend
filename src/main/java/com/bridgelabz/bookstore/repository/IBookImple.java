@@ -28,5 +28,4 @@ public class IBookImple implements IBook {
 		List BookList = currentSession.createQuery("from Book").getResultList();
 		return BookList;
 	}
-
 }
