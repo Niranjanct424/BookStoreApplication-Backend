@@ -26,6 +26,10 @@ import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 import com.bridgelabz.bookstore.util.MailServiceProvider;
 
+//import com.bridgelabz.bookstore.util.RabbitMQSender;
+
+
+
 import lombok.extern.log4j.Log4j2;
 
 @Service
@@ -46,6 +50,11 @@ public class UserServiceImplementation implements UserServices {
 	@Autowired
 	private MailResponse response;
 	
+
+//	@Autowired
+//	private RabbitMQSender rabbitMQSender;
+
+
 
 	@Autowired
 	private EmailProviderService em;
@@ -75,6 +84,12 @@ public class UserServiceImplementation implements UserServices {
 					"http://localhost:8080/user/verify/"+
 					generate.jwtToken(users.getUserId());
 			// setting the data to mail
+
+//			mailObject.setEmail(information.getEmail());
+//			mailObject.setMessage(mailResponse);
+//			mailObject.setSubject("Verification");
+			//rabbitMQSender.send(mailObject);
+
 					emailData.setEmail(users.getEmail());
 					
 					emailData.setSubject("your Registration is successful");
@@ -82,6 +97,7 @@ public class UserServiceImplementation implements UserServices {
 					emailData.setBody(mailResponse);
 			
 					em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+
 			
 			System.out.println(mailResponse);
 			return true;

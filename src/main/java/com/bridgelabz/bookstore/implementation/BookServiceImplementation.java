@@ -69,7 +69,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (fetchRole.equals("seller") || userRole.equals("admin")) 
+				if (fetchRole.equals("seller") ) 
 				{
 					Book book=repository.fetchbyBookName(information.getBookName());
 					System.out.println("Book name "+information.getBookName());
@@ -202,7 +202,7 @@ public class BookServiceImplementation implements IBookService {
 
 	@Override
 
-	public boolean editBook(long bookId,String imageName,EditBookDto information,String token) {
+	public boolean editBook(long bookId,EditBookDto information,String token) {
 		
 		Long id;
 	
@@ -214,7 +214,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 
-				if (fetchRole.equals("seller") || userRole.equals("admin")) 
+				if (fetchRole.equals("seller") ) 
 				{
 					Book info =repository.fetchbyId(bookId);
 					if(info!=null) 
@@ -225,7 +225,7 @@ public class BookServiceImplementation implements IBookService {
 						info.setPrice(information.getPrice());
 						info.setAuthorName(information.getAuthorName());
 						info.setBookDetails(information.getBookDetails());
-						info.setImage(imageName);
+//						info.setImage(imageName);
 						info.setUpdatedDateAndTime(information.getUpdatedAt());
 						repository.save(info);
 						return true;
@@ -256,7 +256,7 @@ public class BookServiceImplementation implements IBookService {
 			log.info("Actual ");
 			String fetchRole = userRole;
 
-			if (fetchRole.equals("seller") || userRole.equals("admin")) {
+			if (fetchRole.equals("seller") ) {
 				Book info = repository.fetchbyId(bookId);
 				if (info != null) {
 					repository.deleteByBookId(bookId);
@@ -440,7 +440,7 @@ public class BookServiceImplementation implements IBookService {
 			System.out.println("actual Role is " + userRole);
 			String fetchRole = userRole;
 
-			if (fetchRole.equals("seller") || userRole.equals("admin")) {
+			if (fetchRole.equals("seller") ) {
 				Book info = repository.fetchbyId(bookId);
 				if (info != null) {
 					info.setImage(imageName);

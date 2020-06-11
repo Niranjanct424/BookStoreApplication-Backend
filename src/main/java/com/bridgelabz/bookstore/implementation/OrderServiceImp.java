@@ -234,6 +234,12 @@ public class OrderServiceImp implements IOrderServices {
 
 	}
 
+	@Override
+	public List<Order> getInProgressOrders() {
+		List<Order> inProgressOrder = orderRepository.getInProgressOrder();
+		return inProgressOrder;
+	}
+
 //	@Override
 //	public List<Order> getOrderList(String token) {
 //		// TODO Auto-generated method stub

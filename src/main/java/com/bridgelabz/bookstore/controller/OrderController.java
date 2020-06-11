@@ -99,6 +99,16 @@ public class OrderController {
 		
 	}
 	
+	@ApiOperation(value = "get In progress order detrails for seller")
+	@GetMapping(value = "bookstore/getOrdersByseller")
+	public ResponseEntity<Response> getInProgressOrders() throws Exception {
+		System.out.println("------------Seller order");
+		List<Order> orderinfo = orderService.getInProgressOrders();
+		System.out.println("seller  ------order ids: "+orderinfo);
+			return ResponseEntity.status(200).body(new Response(" orders list ",200,orderinfo));
+		
+	}
+	
 //	@PutMapping("books/editBookStatus/{bookId}/{status}")
 //	public ResponseEntity<BookResponse> editBookStatus(@PathVariable long bookId, @PathVariable String status,
 //			@RequestHeader("token") String token)
