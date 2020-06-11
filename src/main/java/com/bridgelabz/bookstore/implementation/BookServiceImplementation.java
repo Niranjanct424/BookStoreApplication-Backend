@@ -408,16 +408,13 @@ public class BookServiceImplementation implements IBookService {
 	
 	@Override
 	public double avgRatingOfBook(Long bookId) {
-
-		double rate = repository.avgRateOfBook(bookId);
-		
-
+		double rate=0.0;
 		try {
 		rate = repository.avgRateOfBook(bookId);
 		System.out.println("rate getted:"+rate);
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("No rating");
 		}
 		return rate;
 	}
