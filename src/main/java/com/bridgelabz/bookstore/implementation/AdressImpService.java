@@ -41,16 +41,14 @@ public class AdressImpService  implements IAdressService{
 	}
 	
 	@Override
-	public Optional<Address> updateAddress(UpdateAddressDto addressupdate, String token) {
+	public Address updateAddress(UpdateAddressDto addressupdate, String token) {
 		List<Address> list=new ArrayList<>();
 
 		Long id = generate.parseJWT(token);
 		Users userdetails = userRepo.findById(id)
 				.orElseThrow(null);
-		Optional<Address> ad= addressRepository.findById(addressupdate.getAddressId());
-		return ad.filter(note -> {
-			return note != null;
-		}).map(add->{
+		Address add= addressRepository.findById(addressupdate.getAddressId()).get();
+		
 			add.setAddressId((addressupdate.getAddressId()));
 			add.setAddress(addressupdate.getAddress());
 			add.setAddressType(addressupdate.getType());
@@ -62,9 +60,12 @@ public class AdressImpService  implements IAdressService{
 			
 			addressRepository.save(add);
 			userdetails.getAddress().add(add);
-			return ad;
-		}).orElseThrow(null);
+			System.out.println("------------------working --------------"+add);
+			return add;
+		
 	}
+	
+	
 	@Transactional
 	@Override
 	public List<Address> getAllAddress() {

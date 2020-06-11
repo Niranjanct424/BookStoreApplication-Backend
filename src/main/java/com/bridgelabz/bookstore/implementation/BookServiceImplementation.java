@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -68,11 +69,10 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 				
-				if (fetchRole.equals("seller") || userRole.equals("admin")) 
+				if (fetchRole.equals("seller") ) 
 				{
 					Book book=repository.fetchbyBookName(information.getBookName());
 					System.out.println("Book name "+information.getBookName());
-					
 					if(book ==null)
 					{
 						bookinformation = modelMapper.map(information, Book.class);
@@ -214,7 +214,7 @@ public class BookServiceImplementation implements IBookService {
 				System.out.println("actual Role is " + userRole);
 				String fetchRole = userRole;
 
-				if (fetchRole.equals("seller") || userRole.equals("admin")) 
+				if (fetchRole.equals("seller") ) 
 				{
 					Book info =repository.fetchbyId(bookId);
 					if(info!=null) 
@@ -256,7 +256,7 @@ public class BookServiceImplementation implements IBookService {
 			log.info("Actual ");
 			String fetchRole = userRole;
 
-			if (fetchRole.equals("seller") || userRole.equals("admin")) {
+			if (fetchRole.equals("seller") ) {
 				Book info = repository.fetchbyId(bookId);
 				if (info != null) {
 					repository.deleteByBookId(bookId);
@@ -396,17 +396,29 @@ public class BookServiceImplementation implements IBookService {
 			repository.save(book);
 
 		}
-	}//		Book book = repository.fetchbyId(bookId);
+	}
 
 	@Override
 	public List<ReviewAndRating> getRatingsOfBook(Long bookId) {
-		System.out.println("review "+repository.reviews(bookId));
-		return repository.reviews(bookId);
+
+		Book book=repository.fetchbyId(bookId);
+
+		return book.getReviewRating();
 	}
 	
 	@Override
 	public double avgRatingOfBook(Long bookId) {
+
 		double rate = repository.avgRateOfBook(bookId);
+		
+
+		try {
+		rate = repository.avgRateOfBook(bookId);
+		System.out.println("rate getted:"+rate);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return rate;
 	}
 
@@ -428,7 +440,7 @@ public class BookServiceImplementation implements IBookService {
 			System.out.println("actual Role is " + userRole);
 			String fetchRole = userRole;
 
-			if (fetchRole.equals("seller") || userRole.equals("admin")) {
+			if (fetchRole.equals("seller") ) {
 				Book info = repository.fetchbyId(bookId);
 				if (info != null) {
 					info.setImage(imageName);
@@ -441,6 +453,17 @@ public class BookServiceImplementation implements IBookService {
 		}
 
 		return false;
+	}
+	
+	@Transactional
+	@Override
+	public List<Book> sortBookByRate() {
+		
+		List<Book> books = repository.getAllApprovedBooks();
+		System.out.println("Approved books:"+books);
+		List<Book> sortBook = books.stream().sorted((book1,book2)->(avgRatingOfBook(book1.getBookId())<avgRatingOfBook(book2.getBookId()))?1:(avgRatingOfBook(book1.getBookId())>avgRatingOfBook(book2.getBookId()))?-1:0).collect(Collectors.toList());
+		System.out.println("After sorting:"+sortBook);
+		return sortBook;
 	}
 
 }

@@ -14,10 +14,18 @@ public interface AddressRepository extends JpaRepository<Address, Long>
 {
 	@Query(value = "select * from users where user_id=?", nativeQuery = true)
 	Users findUserById(Long uId);
-	@Query(value = "select * from Address where address_id=?", nativeQuery = true)
+	
+	
+	
+	@Query(value = "select * from Address where user_id=?", nativeQuery = true)
 	List<Address> findAddressByUserId(Long addressId);
+	
+	
+	
 	@Query(value = "select * from Address where address_id=?", nativeQuery = true)
 	Address findAddressById(Long id);
-	@Query(value = "select * from Address where user_id=? and type=?", nativeQuery = true)
+	
+	
+	@Query(value = "select * from Address where user_id=? and address_type =?", nativeQuery = true)
 	Address findAddressBytext(Long id,String type);
 }

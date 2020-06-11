@@ -19,7 +19,7 @@ public interface IAdressService {
 		
 		Users deleteAddress(String token, Long addressId);
 		
-		Optional<Address> updateAddress(UpdateAddressDto address, String token);
+		Address updateAddress(UpdateAddressDto address, String token);
 		
 		List
 		<Address> getAllAddress();

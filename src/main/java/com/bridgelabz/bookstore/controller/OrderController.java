@@ -44,8 +44,22 @@ public class OrderController {
 		
 	}
 	
+//	@GetMapping(value = "/books/{token}")
+//	public ResponseEntity<Response> getOrderlist(@PathVariable("token") String token) throws Exception {
+//		
+//		List<Order> orderdetails = orderService.getOrderList(token);
+//			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("placed orderlist", 200, orderdetails));
+//		
+//	}
+//	@GetMapping(value = "/books_count/{token}")
+//	public ResponseEntity<Response> getBooksCount(@PathVariable("token") String token) throws Exception {
+//		
+//		int userdetails = orderService.getCountOfBooks(token);
+//			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("count of books", 200, userdetails));
+//		
+//	}
 	
-	
+
 	@GetMapping(value = "/books/{token}")
 	public ResponseEntity<Response> getOrderlist(@PathVariable("token") String token) throws Exception {
 		
@@ -60,16 +74,46 @@ public class OrderController {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("count of books", 200, userdetails));
 		
 	}
+	
+	
 
 	
-	@ApiOperation(value = "Change Order Status")
-	@PutMapping(value = "bookstore/orderstatus")
-	public ResponseEntity<Response> orderStaus(@RequestParam String orderStatus,@RequestParam long orderId,@RequestHeader("token") String token) throws Exception {
+	@ApiOperation(value = "Change Order Status by admin ")
+	@PutMapping(value = "bookstore/orderStatusByAdmin")
+	public ResponseEntity<Response> changeOrderStausByAdmin(@RequestParam String status,@RequestParam long orderId,@RequestHeader("token") String token) throws Exception {
 		
-		int orderStatusResult = orderService.changeOrderStatus(orderStatus, orderId);
+		int orderStatusResult = orderService.changeOrderStatus(status,orderId);
 		System.out.println("orderStatusResult :"+orderStatusResult);
 			return ResponseEntity.status(200).body(new Response(orderId+" order status updated ",200,orderStatusResult));
 		
 	}
+	
+	
+	@ApiOperation(value = "get allorder detrails for admin")
+	@GetMapping(value = "bookstore/getOrdersByAdmin")
+	public ResponseEntity<Response> getallOrders() throws Exception {
+		
+		List<Order> orderinfo = orderService.getallOrders();
+		System.out.println("order ids: "+orderinfo);
+			return ResponseEntity.status(200).body(new Response(" orders list ",200,orderinfo));
+		
+	}
+	
+	@ApiOperation(value = "get In progress order detrails for seller")
+	@GetMapping(value = "bookstore/getOrdersByseller")
+	public ResponseEntity<Response> getInProgressOrders() throws Exception {
+		System.out.println("------------Seller order");
+		List<Order> orderinfo = orderService.getInProgressOrders();
+		System.out.println("seller  ------order ids: "+orderinfo);
+			return ResponseEntity.status(200).body(new Response(" orders list ",200,orderinfo));
+		
+	}
+	
+//	@PutMapping("books/editBookStatus/{bookId}/{status}")
+//	public ResponseEntity<BookResponse> editBookStatus(@PathVariable long bookId, @PathVariable String status,
+//			@RequestHeader("token") String token)
+
+
+
 }
 
