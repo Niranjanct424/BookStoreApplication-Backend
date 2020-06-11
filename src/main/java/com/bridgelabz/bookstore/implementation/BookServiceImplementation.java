@@ -202,7 +202,7 @@ public class BookServiceImplementation implements IBookService {
 
 	@Override
 
-	public boolean editBook(long bookId,String imageName,EditBookDto information,String token) {
+	public boolean editBook(long bookId,EditBookDto information,String token) {
 		
 		Long id;
 	
@@ -225,7 +225,7 @@ public class BookServiceImplementation implements IBookService {
 						info.setPrice(information.getPrice());
 						info.setAuthorName(information.getAuthorName());
 						info.setBookDetails(information.getBookDetails());
-						info.setImage(imageName);
+//						info.setImage(imageName);
 						info.setUpdatedDateAndTime(information.getUpdatedAt());
 						repository.save(info);
 						return true;

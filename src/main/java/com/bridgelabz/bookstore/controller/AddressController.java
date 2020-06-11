@@ -80,10 +80,8 @@ public class AddressController {
 	public ResponseEntity<Response> getAddress(@PathVariable Long id) {
 		Address add = addressService.getAddress(id);
 		if (add != null) {
-		
 		}
-		return null;
-			
+		return null;	
 	}
 	@GetMapping(value = "/getAddress/{type}")
 	public ResponseEntity<Response> getAddress(@PathVariable String type,@RequestHeader String token) {

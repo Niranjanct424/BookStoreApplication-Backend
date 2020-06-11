@@ -26,7 +26,6 @@ import com.bridgelabz.bookstore.entity.ReviewAndRating;
 import com.bridgelabz.bookstore.response.BookResponse;
 import com.bridgelabz.bookstore.service.IBookService;
 
-
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -45,6 +44,7 @@ public class BookStoreController {
 		else
 			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse(400, "The Book details not added "));
 	}
+	
 
 	@GetMapping("books/getAllBooks")
 	public ResponseEntity<BookResponse> getBooks(@RequestHeader("token") String token) {
@@ -80,6 +80,8 @@ public class BookStoreController {
 			return ResponseEntity.status(HttpStatus.ACCEPTED)
 					.body(new BookResponse(400, "No Approved Books available"));
 	}
+	
+
 
 
 	@GetMapping(value = "books/getbook/{bookId}")
@@ -87,11 +89,11 @@ public class BookStoreController {
 		Book info = bookservice.getBookbyId(bookId);
 		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is", info));
 	}
+
 	
-	
-	@PutMapping("books/editbook/{bookId}/{imageName}")
-	public ResponseEntity<BookResponse> editBook(@PathVariable("bookId") long bookId,@PathVariable String imageName,@RequestBody EditBookDto information,@RequestHeader("token") String token){
-		boolean res =bookservice.editBook(bookId,imageName,information,token);
+	@PutMapping("books/editbook/{bookId}")
+	public ResponseEntity<BookResponse> editBook(@PathVariable("bookId") long bookId,@RequestBody EditBookDto information,@RequestHeader("token") String token){
+		boolean res =bookservice.editBook(bookId,information,token);
 		if(res)
 			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse(200, "The Book is Updated Successfully"));
 		return null;
@@ -117,16 +119,7 @@ public class BookStoreController {
 					.body(new BookResponse(400, "The Book Status is not updated.."));
 	}
 
-	@GetMapping("books/approvedBooks")
-	public ResponseEntity<BookResponse> getAllApprovedBook() {
-		List<Book> books = bookservice.getAllAprovedBook();
-		if (books != null)
-			return ResponseEntity.status(HttpStatus.ACCEPTED)
-					.body(new BookResponse("The Approved Book details are", books));
-		else
-			return ResponseEntity.status(HttpStatus.ACCEPTED)
-					.body(new BookResponse(400, "No Approved Books available"));
-	}
+
 
 	@GetMapping("books/onHoldBooks")
 	public ResponseEntity<BookResponse> getAllOnHoldBooks(@RequestHeader("token") String token) {
@@ -166,6 +159,7 @@ public class BookStoreController {
 			 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Ratings and review", bookcount ));
 			
 	}
+	
 	@ApiOperation(value = "Write Review of the book")
 	@PutMapping("books/ratingreview")
 	public ResponseEntity<BookResponse> writeReview(@RequestBody RatingReviewDTO rrDto,@RequestHeader(name="token") String token, @RequestParam Long bookId){
@@ -180,8 +174,6 @@ public class BookStoreController {
 		if(rate>0.0)
 		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", rate ));
 		else
-			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", 0 ));
-				
-	}
-
+			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", 0 ));			
+	}	
 }
