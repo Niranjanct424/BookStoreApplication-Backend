@@ -96,9 +96,15 @@ public class OrderServiceImp implements IOrderServices {
 								if (orderId < 0) {
 									orderId = orderId * -1;
 								}
+								
+								double totalprice = book.getPrice() * (bookquantity.getQuantityOfBook());
+								log.info("-----------------------QUantity-------------2--"+bookquantity.getQuantityOfBook());
+								orderDetails.setTotalPrice(totalprice);
+								
 								quantitydetails.add(bookquantity);
 								orderDetails.setOrderId(orderId);
 								orderDetails.setQuantityOfBooks(quantitydetails);
+		
 								orderDetails.setOrderPlacedTime(LocalDateTime.now());
 								orderDetails.setOrderStatus("Pending");
 								orderDetails.setBooksList(list);
@@ -178,22 +184,68 @@ public class OrderServiceImp implements IOrderServices {
 		}
 		return countOfBooks;
 	}
-
+	
+	
+	
+	@Transactional
 	@Override
+	public List<Order> getOrderList(String token) {
+		long id = generate.parseJWT(token);
+		Users userdetails = userRepo.findById(id)
+				.orElseThrow(null);
+
+		return userdetails.getOrderBookDetails();
+
+	}
+
+//	@Transactional
+//	@Override
+//	public List<Order> getOrderList(String token) {
+//		Long id = generate.parseJWT(token);
+//		Users userdetails = userRepo.findById(id).orElseThrow(null);
+//
+//		return userdetails.getOrderBookDetails();
+//
+//	}
+
+	@Transactional
+	@Override
+	public int changeOrderStatus(String status,long orderId) {
+
+		int changedOrderStatus = orderRepository.OrderStatusdefault(status,orderId);
+		return changedOrderStatus;
+	}
+	
+
+	public String getstatusresult()
+	{
+		return null;
+		
+	}
+
+	public List<Order> getallOrders() {
+
+		List<Order> orderIds = orderRepository.getorder();
+		return orderIds;
+	}
+
 	public int changeOrderStatus(String orderStatus, Long orderId) {
 		// TODO Auto-generated method stub
 		return 0;
+
 	}
 
-	@Override
-	public List<Order> getOrderList(String token) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public List<Order> getOrderList(String token) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	
 	
 	
 
 
 
+
+	
 }
