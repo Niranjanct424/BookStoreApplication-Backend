@@ -28,7 +28,7 @@ public class AdminController {
 	@Autowired
 	BookInterface bookRepo;
 
-	@PutMapping("admin/approveBook/{bookId}")
+	@PutMapping("admin/update/{bookId}")
 	public ResponseEntity<BookResponse> updateBookStatus(@PathVariable long bookId, @RequestParam String status ,@RequestHeader String token) {
 		if (adminService.verifyBook(bookId,status,token)) {
 			return ResponseEntity.status(HttpStatus.OK)
@@ -39,8 +39,8 @@ public class AdminController {
 	
 	
 	
-	@GetMapping("admin/bookByStatus")
-	public ResponseEntity<BookResponse> getAllBooksByStatus(String status) {
+	@GetMapping("admin/books")
+	public ResponseEntity<BookResponse> getAllBooksByStatus(@RequestParam String status) {
 		List<Book> books = adminService.getBooksByStatus(status);
 		{
 			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse(status+" Books ", books));
