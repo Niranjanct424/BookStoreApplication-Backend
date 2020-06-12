@@ -198,15 +198,7 @@ public class OrderServiceImp implements IOrderServices {
 
 	}
 
-//	@Transactional
-//	@Override
-//	public List<Order> getOrderList(String token) {
-//		Long id = generate.parseJWT(token);
-//		Users userdetails = userRepo.findById(id).orElseThrow(null);
-//
-//		return userdetails.getOrderBookDetails();
-//
-//	}
+
 
 	@Transactional
 	@Override
@@ -217,29 +209,23 @@ public class OrderServiceImp implements IOrderServices {
 	}
 	
 
-	public String getstatusresult()
-	{
-		return null;
-		
+
+
+
+	
+	@Override
+	public List<Order> getInProgressOrders() {
+		List<Order> inProgressOrder = orderRepository.getInProgressOrder();
+		return inProgressOrder;
 	}
 
+	@Override
 	public List<Order> getallOrders() {
-
-		List<Order> orderIds = orderRepository.getorder();
-		return orderIds;
-	}
-
-	public int changeOrderStatus(String orderStatus, Long orderId) {
 		// TODO Auto-generated method stub
-		return 0;
-
+		return null;
 	}
 
-//	@Override
-//	public List<Order> getOrderList(String token) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+
 	
 	
 	
