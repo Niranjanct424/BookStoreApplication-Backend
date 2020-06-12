@@ -3,6 +3,7 @@ package com.bridgelabz.bookstore.service;
 
 import java.util.List;
 
+import com.bridgelabz.bookstore.dto.OrderDto;
 import com.bridgelabz.bookstore.entity.Order;
 
 
@@ -28,6 +29,9 @@ public interface IOrderServices {
 	int changeOrderStatus(String status,long orderId);
 
 	List<Order> getInProgressOrders();
+
+//	today
+	Order updateOrder(Long orderId, Order order);
 
 	
 }
