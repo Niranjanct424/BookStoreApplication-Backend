@@ -23,15 +23,13 @@ public interface IOrderServices {
 	 List<Order> getOrderList(String token);
 
 	
-	
 	List<Order> getallOrders();
 
 	int changeOrderStatus(String status,long orderId);
 
 	List<Order> getInProgressOrders();
 
-//	today
-	Order updateOrder(Long orderId, Order order);
+
 
 	
 }

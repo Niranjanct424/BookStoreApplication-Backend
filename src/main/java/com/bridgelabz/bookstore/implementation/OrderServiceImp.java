@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bridgelabz.bookstore.dto.OrderDto;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.entity.Order;
@@ -18,7 +17,6 @@ import com.bridgelabz.bookstore.entity.Quantity;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.BookImple;
-import com.bridgelabz.bookstore.repository.OrderRepo;
 import com.bridgelabz.bookstore.repository.OrderRepository;
 import com.bridgelabz.bookstore.repository.UserRepository;
 import com.bridgelabz.bookstore.response.EmailData;
@@ -50,10 +48,7 @@ public class OrderServiceImp implements IOrderServices {
 
 	@Autowired
 	OrderRepository orderRepository;
-	
-	@Autowired
-	OrderRepo orderRepo;
-	
+
 
 	public Order placeOrder(String token, Long bookId) {
 		Long id = generate.parseJWT(token);
@@ -194,7 +189,6 @@ public class OrderServiceImp implements IOrderServices {
 	@Transactional
 	@Override
 	public List<Order> getOrderList(String token) {
-//		System.out.println("orders list "+orderRepo.findBooksList());
 		long id = generate.parseJWT(token);
 		Users userdetails = userRepo.findById(id)
 				.orElseThrow(null);
@@ -203,44 +197,54 @@ public class OrderServiceImp implements IOrderServices {
 
 	}
 
-
+//	@Transactional
+//	@Override
+//	public List<Order> getOrderList(String token) {
+//		Long id = generate.parseJWT(token);
+//		Users userdetails = userRepo.findById(id).orElseThrow(null);
+//
+//		return userdetails.getOrderBookDetails();
+//
+//	}
 
 	@Transactional
 	@Override
 	public int changeOrderStatus(String status,long orderId) {
-		
-//		System.out.println("order Id : "+orderRepo.findByOrderByOrderId(orderId));
-//		System.out.println("order status : "+orderRepo.findByOrderStatus(status));
 
 		int changedOrderStatus = orderRepository.OrderStatusdefault(status,orderId);
 		return changedOrderStatus;
 	}
 	
 
+	public String getstatusresult()
+	{
+		return null;
+		
+	}
+
+	public List<Order> getallOrders() {
+
+		List<Order> orderIds = orderRepository.getorder();
+		return orderIds;
+	}
 
 
-
-	
 	@Override
 	public List<Order> getInProgressOrders() {
 		List<Order> inProgressOrder = orderRepository.getInProgressOrder();
 		return inProgressOrder;
 	}
 
-	@Override
-	public List<Order> getallOrders() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
+//	@Override
+//	public List<Order> getOrderList(String token) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	
-//	today
-	@Override
-	public Order updateOrder(Long orderId, Order order)
-	{
-		return orderRepo.save(order);		
-	}
+	
+	
+
+
 
 
 	
