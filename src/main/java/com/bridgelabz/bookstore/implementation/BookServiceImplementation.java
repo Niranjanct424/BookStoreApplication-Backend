@@ -272,24 +272,6 @@ public class BookServiceImplementation implements IBookService {
 		return false;
 	}
 
-//	@Override
-//	public List<Book> getAllAprovedBooks(String token) 
-//	{
-//		Long id;
-//		
-//			id = (long) generate.parseJWT(token);
-//			Users userInfo = userRepository.getUserById(id);
-//			if(userInfo != null) 
-//			{
-//				List<Book> approvedBooks=repository.getAllApprovedBooks();
-//				return approvedBooks;
-//			}
-//			else 
-//			{
-//				throw new UserException("User doesn't exist");
-//			}
-//	
-//	}
 
 	@Transactional
 	@Override
