@@ -27,5 +27,7 @@ public interface IOrderServices {
 
 	int changeOrderStatus(String status,long orderId);
 
+	List<Order> getInProgressOrders();
+
 	
 }

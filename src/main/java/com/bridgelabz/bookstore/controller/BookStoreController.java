@@ -83,15 +83,17 @@ public class BookStoreController {
 	
 
 
+
 	@GetMapping(value = "books/getbook/{bookId}")
 	public ResponseEntity<BookResponse> getBookbyId(@PathVariable("bookId") Long bookId) {
 		Book info = bookservice.getBookbyId(bookId);
 		return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("The book is", info));
 	}
+
 	
-	@PutMapping("books/editbook/{bookId}/{imageName}")
-	public ResponseEntity<BookResponse> editBook(@PathVariable("bookId") long bookId,@PathVariable String imageName,@RequestBody EditBookDto information,@RequestHeader("token") String token){
-		boolean res =bookservice.editBook(bookId,imageName,information,token);
+	@PutMapping("books/editbook/{bookId}")
+	public ResponseEntity<BookResponse> editBook(@PathVariable("bookId") long bookId,@RequestBody EditBookDto information,@RequestHeader("token") String token){
+		boolean res =bookservice.editBook(bookId,information,token);
 		if(res)
 			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse(200, "The Book is Updated Successfully"));
 		return null;

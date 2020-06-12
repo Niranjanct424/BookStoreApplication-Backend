@@ -27,7 +27,7 @@ public interface IBookService {
 	
 	Book getTotalPriceofBook( Long bookId, long quantity);
 
-	boolean editBook(long bookId,String imageName,EditBookDto information, String token);
+	boolean editBook(long bookId,EditBookDto information, String token);
 
 	boolean deleteBook(long bookId, String token);
 
