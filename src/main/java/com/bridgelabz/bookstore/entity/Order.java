@@ -31,6 +31,8 @@ public class Order implements Serializable{
 	
 	private Double totalPrice;
 	
+	
+	
 	@OneToMany
 	(cascade = CascadeType.ALL, targetEntity = Quantity.class)
 	@JoinColumn(name = "orderId")
