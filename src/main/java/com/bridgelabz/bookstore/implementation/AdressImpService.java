@@ -51,12 +51,14 @@ public class AdressImpService  implements IAdressService{
 		
 			add.setAddressId((addressupdate.getAddressId()));
 			add.setAddress(addressupdate.getAddress());
-			add.setAddressType(addressupdate.getType());
+			add.setLocality(addressupdate.getLocality());
 			add.setCity(addressupdate.getCity());
 			add.setCountry(addressupdate.getCountry());
 			add.setLandmark(addressupdate.getLandmark());
 			add.setPincode(addressupdate.getPincode());
 			add.setState(addressupdate.getState());
+			add.setCountry(addressupdate.getCountry());
+			add.setPhoneNumber(addressupdate.getPhoneNumber());
 			
 			addressRepository.save(add);
 			userdetails.getAddress().add(add);
