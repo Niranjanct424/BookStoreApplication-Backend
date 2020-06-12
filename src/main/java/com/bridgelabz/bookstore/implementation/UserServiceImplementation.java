@@ -52,11 +52,7 @@ public class UserServiceImplementation implements UserServices {
 	@Autowired
 	private EmailData emailData;
 
-
-
-
-
-
+	
 	@Override
 	@Transactional
 	public boolean register(UserDto information) {

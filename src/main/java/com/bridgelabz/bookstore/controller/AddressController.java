@@ -1,6 +1,5 @@
 package com.bridgelabz.bookstore.controller;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,7 @@ public class AddressController {
 	private IAdressService addressService;
 
 	@PostMapping("/address/add/{token}")
-	public ResponseEntity<Response> addAddress(@RequestBody AddressDto address, @PathVariable String token)
+	public ResponseEntity<Response> addAddress(@RequestBody AddressDto address, @RequestHeader String token)
 			throws Exception {
 
 		Address addres = addressService.addAddress(address, token);
@@ -72,11 +71,8 @@ public class AddressController {
 	public List<Address> getAllAddress()
 	{
 		return addressService.getAllAddress();
-
 	}
-
-
-
+	
 	@GetMapping( "/address/users") 
 	public ResponseEntity<Response> getAddressByUserId(@RequestHeader String token) {
 		List<Address> result = addressService.getAddressByUserId(token);
