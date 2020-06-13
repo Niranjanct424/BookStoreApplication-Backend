@@ -2,7 +2,6 @@
  * 
  */
 package com.bridgelabz.bookstore.response;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,4 +11,5 @@ public class MailResponse {
 
 		return url + "/" + token;
 	}
+
 }

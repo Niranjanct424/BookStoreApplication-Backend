@@ -1,7 +1,6 @@
 package com.bridgelabz.bookstore.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -24,8 +23,34 @@ public class WishlistBook {
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Book> booksList;
 	
+
 	private LocalDateTime wishlistTime;
+
+	public long getWishlistId() {
+		return wishlistId;
+	}
+
+	public void setWishlistId(long wishlistId) {
+		this.wishlistId = wishlistId;
+	}
+
+	public List<Book> getBooksList() {
+		return booksList;
+	}
+
+	public void setBooksList(List<Book> booksList) {
+		this.booksList = booksList;
+	}
+
+	public LocalDateTime getWishlistTime() {
+		return wishlistTime;
+	}
+
+	public void setWishlistTime(LocalDateTime wishlistTime) {
+		this.wishlistTime = wishlistTime;
+	}
 
 	
 	
+
 }

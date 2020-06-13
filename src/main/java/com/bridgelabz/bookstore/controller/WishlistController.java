@@ -1,10 +1,12 @@
 package com.bridgelabz.bookstore.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import com.bridgelabz.bookstore.entity.WishlistBook;
 import com.bridgelabz.bookstore.response.Response;
 import com.bridgelabz.bookstore.service.IWishlistService;
 @RestController
+@CrossOrigin
 public class WishlistController {
 	@Autowired
 	private IWishlistService wishbookService;
@@ -25,20 +28,24 @@ public class WishlistController {
 	public ResponseEntity<Response> addBooksToCart
 	(@RequestHeader String token,@PathVariable long bookId)throws Exception {
 	    List<WishlistBook> wishbook = wishbookService.addwishBook(token, bookId);
+	    System.out.println("------------------------------------------ offf--- vikash");
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("book is added to wishlist Bag", 200,wishbook));
 	  	}
 	
 	@GetMapping("bookstore/v3/wishlist/getwishbooks")
-	public ResponseEntity<Response> getBooksfromCart(@RequestHeader(name="token")  String token) throws Exception {
+	public ResponseEntity<Response> getBooksfromWish(@RequestHeader(name="token")  String token) throws Exception {
+		List<WishlistBook> wish=new ArrayList<>();
+		
 		List<WishlistBook> wishbook = wishbookService.getWishlistBooks(token);
+		 
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response(" wishlist Bag is fetched", 200,wishbook));
 	}
 
 	
 	@DeleteMapping("bookstore/v3/wishlist/removeWishlist/{token}/{bookId}")
-	public ResponseEntity<Response> removeBooksToCart(@PathVariable String token,@PathVariable Long bookId) throws Exception {
+	public ResponseEntity<Response> removeBooksToWish(@PathVariable String token,@PathVariable Long bookId) throws Exception {
 		boolean wishbook = wishbookService.removeWishBook(token, bookId);
 		if(wishbook!=false) {
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
@@ -49,11 +56,9 @@ public class WishlistController {
 	}
 	
 	@GetMapping("bookstore/v3/wishlist/wishlistcount")
-	public ResponseEntity<Response> getBooksCount(@RequestHeader(name="token") String token) throws Exception {
+	public ResponseEntity<Response> getWishBooksCount(@RequestHeader(name="token") String token) throws Exception {
 		int wishbookCount = wishbookService.getCountOfWishlist(token);
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("no of wishbooks", 200,wishbookCount));
 	}
-	
-	
 }

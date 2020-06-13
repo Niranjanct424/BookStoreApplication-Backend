@@ -1,17 +1,17 @@
 package com.bridgelabz.bookstore.implementation;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.exception.AdminNotFoundException;
 import com.bridgelabz.bookstore.exception.BookNotFoundException;
 import com.bridgelabz.bookstore.repository.BookImple;
+import com.bridgelabz.bookstore.repository.BookInterface;
 import com.bridgelabz.bookstore.repository.CustomerRepository;
 import com.bridgelabz.bookstore.service.IAdminService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
@@ -30,32 +30,30 @@ public class AdminServiceImpl implements IAdminService {
 
 	@Autowired
 	private BookImple bookRepository;
+	
+	@Autowired
+	BookInterface bookRepo;
 
 	@Override
-	public boolean verifyBook(long bookId, String token) {
+	public boolean verifyBook(long bookId,String staus, String token) {
 
 		long userid = 0;
 		Users user = null;
-		try {
 			userid = jwt.parseJWT(token);
 			System.out.println("user id:" + userid);
 			user = userRepo.getCustomerDetailsbyId(userid);
 			System.out.println("user:" + user);
-		} catch (JWTVerificationException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-
+	
 		if (user != null) {
-			Book book = bookRepository.fetchbyId(bookId);
+			Book book = bookRepo.findByBookId(bookId);
+			System.out.println("bookinfo "+book);
+			
 			if (book != null) {
-				book.setStatus("approved");
+				book.setStatus(staus);
 
-				bookRepository.save(book);
+				bookRepo.save(book);
 				return true;
+				
 			} else {
 				throw new BookNotFoundException("Book Not Found");
 			}
@@ -65,46 +63,7 @@ public class AdminServiceImpl implements IAdminService {
 		}
 	}
 
-	@Override
-	public boolean rejectBook(long bookId, String token) {
-
-		long userid = 0;
-		Users user = null;
-		try {
-			userid = jwt.parseJWT(token);
-			System.out.println("user id:" + userid);
-			user = userRepo.getCustomerDetailsbyId(userid);
-			System.out.println("Admin " + user);
-			System.out.println("user:" + user);
-		} catch (JWTVerificationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		if (user != null) {
-			Book book = bookRepository.fetchbyId(bookId);
-			if (book != null) {
-				System.out.println("book " + book);
-				book.setStatus("rejected");
-
-				bookRepository.save(book);
-				return true;
-			} else {
-				throw new BookNotFoundException("Book Not Found");
-			}
-
-		} else {
-			throw new AdminNotFoundException("Admin Not Found");
-		}
-
-	}
-
+<<<<<<< HEAD
 //	@Override
 //	public boolean orderStatus(long orderId, String token) {
 
@@ -198,5 +157,14 @@ public class AdminServiceImpl implements IAdminService {
 	public List<Book> getAllApprovedBooks(String token) {
 		return bookRepository.getApprovedBooks();
 	}
+=======
+		@Override
+	public List<Book> getBooksByStatus(String status) {
+		
+		return bookRepo.findByStatus(status);
+	}
+
+
+>>>>>>> 244f51500a674a8c535845c8ccc2d121f97168dd
 
 }

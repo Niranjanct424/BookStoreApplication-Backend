@@ -9,10 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.bridgelabz.bookstore.dto.AddressDto;
+
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "Address")
 public class Address implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -21,19 +25,19 @@ public class Address implements Serializable {
 	private long addressId;
 
 	@Column(name = "customer_pincode")
-	private long Pincode;
+	private String pincode;
 
 	@Column(name = "customer_locality")
-	private String Locality;
+	private String locality;
 
 	@Column(name = "customer_address")
-	private String Address;
+	private String address;
 
 	@Column(name = "customer_city")
-	private String City;
+	private String city;
 
 	@Column(name = "customer_landmark")
-	private String Landmark;
+	private String landmark;
 	
 	@Column(name = "country")
     private String country;
@@ -41,70 +45,29 @@ public class Address implements Serializable {
 	@Column(name = "address_type")
     private String addressType;
 	
-	public String getCountry() {
-		return country;
+	@Column
+	private String phoneNumber;
+	
+	@Column
+	private String name;
+
+	@Column
+	private String state;
+	public Address() {
+		super();
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public Address(AddressDto address2) {
+	this.name=address2.getName();
+	this.phoneNumber=address2.getPhoneNumber();
+	this.landmark=address2.getLandmark();
+	this.addressType=address2.getType();
+	this.pincode=address2.getPincode();
+	this.state=address2.getState();
+	this.country=address2.getCountry();
+	this.address=address2.getAddress();
+	this.locality=address2.getLocality();
 	}
-
-	public String getAddressType() {
-		return addressType;
-	}
-
-	public void setAddressType(String addressType) {
-		this.addressType = addressType;
-	}
-
-	public long getAddressId() {
-		return addressId;
-	}
-
-	public void setAddressId(long addressId) {
-		this.addressId = addressId;
-	}
-
-	public long getPincode() {
-		return Pincode;
-	}
-
-	public void setPincode(long pincode) {
-		Pincode = pincode;
-	}
-
-	public String getLocality() {
-		return Locality;
-	}
-
-	public void setLocality(String locality) {
-		Locality = locality;
-	}
-
-	public String getAddress() {
-		return Address;
-	}
-
-	public void setAddress(String address) {
-		Address = address;
-	}
-
-	public String getCity() {
-		return City;
-	}
-
-	public void setCity(String city) {
-		City = city;
-	}
-
-	public String getLandmark() {
-		return Landmark;
-	}
-
-	public void setLandmark(String landmark) {
-		Landmark = landmark;
-	}
-
-
+	
 
 }

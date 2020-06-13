@@ -43,8 +43,8 @@ public class CartController {
 	}
 
 	
-	@DeleteMapping("bookstore/v3/cart/removeCartBooks/{token}/{bookId}")
-	public ResponseEntity<Response> removeBooksToCart(@PathVariable String token,@PathVariable Long bookId) throws Exception {
+	@DeleteMapping("bookstore/v3/cart/removeCartBooks/{bookId}")
+	public ResponseEntity<Response> removeBooksToCart(@RequestHeader(name="token") String token ,@PathVariable Long bookId) throws Exception {
 		boolean cartdetails = cartService.removeBooksFromCart(token,bookId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("book removed from cart", 200,cartdetails));  				
 	}
@@ -68,7 +68,5 @@ public class CartController {
 		CartItem cartdetails = cartService.descreaseBooksQuantityInCart(token, bookId, bookQuantityDetails);
 		  return ResponseEntity.status(HttpStatus.ACCEPTED).body
 				  (new Response("decreased 1 quantity of book ", 200,cartdetails));	
-		
  }
-
 }

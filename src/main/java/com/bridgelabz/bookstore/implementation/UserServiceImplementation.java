@@ -19,12 +19,21 @@ import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.request.LoginInformation;
 import com.bridgelabz.bookstore.request.PasswordUpdate;
+import com.bridgelabz.bookstore.response.EmailData;
 import com.bridgelabz.bookstore.response.MailResponse;
 import com.bridgelabz.bookstore.service.UserServices;
+import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 import com.bridgelabz.bookstore.util.MailServiceProvider;
 
+//import com.bridgelabz.bookstore.util.RabbitMQSender;
+
+
+
+import lombok.extern.log4j.Log4j2;
+
 @Service
+@Log4j2
 public class UserServiceImplementation implements UserServices {
 	private Users users = new Users();
 	@Autowired
@@ -40,7 +49,19 @@ public class UserServiceImplementation implements UserServices {
 
 	@Autowired
 	private MailResponse response;
+	
 
+//	@Autowired
+//	private RabbitMQSender rabbitMQSender;
+
+
+
+	@Autowired
+	private EmailProviderService em;
+	@Autowired
+	private EmailData emailData;
+
+	
 	@Override
 	@Transactional
 	public boolean register(UserDto information) {
@@ -55,16 +76,29 @@ public class UserServiceImplementation implements UserServices {
 			users.setVerified(false);
 			// calling the save method
 			users = repository.save(users);
-			String mailResponse = response.formMessage("http://localhost:8080/user/verify",
-					generate.jwtToken(users.getUserId()));
+			String mailResponse = 
+					"http://localhost:8080/user/verify/"+
+					generate.jwtToken(users.getUserId());
 			// setting the data to mail
+
+//			mailObject.setEmail(information.getEmail());
+//			mailObject.setMessage(mailResponse);
+//			mailObject.setSubject("Verification");
+			//rabbitMQSender.send(mailObject);
+
+					emailData.setEmail(users.getEmail());
+					
+					emailData.setSubject("your Registration is successful");
+			
+					emailData.setBody(mailResponse);
+			
+					em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+
 			System.out.println(mailResponse);
 			return true;
 		} else {
 			throw new UserException("user already exist with the same mail id");
-
 		}
-
 	}
 
 	@Override
@@ -73,14 +107,17 @@ public class UserServiceImplementation implements UserServices {
 		if (user != null) {
 			String userRole = information.getRole();
 			String fetchRole = user.getRole();
-			if (fetchRole.equals("admin")) {
+			if (fetchRole.equals(userRole)) {
 				Users userInfo = verifyPassword(user, information);
-				return userInfo;
-			} else if (fetchRole.equals("seller") && !userRole.equals("admin")) {
-				Users userInfo = verifyPassword(user, information);
+				log.info("you logged in as " + userRole);
 				return userInfo;
 			} else if (fetchRole.equals(userRole)) {
 				Users userInfo = verifyPassword(user, information);
+				log.info("you logged in as " + userRole);
+				return userInfo;
+			} else if (fetchRole.equals(userRole)) {
+				Users userInfo = verifyPassword(user, information);
+				log.info("you logged in as " + userRole);
 				return userInfo;
 			} else {
 				throw new UserException("Your are not Authorized person");

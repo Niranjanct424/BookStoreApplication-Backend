@@ -24,10 +24,18 @@ public class Order implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	private Long orderId;
-	@Column(name = "order_placed_time", nullable = false)
-	private LocalDateTime orderPlaceTime;
+	@Column(name = "order_placed_time")
+	private LocalDateTime orderPlacedTime;
+	
+<<<<<<< HEAD
+	private Double totalPrice;
+=======
+	private String orderStatus;
 	
 	private Double totalPrice;
+	
+	private Long addressId;
+>>>>>>> 244f51500a674a8c535845c8ccc2d121f97168dd
 	
 	@OneToMany
 	(cascade = CascadeType.ALL, targetEntity = Quantity.class)
@@ -36,6 +44,20 @@ public class Order implements Serializable{
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Book> BooksList;
+	 public Order() {
+		 
+	 }
+	
+
+	public Order(Long orderId, LocalDateTime orderPlacedTime, List<Quantity> quantityOfBooks,
+			List<Book> booksList) {
+		super();
+		this.orderId = orderId;
+		this.orderPlacedTime = orderPlacedTime;
+		QuantityOfBooks = quantityOfBooks;
+		BooksList = booksList;
+	}
+
 
 
 }

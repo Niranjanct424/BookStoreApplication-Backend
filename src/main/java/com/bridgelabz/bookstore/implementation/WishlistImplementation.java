@@ -1,5 +1,4 @@
 package com.bridgelabz.bookstore.implementation;
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.entity.WishlistBook;
@@ -35,7 +33,6 @@ public class WishlistImplementation implements IWishlistService {
 	public List<WishlistBook> addwishBook(String token, long bookId) {
 		Long id;
 
-			try {
 				id = (long) generate.parseJWT(token);
 			
 			Users user = userRepository.findById(id).get();
@@ -64,11 +61,9 @@ public class WishlistImplementation implements IWishlistService {
 			
 			}//user
 			//write here exception........
-			} catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return null;
+			
+			
 	
 }
 	
@@ -88,17 +83,22 @@ public class WishlistImplementation implements IWishlistService {
 	@Transactional
 	public List<WishlistBook> getWishlistBooks(String token) {
 		Long id;
-		try {
+	
 			id = (long) generate.parseJWT(token);
 			Users user = userRepository.findById(id).get();
 			if(user!=null) {
 			List<WishlistBook> wishBooks = user.getWishlistBook();
-		     return wishBooks;
+			List<WishlistBook> booksinWish=new ArrayList<>();
+			  for(WishlistBook book:wishBooks) {
+				  if(!(book.getBooksList().isEmpty())) {
+				  booksinWish.add(book);
+				  }
+			  }
+			
+		     return booksinWish;
 			}
 			//write here exception........
-		} catch (JWTVerificationException | IllegalArgumentException | UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+	
 		return null;
 	}
 
@@ -107,7 +107,6 @@ public class WishlistImplementation implements IWishlistService {
 	public boolean removeWishBook(String token, Long bookId) {
 		
 		Long id;
-		try {
 			id = (long) generate.parseJWT(token);
 			Users user = userRepository.findById(id).get();
 			if(user!=null) {
@@ -132,13 +131,7 @@ public class WishlistImplementation implements IWishlistService {
 			
 			}//user
 			//exception user
-		} catch (JWTVerificationException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		
 		return false;
 	}
 
@@ -146,7 +139,6 @@ public class WishlistImplementation implements IWishlistService {
 	@Transactional
 	public int getCountOfWishlist(String token) {
 		Long id;
-		try {
 			id = (long) generate.parseJWT(token);
          int countOfWishList=0;
 		Users user = userRepository.findById(id).get();
@@ -161,13 +153,7 @@ public class WishlistImplementation implements IWishlistService {
 		return countOfWishList;
 		}
 		//write here exception...................
-		} catch (JWTVerificationException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		
 		return 0;
 		}
 
