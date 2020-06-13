@@ -39,7 +39,6 @@ public class CartServiceImplimentation implements ICartService{
 	
 			id = (long) generate.parseJWT(token);
 		
-		
 		Users user = userRepository.findById(id).orElse(null);
 
 		Book book = bookRepository.findById(bookId).orElse(null);
