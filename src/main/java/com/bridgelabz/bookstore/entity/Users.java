@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+
 import lombok.Data;
 
 @Entity
@@ -42,6 +43,10 @@ public class Users implements Serializable {
 		@OneToMany(cascade = CascadeType.ALL, targetEntity = WishlistBook.class)
 		@JoinColumn(name = "userId")
 		private List<WishlistBook> wishlistBook;
+		
+		@OneToMany(cascade = CascadeType.ALL, targetEntity = Order.class)
+		@JoinColumn(name = "userId")
+		private List<Order> orderBookDetails;
 
 		@Override
 		public String toString() {

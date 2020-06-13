@@ -9,7 +9,7 @@ public interface IAdminService {
 
 	boolean verifyBook(long bookId, String token);
 
-	List<Book> rejectedBooks();
+	List<Book> rejectedBooks(String token);
 
 //	boolean orderStatus(long orderId, String token);
 
@@ -17,7 +17,7 @@ public interface IAdminService {
 
 //	List<Book> getUnVerifiedBooks();
 
-	List<Book> getAllApprovedBooks();
+	List<Book> getAllApprovedBooks(String token);
 
 	List<Book> getUnVerifiedBooks(String token);
 

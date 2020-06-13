@@ -65,9 +65,9 @@ public class AdminController {
 	
 	@GetMapping("admin/allRejectedBooks")
 	public ResponseEntity<BookResponse> getAllRejectedBooks(@RequestHeader String token) {
-		List<Book> unverifiedBooks = adminService.rejectedBooks();
+		List<Book> rejectedBooks = adminService.rejectedBooks(token);
 		{
-			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("All rejected books by admin", unverifiedBooks));
+			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("All rejected books by admin", rejectedBooks));
 		}
 
 	}
@@ -75,10 +75,9 @@ public class AdminController {
 	
 	@GetMapping("admin/allApprovedBooks")
 	public ResponseEntity<BookResponse> getAllApprovedBooks(@RequestHeader String token) {
-		List<Book> unverifiedBooks = adminService.getAllApprovedBooks();
+		List<Book> approvedBooks = adminService.getAllApprovedBooks(token);
 		{
-			
-			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("All Approved books by admin", unverifiedBooks));
+			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("All Approved books by admin", approvedBooks));
 		}
 
 	}

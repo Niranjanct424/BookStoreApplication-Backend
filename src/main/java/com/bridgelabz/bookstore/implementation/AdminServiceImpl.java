@@ -142,9 +142,7 @@ public class AdminServiceImpl implements IAdminService {
 	@Override
 	public List<Book> getUnVerifiedBooks(String token) {
 
-
-
-long userid = 0;
+		long userid = 0;
 		Users user = null;
 		try {
 			userid = jwt.parseJWT(token);
@@ -169,12 +167,35 @@ long userid = 0;
 	}
 
 	@Override
-	public List<Book> rejectedBooks() {
-		return bookRepository.getAllRejectedBooks();
+	public List<Book> rejectedBooks(String token) {
+		
+		long userid = 0;
+		Users user = null;
+		try {
+			userid = jwt.parseJWT(token);
+			System.out.println("user id:" + userid);
+			user = userRepo.getCustomerDetailsbyId(userid);
+			System.out.println("user:" + user);
+		} catch (JWTVerificationException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		if (user != null) {
+			return bookRepository.getAllRejectedBooks();
+
+		} else {
+			throw new BookNotFoundException("Admin Not Found cant get unverified books");
+		}
+
+		
 	}
 
 	@Override
-	public List<Book> getAllApprovedBooks() {
+	public List<Book> getAllApprovedBooks(String token) {
 		return bookRepository.getApprovedBooks();
 	}
 
