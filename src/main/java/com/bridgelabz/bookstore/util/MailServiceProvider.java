@@ -15,8 +15,6 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.stereotype.Component;
 
-
-
 @Component
 public class MailServiceProvider {
 	public static void sendEmail(String toEmail, String subject, String body) {
@@ -53,6 +51,4 @@ public class MailServiceProvider {
 
 		}
 	}
-	
-
 }

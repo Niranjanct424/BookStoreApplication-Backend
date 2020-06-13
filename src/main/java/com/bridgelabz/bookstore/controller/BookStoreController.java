@@ -45,7 +45,6 @@ public class BookStoreController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse(400, "The Book details not added "));
 	}
 	
-
 	@GetMapping("books/getAllBooks")
 	public ResponseEntity<BookResponse> getBooks(@RequestHeader("token") String token) {
 		List<Book> books = bookservice.getBookInfo(token);

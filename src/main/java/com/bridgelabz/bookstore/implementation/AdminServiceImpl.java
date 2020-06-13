@@ -1,6 +1,7 @@
 package com.bridgelabz.bookstore.implementation;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.exception.AdminNotFoundException;
 import com.bridgelabz.bookstore.exception.BookNotFoundException;
 import com.bridgelabz.bookstore.repository.BookImple;
+import com.bridgelabz.bookstore.repository.BookInterface;
 import com.bridgelabz.bookstore.repository.CustomerRepository;
 import com.bridgelabz.bookstore.service.IAdminService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
@@ -28,9 +30,12 @@ public class AdminServiceImpl implements IAdminService {
 
 	@Autowired
 	private BookImple bookRepository;
+	
+	@Autowired
+	BookInterface bookRepo;
 
 	@Override
-	public boolean verifyBook(long bookId, String token) {
+	public boolean verifyBook(long bookId,String staus, String token) {
 
 		long userid = 0;
 		Users user = null;
@@ -40,12 +45,15 @@ public class AdminServiceImpl implements IAdminService {
 			System.out.println("user:" + user);
 	
 		if (user != null) {
-			Book book = bookRepository.fetchbyId(bookId);
+			Book book = bookRepo.findByBookId(bookId);
+			System.out.println("bookinfo "+book);
+			
 			if (book != null) {
-				book.setStatus("approved");
+				book.setStatus(staus);
 
-				bookRepository.save(book);
+				bookRepo.save(book);
 				return true;
+				
 			} else {
 				throw new BookNotFoundException("Book Not Found");
 			}
@@ -55,102 +63,12 @@ public class AdminServiceImpl implements IAdminService {
 		}
 	}
 
-	@Override
-	public boolean rejectBook(long bookId, String token) {
-
-		long userid = 0;
-		Users user = null;
-	
-			userid = jwt.parseJWT(token);
-			System.out.println("user id:" + userid);
-			user = userRepo.getCustomerDetailsbyId(userid);
-			System.out.println("Admin " + user);
-			System.out.println("user:" + user);
-	
-
-		if (user != null) {
-			Book book = bookRepository.fetchbyId(bookId);
-			if (book != null) {
-				System.out.println("book " + book);
-				book.setStatus("rejected");
-
-				bookRepository.save(book);
-				return true;
-			} else {
-				throw new BookNotFoundException("Book Not Found");
-			}
-
-		} else {
-			throw new AdminNotFoundException("Admin Not Found");
-		}
-
+		@Override
+	public List<Book> getBooksByStatus(String status) {
+		
+		return bookRepo.findByStatus(status);
 	}
 
-//	@Override
-//	public boolean orderStatus(long orderId, String token) {
 
-//		long userid = 0;
-//		try {
-//			userid = jwt.parseJWT(token);
-//		} catch (JWTVerificationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IllegalArgumentException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		Users user = userRepo.getCustomerDetailsbyId(userid);
-//
-//		if (user != null) {
-//
-//			OrderStatus status = orderStatusRepo.fetchbyId(orderId);
-//			status.setIspacked(true);
-//			status.setShipped(true);
-//			status.setDelivered(true);
-//			orderStatusRepo.save(status);
-//			return true;
-//
-//		} else {
-//			throw new AdminNotFoundException("Admin Not Found");
-//		}
-//
-//	}
-
-	@Override
-	public List<Book> getUnVerifiedBooks(String token) {
-
-
-
-long userid = 0;
-		Users user = null;
-
-			userid = jwt.parseJWT(token);
-			System.out.println("user id:" + userid);
-			user = userRepo.getCustomerDetailsbyId(userid);
-			System.out.println("user:" + user);
-	
-
-		if (user != null) {
-			return bookRepository.getAllonHoldBooks();
-
-		} else {
-			throw new BookNotFoundException("Admin Not Found cant get unverified books");
-		}
-
-	}
-
-	@Override
-	public List<Book> rejectedBooks() {
-		return bookRepository.getAllRejectedBooks();
-	}
-
-	@Override
-	public List<Book> getAllApprovedBooks() {
-		return bookRepository.getApprovedBooks();
-	}
 
 }
