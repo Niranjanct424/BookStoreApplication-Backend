@@ -88,7 +88,14 @@ public class WishlistImplementation implements IWishlistService {
 			Users user = userRepository.findById(id).get();
 			if(user!=null) {
 			List<WishlistBook> wishBooks = user.getWishlistBook();
-		     return wishBooks;
+			List<WishlistBook> booksinWish=new ArrayList<>();
+			  for(WishlistBook book:wishBooks) {
+				  if(!(book.getBooksList().isEmpty())) {
+				  booksinWish.add(book);
+				  }
+			  }
+			
+		     return booksinWish;
 			}
 			//write here exception........
 	
