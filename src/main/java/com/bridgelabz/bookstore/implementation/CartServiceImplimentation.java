@@ -95,7 +95,7 @@ public class CartServiceImplimentation implements ICartService{
 	public List<CartItem> getBooksfromCart(String token) {
 		Long id = (long) generate.parseJWT(token);
 		Users user = userRepository.findById(id).get();
-		if (user != null) {
+	if (user != null) {
 			List<CartItem> cartItem = new ArrayList<>();
 			for (CartItem cartBooks : user.getCartBooks()) {
 				if (!(cartBooks.getBooksList().isEmpty())) {

@@ -31,7 +31,7 @@ public class Order implements Serializable{
 	
 	private Double totalPrice;
 	
-	
+	private Long addressId;
 	
 	@OneToMany
 	(cascade = CascadeType.ALL, targetEntity = Quantity.class)

@@ -2,7 +2,6 @@ package com.bridgelabz.bookstore.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -58,13 +57,11 @@ public class AdressImpService  implements IAdressService{
 			add.setPincode(addressupdate.getPincode());
 			add.setState(addressupdate.getState());
 			add.setCountry(addressupdate.getCountry());
-			add.setPhoneNumber(addressupdate.getPhoneNumber());
-			
+			add.setPhoneNumber(addressupdate.getPhoneNumber());		
 			addressRepository.save(add);
 			userdetails.getAddress().add(add);
 			System.out.println("------------------working --------------"+add);
 			return add;
-		
 	}
 	
 	
@@ -117,9 +114,6 @@ public class AdressImpService  implements IAdressService{
 		deleteaddress.remove(filteredaddress);
 		addressRepository.delete(filteredaddress);
 		return userRepo.save(userdetails);
-
-
-
 	}
 
 

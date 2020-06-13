@@ -30,9 +30,9 @@ public class OrderController {
 	@Autowired
 	OrderServiceImp orderServiceimpl;
 	
-	@PostMapping("bookstore/placeOrder/{token}")
-	public ResponseEntity<Response> placeOrder(@PathVariable String token,@RequestParam Long bookId) throws Exception {
-		Order orderdetails = orderService.placeOrder(token, bookId);
+	@PostMapping("bookstore/placeOrder")
+	public ResponseEntity<Response> placeOrder(@RequestHeader String token,@RequestParam Long bookId, @RequestParam Long addressId) throws Exception {
+		Order orderdetails = orderService.placeOrder(token, bookId, addressId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(" CHECK YOUR MAIL  ORDER IS SUCCESSFULLY PLACED", 200, orderdetails));
 	}
 	
