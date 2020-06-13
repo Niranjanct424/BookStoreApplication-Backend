@@ -34,7 +34,7 @@ public class WishlistController {
 	  	}
 	
 	@GetMapping("bookstore/v3/wishlist/getwishbooks")
-	public ResponseEntity<Response> getBooksfromCart(@RequestHeader(name="token")  String token) throws Exception {
+	public ResponseEntity<Response> getBooksfromWish(@RequestHeader(name="token")  String token) throws Exception {
 		List<WishlistBook> wish=new ArrayList<>();
 		
 		List<WishlistBook> wishbook = wishbookService.getWishlistBooks(token);
@@ -45,7 +45,7 @@ public class WishlistController {
 
 	
 	@DeleteMapping("bookstore/v3/wishlist/removeWishlist/{token}/{bookId}")
-	public ResponseEntity<Response> removeBooksToCart(@PathVariable String token,@PathVariable Long bookId) throws Exception {
+	public ResponseEntity<Response> removeBooksToWish(@PathVariable String token,@PathVariable Long bookId) throws Exception {
 		boolean wishbook = wishbookService.removeWishBook(token, bookId);
 		if(wishbook!=false) {
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
@@ -56,7 +56,7 @@ public class WishlistController {
 	}
 	
 	@GetMapping("bookstore/v3/wishlist/wishlistcount")
-	public ResponseEntity<Response> getBooksCount(@RequestHeader(name="token") String token) throws Exception {
+	public ResponseEntity<Response> getWishBooksCount(@RequestHeader(name="token") String token) throws Exception {
 		int wishbookCount = wishbookService.getCountOfWishlist(token);
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("no of wishbooks", 200,wishbookCount));
