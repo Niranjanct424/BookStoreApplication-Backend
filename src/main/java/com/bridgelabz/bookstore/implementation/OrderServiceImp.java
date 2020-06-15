@@ -49,12 +49,10 @@ public class OrderServiceImp implements IOrderServices {
 	@Autowired
 	OrderRepository orderRepository;
 
-
-	public Order placeOrder(String token, Long bookId) {
+	public Order placeOrder(String token, Long bookId, Long addressId) {
 		Long id = generate.parseJWT(token);
 		Users userdetails = userRepo.findById(id).get();
 		if (userdetails != null) {
-
 			Order orderDetails = new Order();
 			Random random = new Random();
 			ArrayList<Book> list = new ArrayList<>();
@@ -74,7 +72,6 @@ public class OrderServiceImp implements IOrderServices {
 				// select specific cart book to order
 				log.info("-----------------------usercart-------------2--"+userCart);
 				userCartbooks = userCart.getBooksList();// getting books from cart
-
 				for (Book book : userCartbooks) {
 					log.info("-----------------------book---------------"+book);
 					if (book.getBookId().equals(bookId))// specific book to order @path taking input of this api
@@ -89,39 +86,33 @@ public class OrderServiceImp implements IOrderServices {
 							Long noOfBooks = book.getNoOfBooks() - bookquantity.getQuantityOfBook();
 							book.setNoOfBooks(noOfBooks);
 							Book bb = bookRepository.save(book);
-
 							try {
 								list.add(bb);
 								orderId = random.nextInt(1000000);
 								if (orderId < 0) {
 									orderId = orderId * -1;
 								}
-								
 								double totalprice = book.getPrice() * (bookquantity.getQuantityOfBook());
 								log.info("-----------------------QUantity-------------2--"+bookquantity.getQuantityOfBook());
 								orderDetails.setTotalPrice(totalprice);
-								
 								quantitydetails.add(bookquantity);
 								orderDetails.setOrderId(orderId);
 								orderDetails.setQuantityOfBooks(quantitydetails);
-		
 								orderDetails.setOrderPlacedTime(LocalDateTime.now());
+								orderDetails.setOrderStatus("Pending");
+								orderDetails.setAddressId(addressId);
 								orderDetails.setBooksList(list);
 								details.add("orderId:" + orderId + "\n" + "BookName:" + book.getBookName() + "\n"
 										+ "Quantity:" + bookquantity.getQuantityOfBook() + "\n" + "TotalPrice:"
 										+ bookquantity.getTotalprice());
-
 							} catch (Exception e) {
 								throw new UserException("order Failed");
 							}
-
 						}//quantity for
-
 					} // if condition checks id of the books
 
 				} // book iteration--for
 			} // cart iterate--for
-
 			userdetails.getOrderBookDetails().add(orderDetails);
 			String data = "";
 			for(String dt:details) {
@@ -228,11 +219,6 @@ public class OrderServiceImp implements IOrderServices {
 		return orderIds;
 	}
 
-	public int changeOrderStatus(String orderStatus, Long orderId) {
-		// TODO Auto-generated method stub
-		return 0;
-
-	}
 
 	@Override
 	public List<Order> getInProgressOrders() {
