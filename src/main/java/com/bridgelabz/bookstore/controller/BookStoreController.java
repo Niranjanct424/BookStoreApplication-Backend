@@ -159,8 +159,11 @@ public class BookStoreController {
 	@ApiOperation(value = "Write Review of the book")
 	@PutMapping("books/ratingreview")
 	public ResponseEntity<BookResponse> writeReview(@RequestBody RatingReviewDTO rrDto,@RequestHeader(name="token") String token, @RequestParam Long bookId){
-		bookservice.writeReviewAndRating(token, rrDto, bookId);
+		if(bookservice.writeReviewAndRating(token, rrDto , bookId))
 		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", 200 ));			
+		else
+			 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("You are already given rate", 200 ));
+			
 	}
 	
 	@ApiOperation(value = "Average rating of the book")
@@ -168,10 +171,10 @@ public class BookStoreController {
 	public ResponseEntity<BookResponse> avgRatingOfBook(@RequestParam long bookId){
 		double rate = bookservice.avgRatingOfBook(bookId);
 		if(rate>0.0)
-		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", rate ));
+		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Avg rate", rate ));
 		else
 
-			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", 0 ));
+			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Avg rate", 0 ));
 				
 	}
 	
