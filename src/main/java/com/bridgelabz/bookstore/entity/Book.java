@@ -94,9 +94,7 @@ public class Book implements Serializable{
 	}
 
 	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "book_id")
-	private List<ReviewAndRating> reviewRating;
+
 
 
 }

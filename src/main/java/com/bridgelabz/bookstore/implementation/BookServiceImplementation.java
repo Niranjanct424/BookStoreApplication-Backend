@@ -358,34 +358,48 @@ public class BookServiceImplementation implements IBookService {
 
 
 	@Override
-	public void writeReviewAndRating(String token, RatingReviewDTO rrDTO, Long bookId) {
-		Long uId = generate.parseJWT(token);
-		Users user = userRepository.getUserById(uId);
-		Book book = repository.fetchbyId(bookId);
-		boolean notExist =  book.getReviewRating().stream().noneMatch(rr -> rr.getUser().getUserId()==uId);
-		if(notExist) {
+	public boolean writeReviewAndRating(String token, RatingReviewDTO rrDTO, Long bookId) {
+//		Long uId = generate.parseJWT(token);
+//		Users user = userRepository.getUserById(uId);
+//		Book book = repository.fetchbyId(bookId);
+//		boolean notExist =  book.getReviewRating().stream().noneMatch(rr -> rr.getUser().getUserId()==uId);
+//		if(notExist) {
+//			ReviewAndRating rr = new ReviewAndRating(rrDTO);
+//			rr.setUser(user);
+//			book.getReviewRating().add(rr);
+//			rrRepository.save(rr);
+//			repository.save(book);
+//		}
+//		else {
+//			ReviewAndRating rr = book.getReviewRating().stream().filter(r -> r.getUser().getUserId()==uId).findFirst().orElseThrow(() -> new BookAlreadyExist("Review doesnot exist"));
+//			rr.setRating(rrDTO.getRating());
+//			rr.setReview(rrDTO.getReview());
+//			rrRepository.save(rr);
+//			repository.save(book);
+//
+//		}
+		Long userId = generate.parseJWT(token);
+		Users user = userRepository.getUserById(userId);
+		ReviewAndRating review = rrRepository.getBookReview(bookId , user.getName());
+		if(review==null) {
 			ReviewAndRating rr = new ReviewAndRating(rrDTO);
-			rr.setUser(user);
-			book.getReviewRating().add(rr);
+			rr.setBookId(bookId);
+			rr.setUserName(user.getName());
 			rrRepository.save(rr);
-			repository.save(book);
+			return true;
+			
 		}
-		else {
-			ReviewAndRating rr = book.getReviewRating().stream().filter(r -> r.getUser().getUserId()==uId).findFirst().orElseThrow(() -> new BookAlreadyExist("Review doesnot exist"));
-			rr.setRating(rrDTO.getRating());
-			rr.setReview(rrDTO.getReview());
-			rrRepository.save(rr);
-			repository.save(book);
+		return false;
 
-		}
 	}
 
 	@Override
 	public List<ReviewAndRating> getRatingsOfBook(Long bookId) {
 
-		Book book=repository.fetchbyId(bookId);
-
-		return book.getReviewRating();
+//		Book book=repository.fetchbyId(bookId);
+//
+//		return book.getReviewRating();
+		return rrRepository.getreviews(bookId);
 	}
 	
 	@Override
