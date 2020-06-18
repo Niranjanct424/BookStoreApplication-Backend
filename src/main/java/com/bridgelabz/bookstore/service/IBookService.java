@@ -39,7 +39,7 @@ public interface IBookService {
 
 	List<Book> getAllRejectedBooks(String token);
 	
-	void writeReviewAndRating(String token, RatingReviewDTO rrDTO, Long bookId);
+	boolean writeReviewAndRating(String token, RatingReviewDTO rrDTO, Long bookId);
 	
 	List<ReviewAndRating> getRatingsOfBook(Long bookId);
 	
