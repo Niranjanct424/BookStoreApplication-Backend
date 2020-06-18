@@ -80,9 +80,6 @@ public class BookStoreController {
 					.body(new BookResponse(400, "No Approved Books available"));
 	}
 	
-
-
-
 	@GetMapping(value = "books/getbook/{bookId}")
 	public ResponseEntity<BookResponse> getBookbyId(@PathVariable("bookId") Long bookId) {
 		Book info = bookservice.getBookbyId(bookId);
@@ -185,8 +182,7 @@ public class BookStoreController {
 		if(books!=null)
 		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("books fetched", books ));
 		else
-			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("books not fetched" , books));
-				
+			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("books not fetched" , books));		
 	}
 
 
