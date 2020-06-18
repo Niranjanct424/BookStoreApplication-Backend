@@ -28,8 +28,7 @@ public class WishlistController {
 	public ResponseEntity<Response> addBooksToCart
 	(@RequestHeader String token,@PathVariable long bookId)throws Exception {
 	    List<WishlistBook> wishbook = wishbookService.addwishBook(token, bookId);
-	    System.out.println("------------------------------------------ offf--- vikash");
-	    return ResponseEntity.status(HttpStatus.ACCEPTED)
+	   return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("book is added to wishlist Bag", 200,wishbook));
 	  	}
 	
