@@ -20,6 +20,8 @@ import com.bridgelabz.bookstore.controller.UserController;
 import com.bridgelabz.bookstore.dto.UserDto;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.request.LoginInformation;
+import com.bridgelabz.bookstore.request.PasswordReset;
+import com.bridgelabz.bookstore.request.PasswordUpdate;
 import com.bridgelabz.bookstore.service.UserServices;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -98,5 +100,41 @@ public class UserControllerTest {
 		assertEquals(result.getResponse().getStatus(), HttpStatus.ACCEPTED.value());
 	
 	}
-
+	
+	@Test
+	public void forgotPasswordtest() throws Exception{
+		PasswordReset user = new PasswordReset();
+		user.setEmail("nayangkumar@gmail.com");
+		
+	
+		ObjectMapper object = new ObjectMapper();
+		Mockito.when(service.isUserExist(Mockito.anyString())).thenReturn(true);
+		
+		MvcResult result =mockMvc.perform(MockMvcRequestBuilders.post("/user/forgotpassword")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(object.writeValueAsString(user))).andReturn();
+		System.out.println("register response:"+result.getResponse().getStatus());
+		assertEquals(result.getResponse().getStatus(), HttpStatus.ACCEPTED.value());
+	
+	}
+	
+	@Test
+	public void passwordUpdatetest() throws Exception{
+		PasswordUpdate user = new PasswordUpdate();
+		user.setEmail("nayangkumar@gmail.com");
+		user.setNewPassword("nayan@123");
+		user.setConfirmPassword("nayan@123");
+		
+	
+		ObjectMapper object = new ObjectMapper();
+		Mockito.when(service.update(Mockito.any(),Mockito.anyString())).thenReturn(true);
+		
+		MvcResult result =mockMvc.perform(MockMvcRequestBuilders.put("/user/update/token")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(object.writeValueAsString(user))).andReturn();
+		System.out.println("register response:"+result.getResponse().getStatus());
+		assertEquals(result.getResponse().getStatus(), HttpStatus.ACCEPTED.value());
+	
+	}
+	
 }
