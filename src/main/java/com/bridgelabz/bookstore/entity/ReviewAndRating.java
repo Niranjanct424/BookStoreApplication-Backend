@@ -10,7 +10,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.bridgelabz.bookstore.dto.RatingReviewDTO;
-
 import javax.persistence.JoinColumn;
 
 @Entity
@@ -26,8 +25,6 @@ public class ReviewAndRating {
 	
 	@Column(name = "review", nullable = false)
 	private String review;
-	
-	
 	
 	@OneToOne
 	@JoinTable(name="rating_review_user", joinColumns = @JoinColumn(name="ratingReviewId"),

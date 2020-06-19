@@ -73,10 +73,12 @@ public class UserController {
 	public ResponseEntity<Response> userVerification(@PathVariable("token") String token) throws Exception {
 		System.out.println("token for verification" + token);
 		boolean update = service.verify(token);
-		if (update) {
+		if (update)
+		{
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("verified", 200));
-		} else {
-			
+		} 
+		else 
+		{	
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("not verified", 400));
 		}
 	}
