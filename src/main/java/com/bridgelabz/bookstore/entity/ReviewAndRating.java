@@ -10,7 +10,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.bridgelabz.bookstore.dto.RatingReviewDTO;
-
 import javax.persistence.JoinColumn;
 
 @Entity
@@ -90,5 +89,5 @@ public class ReviewAndRating {
 	public void setRating(Integer rating) {
 		this.rating = rating;
 	}
-	
+		
 }
