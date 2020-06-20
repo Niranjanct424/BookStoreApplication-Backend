@@ -12,7 +12,6 @@ import lombok.Data;
 @Component
 public class EditBookDto {
 	private String bookName;
-	private Long quantity;
 	private Long noOfBooks;
 	private Double price;
 	private String authorName;

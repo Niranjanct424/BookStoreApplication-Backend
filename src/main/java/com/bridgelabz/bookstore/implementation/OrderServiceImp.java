@@ -99,7 +99,7 @@ public class OrderServiceImp implements IOrderServices {
 								orderDetails.setOrderId(orderId);
 								orderDetails.setQuantityOfBooks(quantitydetails);
 								orderDetails.setOrderPlacedTime(LocalDateTime.now());
-								orderDetails.setOrderStatus("Pending");
+								orderDetails.setOrderStatus("pending");
 								orderDetails.setAddressId(addressId);
 								orderDetails.setBooksList(list);
 								details.add("orderId:" + orderId + "\n" + "BookName:" + book.getBookName() + "\n"
@@ -127,7 +127,7 @@ public class OrderServiceImp implements IOrderServices {
 	
 			emailData.setBody(body);
 	
-			em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+			//em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
 			/*
 			 * remove specific book from the cart........
 			 */
@@ -203,6 +203,23 @@ public class OrderServiceImp implements IOrderServices {
 	public int changeOrderStatus(String status,long orderId) {
 
 		int changedOrderStatus = orderRepository.OrderStatusdefault(status,orderId);
+		long userId=orderRepository.findUserId(orderId);
+		
+		
+		Users userdetails = userRepo.findById(userId).get();
+		
+		
+		
+		if(changedOrderStatus >0) 
+		{	 
+			String body="";
+				emailData.setEmail(userdetails.getEmail());		
+				emailData.setSubject("Book Store");
+				body=(status.equals("in shipment")) ? "Your Order has been Shipped" : (status.equals("delivered")) ? "Your Order has been Delivered" : "Your order is in Progress"; 
+				
+				emailData.setBody(body);
+//				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+		}
 		return changedOrderStatus;
 	}
 	

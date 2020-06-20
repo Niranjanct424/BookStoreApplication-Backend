@@ -226,7 +226,7 @@ public class BookServiceImplementation implements IBookService {
 						info.setAuthorName(information.getAuthorName());
 						info.setBookDetails(information.getBookDetails());
 //						info.setImage(imageName);
-						info.setUpdatedDateAndTime(information.getUpdatedAt());
+						info.setUpdatedDateAndTime(LocalDateTime.now());
 						repository.save(info);
 						return true;
 					}

@@ -42,9 +42,9 @@ public class AdminController {
 	@GetMapping("admin/books")
 	public ResponseEntity<BookResponse> getAllBooksByStatus(@RequestParam String status) {
 		List<Book> books = adminService.getBooksByStatus(status);
-		{
+		
 			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse(status+" Books ", books));
-		}
+		
 
 	}
 	
