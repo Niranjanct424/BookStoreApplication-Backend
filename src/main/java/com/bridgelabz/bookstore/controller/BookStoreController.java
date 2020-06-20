@@ -163,9 +163,9 @@ public class BookStoreController {
 	@PutMapping("books/ratingreview")
 	public ResponseEntity<BookResponse> writeReview(@RequestBody RatingReviewDTO rrDto,@RequestHeader(name="token") String token, @RequestParam Long bookId){
 		if(bookservice.writeReviewAndRating(token, rrDto , bookId))
-		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Your review is added", 200 ));			
+		 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("Thank you..for your review", 200 ));			
 		else
-			 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("You are already given rate", 200 ));
+			 return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new BookResponse("You are already given rate", 208 ));
 			
 	}
 	
