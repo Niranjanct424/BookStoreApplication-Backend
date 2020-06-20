@@ -26,8 +26,8 @@ public class OrderController {
 	@Autowired
 	private IOrderServices orderService;
 	
-	@Autowired
-	OrderServiceImp orderServiceimpl;
+//	@Autowired
+//	OrderServiceImp orderServiceimpl;
 	
 	@PostMapping("bookstore/placeOrder")
 	public ResponseEntity<Response> placeOrder(@RequestHeader String token,@RequestParam Long bookId, @RequestParam Long addressId) throws Exception {
