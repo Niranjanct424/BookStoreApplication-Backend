@@ -46,6 +46,7 @@ public class MailServiceProvider {
 			message.setSubject(subject);
 			message.setText(body);
 			Transport.send(message);
+			
 		} catch (Exception e) {
 			System.out.println("exception occured while sending mail");
 

@@ -119,15 +119,24 @@ public class OrderServiceImp implements IOrderServices {
 				data=data+dt+"\n";	
 				log.info("\n "+dt);
 			}    
+			System.out.println("in progress of email to rate");
 	 		String body="@"+userdetails.getEmail()+" \n"+"order details"+" \n"+data+"\n"+"please rate us below link"+"\n"
-	 		+"http://localhost:8081/books/ratingreview";
+	 		+"http://localhost:4200/books/rateandreview/"+bookId+"/"+token;
 			emailData.setEmail(userdetails.getEmail());
 	
 			emailData.setSubject("your Order is succefully placed");
 	
 			emailData.setBody(body);
+
 	
 			//em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+
+			System.out.println("emailData.getEmail() "+emailData.getEmail());
+			System.out.println("emailData.getSubject() "+emailData.getSubject());
+			System.out.println("emailData.getBody() "+emailData.getBody());
+			em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+			System.out.println("rate mail sent after order");
+
 			/*
 			 * remove specific book from the cart........
 			 */
@@ -218,7 +227,7 @@ public class OrderServiceImp implements IOrderServices {
 				body=(status.equals("in shipment")) ? "Your Order has been Shipped" : (status.equals("delivered")) ? "Your Order has been Delivered" : "Your order is in Progress"; 
 				
 				emailData.setBody(body);
-//				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
 		}
 		return changedOrderStatus;
 	}
