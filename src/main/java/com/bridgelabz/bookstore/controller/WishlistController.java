@@ -18,7 +18,8 @@ import com.bridgelabz.bookstore.entity.WishlistBook;
 import com.bridgelabz.bookstore.response.Response;
 import com.bridgelabz.bookstore.service.IWishlistService;
 @RestController
-@CrossOrigin
+
+@CrossOrigin("*")
 public class WishlistController {
 	@Autowired
 	private IWishlistService wishbookService;

@@ -9,6 +9,8 @@ public interface IAdminService {
 
 	boolean verifyBook(long bookId, String staus, String token);
 
+
 	List<Book> getBooksByStatus(String status);
+
 
 }

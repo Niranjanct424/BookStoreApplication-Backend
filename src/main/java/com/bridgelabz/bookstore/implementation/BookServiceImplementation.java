@@ -378,6 +378,7 @@ public class BookServiceImplementation implements IBookService {
 //			repository.save(book);
 //
 //		}
+		
 		Long userId = generate.parseJWT(token);
 		Users user = userRepository.getUserById(userId);
 		ReviewAndRating review = rrRepository.getBookReview(bookId , user.getName());

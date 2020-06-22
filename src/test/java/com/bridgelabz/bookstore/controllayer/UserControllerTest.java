@@ -23,6 +23,7 @@ import com.bridgelabz.bookstore.request.LoginInformation;
 import com.bridgelabz.bookstore.request.PasswordReset;
 import com.bridgelabz.bookstore.request.PasswordUpdate;
 import com.bridgelabz.bookstore.service.UserServices;
+import com.bridgelabz.bookstore.util.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
@@ -38,6 +39,9 @@ public class UserControllerTest {
 	
 	@MockBean
 	private UserServices service;
+	
+	@MockBean
+	private JwtGenerator generate;
 
 
 	@BeforeEach
@@ -79,6 +83,7 @@ public class UserControllerTest {
 		loginDto.setRole("admin");
 		ObjectMapper object = new ObjectMapper();
 		Mockito.when(service.login(Mockito.any())).thenReturn(user);
+		Mockito.when(generate.jwtToken(Mockito.anyLong())).thenReturn("token");
 		
 		MvcResult result =mockMvc.perform(MockMvcRequestBuilders.post("/user/login")
 				.contentType(MediaType.APPLICATION_JSON)

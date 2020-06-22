@@ -20,5 +20,5 @@ public interface ReviewRatingRepository extends JpaRepository<ReviewAndRating, L
 	@Query("from ReviewAndRating where book_id=:id and name=:userName ")
     ReviewAndRating getBookReview(Long id , String userName);
 	
-	
+
 }

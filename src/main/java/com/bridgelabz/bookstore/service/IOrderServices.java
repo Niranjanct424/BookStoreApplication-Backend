@@ -10,10 +10,7 @@ public interface IOrderServices {
     boolean confirmBooktoOrder(String token, Long bookId);
     
 	Order  placeOrder(String token ,Long bookId, Long addressId);
-	
-//	List<Order> getOrderList(String orderStatus);
 
-//	int changeOrderStatus(String orderStatus, Long orderId);
 	
 
 	int getCountOfBooks(String token);
