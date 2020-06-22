@@ -57,7 +57,8 @@ public class AdressImpService  implements IAdressService{
 			add.setPincode(addressupdate.getPincode());
 			add.setState(addressupdate.getState());
 			add.setCountry(addressupdate.getCountry());
-			add.setPhoneNumber(addressupdate.getPhoneNumber());		
+			add.setPhoneNumber(addressupdate.getPhoneNumber());	
+			add.setAddressType(addressupdate.getAddressType());;
 			addressRepository.save(add);
 			userdetails.getAddress().add(add);
 			System.out.println("------------------working --------------"+add);
