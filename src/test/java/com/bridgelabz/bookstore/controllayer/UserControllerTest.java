@@ -124,11 +124,8 @@ public class UserControllerTest {
 		user.setEmail("nayangkumar@gmail.com");
 		user.setNewPassword("nayan@123");
 		user.setConfirmPassword("nayan@123");
-		
-	
 		ObjectMapper object = new ObjectMapper();
 		Mockito.when(service.update(Mockito.any(),Mockito.anyString())).thenReturn(true);
-		
 		MvcResult result =mockMvc.perform(MockMvcRequestBuilders.put("/user/update/token")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(object.writeValueAsString(user))).andReturn();

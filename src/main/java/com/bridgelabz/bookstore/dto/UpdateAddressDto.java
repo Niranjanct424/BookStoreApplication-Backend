@@ -16,4 +16,5 @@ public class UpdateAddressDto {
 	private String pincode;
 	private String country;
 	private String phoneNumber;
+	private String addressType;
 }
