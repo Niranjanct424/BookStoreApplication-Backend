@@ -1,21 +1,23 @@
 package com.bridgelabz.bookstore.controllayer;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import com.bridgelabz.bookstore.controller.UserController;
 import com.bridgelabz.bookstore.dto.UserDto;
 import com.bridgelabz.bookstore.entity.Users;
@@ -27,7 +29,7 @@ import com.bridgelabz.bookstore.util.JwtGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
 
@@ -37,10 +39,10 @@ public class UserControllerTest {
 	UserController controller;
 
 	
-	@MockBean
+	@Mock
 	private UserServices service;
 	
-	@MockBean
+	@Mock
 	private JwtGenerator generate;
 
 
