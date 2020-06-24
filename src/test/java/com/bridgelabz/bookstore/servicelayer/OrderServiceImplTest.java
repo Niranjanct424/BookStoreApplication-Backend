@@ -170,4 +170,15 @@ class OrderServiceImplTest {
 		
 		
 	}
+	
+	@Test
+	void change_Order_Status_Valid_Test() {
+		
+		Mockito.when(orderRepository.OrderStatusdefault("pending",(long)1)).thenReturn(1);
+		
+		int changedOrderStatus = orderService.changeOrderStatus("pending",(long)1);
+		System.out.println("val "+changedOrderStatus);
+		
+		assertThat(orderService.changeOrderStatus("pending", (long)1)).isEqualTo(1);
+	}
 }
