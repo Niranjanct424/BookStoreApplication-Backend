@@ -83,7 +83,7 @@ public class OrderController {
 		
 		int orderStatusResult = orderService.changeOrderStatus(status,orderId);
 		System.out.println("orderStatusResult :"+orderStatusResult);
-			return ResponseEntity.status(200).body(new Response(orderId+" order status updated ",200,orderStatusResult));
+			return ResponseEntity.status(HttpStatus.OK).body(new Response(orderId+" order status updated ",200,orderStatusResult));
 		
 	}
 	
@@ -94,7 +94,7 @@ public class OrderController {
 		
 		List<Order> orderinfo = orderService.getallOrders();
 		System.out.println("order ids: "+orderinfo);
-			return ResponseEntity.status(200).body(new Response(" orders list ",200,orderinfo));
+			return ResponseEntity.status(HttpStatus.OK).body(new Response(" orders list ",200,orderinfo));
 		
 	}
 	
