@@ -180,4 +180,24 @@ public class AdminServiceImpleTest {
 //    "reviewRating": []
 	
 	
+	@Test
+	final void verify_Book_Test() {
+		String token="validToken";
+		long userId=1L;
+		Mockito.when(jwt.parseJWT(token)).thenReturn(userId);
+		Users user=new Users();
+		user.setName("brijesh");
+		user.setMobileNumber(7259866545L);
+		user.setAddress(null);
+		user.setCartBooks(null);
+		user.setCreatedDate(null);
+		user.setRole("admin");
+		
+		Mockito.when(userRepo.getCustomerDetailsbyId(userId)).thenReturn(user);
+		
+		Mockito.when(adminService.verifyBook(Mockito.anyLong(), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+		
+		boolean res=adminService.verifyBook(Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
+		assertTrue(res==true);
+	}
 }
