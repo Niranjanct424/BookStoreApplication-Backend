@@ -41,9 +41,6 @@ public class Users  {
 		@OneToMany(cascade = CascadeType.ALL, targetEntity = WishlistBook.class)
 		@JoinColumn(name = "userId")
 		private List<WishlistBook> wishlistBook;
-		
-
-		
 		@OneToMany(cascade = CascadeType.ALL, targetEntity = Order.class)
 		@JoinColumn(name = "userId")
 		private List<Order> orderBookDetails;

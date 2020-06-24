@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,11 @@ import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.entity.WishlistBook;
 import com.bridgelabz.bookstore.repository.BookImple;
+import com.bridgelabz.bookstore.repository.BookInterface;
 import com.bridgelabz.bookstore.repository.UserRepository;
+import com.bridgelabz.bookstore.response.EmailData;
 import com.bridgelabz.bookstore.service.IWishlistService;
+import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 @Service
 public class WishlistImplementation implements IWishlistService {
@@ -25,8 +29,19 @@ public class WishlistImplementation implements IWishlistService {
 	@Autowired
 	private BookImple bookRepository;
 
-	Users user=new Users();
 
+	Users user=new Users();
+	private  boolean notifyWishbooks;
+	
+	
+
+	public boolean isNotifyWishbooks() {
+		return notifyWishbooks;
+	}
+
+	public void setNotifyWishbooks(boolean notifyWishbooks) {
+		this.notifyWishbooks = notifyWishbooks;
+	}
 
 	@Override
 	@Transactional
@@ -42,7 +57,7 @@ public class WishlistImplementation implements IWishlistService {
 			List<Book> books = null;
 			for (WishlistBook d : user.getWishlistBook()) {
 				books = d.getBooksList();
-			}
+
 			if (books == null) {
 				Users userdetails = this.wishbooks(book,user);
 				return userRepository.save(userdetails).getWishlistBook();
@@ -55,15 +70,15 @@ public class WishlistImplementation implements IWishlistService {
 				Users userdetails = this.wishbooks(book,user);
 				return userRepository.save(userdetails).getWishlistBook();
 			}
+			}
+
 			}//book
-			
-			//write here exception........
-			
 			}//user
+			
 			//write here exception........
 			return null;
 			
-			
+		
 	
 }
 	
@@ -91,14 +106,27 @@ public class WishlistImplementation implements IWishlistService {
 			List<WishlistBook> booksinWish=new ArrayList<>();
 			  for(WishlistBook book:wishBooks) {
 				  if(!(book.getBooksList().isEmpty())) {
-				  booksinWish.add(book);
-				  }
+					  booksinWish.add(book);
+					   
+					  
+					  }
+				  Book bookstackdeatils;
+				 for( Book bookstack:book.getBooksList()) {
+				Long l=	 bookstack.getNoOfBooks();
+				int i=l.intValue();
+				 if(i==0) {
+					 bookstackdeatils=bookstack;
+					setNotifyWishbooks(false);
+				 }
+				 }
+
+				  
+				 
 			  }
 			
 		     return booksinWish;
 			}
 			//write here exception........
-	
 		return null;
 	}
 
