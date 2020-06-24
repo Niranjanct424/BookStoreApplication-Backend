@@ -10,6 +10,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,10 +37,10 @@ public class EmailProviderService{
 	
 		Session session = Session.getInstance(property, auth);
 
-		send(session, fromEmail, emailContact, emailSubject, body);
+	//send(session, fromEmail, emailContact, emailSubject, body);
 
-		// sendMail(emailContact, emailSubject, body);
-		// send(session, fromEmail, emailContact, emailSubject, body);
+		
+	 sendHtml(session, fromEmail, emailContact, emailSubject, body);
 	}// end of send mail
 
 	private void send(Session session, String fromEmail, String emailContact, String emailSubject, String body) {
@@ -53,7 +55,7 @@ public class EmailProviderService{
 
 			mimeMessage.addHeader("Content-Transfer-Encoding", "8bit");
 
-			mimeMessage.setFrom(new InternetAddress(fromEmail,"Bookstore"));
+			mimeMessage.setFrom(new InternetAddress(fromEmail, "Bookstore"));
 
 			mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(emailContact));
 
@@ -70,5 +72,42 @@ public class EmailProviderService{
 
 		}
 	}
+	
+	//for html content
+	
+	
+	private void sendHtml(Session session, String fromEmail, String emailContact, String emailSubject, String body) {
+		// TODO Auto-generated method stub
+		try {
+			MimeMessage mimeMessage = new MimeMessage(session);
+			mimeMessage.addHeader("Content-type", "text/HTML; charset=UTF-8");
+
+			mimeMessage.addHeader("format", "flowed");
+
+			mimeMessage.addHeader("Content-Transfer-Encoding", "8bit");
+
+			mimeMessage.setFrom(new InternetAddress(fromEmail, "Bookstore"));
+
+			mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(emailContact));
+			
+			
+			
+			
+			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+			helper.setTo(emailContact);
+			helper.setSubject(emailSubject);
+			helper.setText(body, true);
+
+			Transport.send(mimeMessage);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("exception occured while sending mail");
+
+		}
+	}
+	
+	
+	
+	
 
 }

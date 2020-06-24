@@ -21,13 +21,17 @@ import com.bridgelabz.bookstore.dto.RatingReviewDTO;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.ReviewAndRating;
 import com.bridgelabz.bookstore.entity.Users;
+import com.bridgelabz.bookstore.entity.WishlistBook;
 import com.bridgelabz.bookstore.exception.BookAlreadyExist;
 import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.AddressRepository;
 import com.bridgelabz.bookstore.repository.BookImple;
 import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.repository.ReviewRatingRepository;
+import com.bridgelabz.bookstore.response.EmailData;
 import com.bridgelabz.bookstore.service.IBookService;
+import com.bridgelabz.bookstore.service.IWishlistService;
+import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +41,11 @@ import lombok.extern.slf4j.Slf4j;
 public class BookServiceImplementation implements IBookService {
 	private Book bookinformation = new Book();
 	private ModelMapper modelMapper = new ModelMapper();
+	
+	@Autowired
+	private EmailProviderService em;
+	@Autowired
+	private EmailData emailData;
 
 	@Autowired
 	private BookImple repository;
@@ -53,7 +62,9 @@ public class BookServiceImplementation implements IBookService {
 	@Autowired
 	private ReviewRatingRepository rrRepository;
 
-
+    @Autowired
+    private  WishlistImplementation WishServiceNotify;
+	
 	@Transactional
 	@Override
 
@@ -219,6 +230,9 @@ public class BookServiceImplementation implements IBookService {
 					Book info =repository.fetchbyId(bookId);
 					if(info!=null) 
 					{
+						Long l=info.getNoOfBooks();
+						int beforeNoOfbooks=l.intValue();
+						log.info("------------------------"+beforeNoOfbooks);
 						info.setBookId(bookId);
 						info.setBookName(information.getBookName());
 						info.setNoOfBooks(information.getNoOfBooks());
@@ -227,6 +241,56 @@ public class BookServiceImplementation implements IBookService {
 						info.setBookDetails(information.getBookDetails());
 //						info.setImage(imageName);
 						info.setUpdatedDateAndTime(information.getUpdatedAt());
+					
+						Long af=info.getNoOfBooks();
+						int afterNoOfbooks=af.intValue();
+						log.info("------------------------"+afterNoOfbooks);
+//						if(after==before) {
+//						
+//						}
+						
+//						for (WishlistBook w : userInfo.getWishlistBook()) {
+//							for(Book wishbook :w.getBooksList()) {
+//						
+//							if(wishbook.getBookId()==bookId) {
+						if(beforeNoOfbooks==0) {
+							log.info("------------------------"+afterNoOfbooks);
+							
+							if(afterNoOfbooks>beforeNoOfbooks) {
+								WishServiceNotify.setNotifyWishbooks(true);
+								if(WishServiceNotify.isNotifyWishbooks()==true) {
+//									Users userdetails=new Users();
+			
+//									emailData.setEmail(userdetails.getEmail());
+									
+									String body="<html> \n"
+							 				
+								 			
+	 				+"<h3 ; style=\"background-color:#990000;color:#ffffff;\" >\n "
+	 				+ "<center>Bookstore Notification</center> "
+	 				+ "</h3>\n "
+	 				+ "<body  style=\"background-color:#FAF3F1;\">\n"+
+	 				"<br>"+" ur Wish book is available name is"+info.getBookName()+"\n"
+	 				+"   check ur book below link<br>"+"\n"
+	 		+" http://localhost:4200/wish<br>"
+	
+	 		+ "</body>"
+	 		+ " </html>" ;
+											
+											emailData.setSubject("Notification in WishList");
+									
+											emailData.setBody(body);
+									
+											em.sendMail("sandeepkumarrayala@gmail.com", 
+													emailData.getSubject(), emailData.getBody());
+									 
+								}
+							}
+							
+						}
+//							}//if id equating
+//							}//wish book
+//						}//wishbookw for
 						repository.save(info);
 						return true;
 					}

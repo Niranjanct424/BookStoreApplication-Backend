@@ -1,6 +1,5 @@
 package com.bridgelabz.bookstore.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,27 +24,27 @@ public class WishlistController {
 	
 	
 	@PostMapping("bookstore/v3/wishlist/addbookWishlist/{bookId}")
-	public ResponseEntity<Response> addBooksToCart
+	public ResponseEntity<Response> addBooksToWish
 	(@RequestHeader String token,@PathVariable long bookId)throws Exception {
 	    List<WishlistBook> wishbook = wishbookService.addwishBook(token, bookId);
-	    System.out.println("------------------------------------------ offf--- vikash");
+	    System.out.println("------------------------------------------F offf--- vikash");
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response("book is added to wishlist Bag", 200,wishbook));
 	  	}
 	
 	@GetMapping("bookstore/v3/wishlist/getwishbooks")
 	public ResponseEntity<Response> getBooksfromWish(@RequestHeader(name="token")  String token) throws Exception {
-		List<WishlistBook> wish=new ArrayList<>();
 		
 		List<WishlistBook> wishbook = wishbookService.getWishlistBooks(token);
+		   
 		 
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(new Response(" wishlist Bag is fetched", 200,wishbook));
 	}
 
 	
-	@DeleteMapping("bookstore/v3/wishlist/removeWishlist/{token}/{bookId}")
-	public ResponseEntity<Response> removeBooksToWish(@PathVariable String token,@PathVariable Long bookId) throws Exception {
+	@DeleteMapping("bookstore/v3/wishlist/removeWishlist/{bookId}")
+	public ResponseEntity<Response> removeBooksToWish(@RequestHeader String token,@PathVariable Long bookId) throws Exception {
 		boolean wishbook = wishbookService.removeWishBook(token, bookId);
 		if(wishbook!=false) {
 	    return ResponseEntity.status(HttpStatus.ACCEPTED)

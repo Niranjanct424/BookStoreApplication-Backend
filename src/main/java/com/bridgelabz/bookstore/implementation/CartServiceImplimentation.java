@@ -15,13 +15,19 @@ import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.entity.Quantity;
 import com.bridgelabz.bookstore.entity.Users;
+import com.bridgelabz.bookstore.entity.WishlistBook;
+import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.BookImple;
 import com.bridgelabz.bookstore.repository.QuantityRepository;
 import com.bridgelabz.bookstore.repository.UserRepository;
 import com.bridgelabz.bookstore.service.ICartService;
+import com.bridgelabz.bookstore.service.IWishlistService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class CartServiceImplimentation implements ICartService{
 	@Autowired
 	private JwtGenerator generate;
@@ -30,19 +36,39 @@ public class CartServiceImplimentation implements ICartService{
 	@Autowired
 	private BookImple bookRepository;
 	@Autowired
+	private IWishlistService wishService;
+	@Autowired
 	private QuantityRepository quantityRepository;
 	Users user=new Users();
 	@Transactional
 	@Override
 	public List<CartItem> addBooktoCart(String token, long bookId) {
+		
+		
 		Long id;
 	
 			id = (long) generate.parseJWT(token);
 		
 		Users user = userRepository.findById(id).orElse(null);
 
-		Book book = bookRepository.findById(bookId).orElse(null);
-	
+		Book book = bookRepository.findById(bookId).get();
+		if(book!=null) {
+		// if the book present in wishlist and book number is not equal to zero
+		Long l=book.getNoOfBooks();
+		int i=l.intValue();
+		log.info("-------hitting or not------------------------"+i);
+	if(i>0) {
+			log.info("-------hitting or not------------------------"+i);
+	List<WishlistBook> wishbook=	user.getWishlistBook();
+	   for(WishlistBook wishbooks:wishbook) {
+		  
+		   boolean b =wishbooks.getBooksList().contains(book);
+	      if(b==true ) {
+			  wishService.removeWishBook(token,book.getBookId() );
+	      }
+
+		  }// if book present in the wishbook
+		
 		List<Book> books = null;
 		for (CartItem d : user.getCartBooks()) {
 			books = d.getBooksList();
@@ -67,7 +93,11 @@ public class CartServiceImplimentation implements ICartService{
 		}
 		
 		
-		
+	}//i==0
+	
+	 throw new UserException("Out of stock u cannot add to cart");
+		}//book
+		return null;
 
 	}
 
@@ -82,7 +112,10 @@ public class CartServiceImplimentation implements ICartService{
 		cart.setBooksList(booklist);
 		ArrayList<Quantity> quantitydetails = new ArrayList<Quantity>();
 		qunatityofbook.setQuantityOfBook(quantity);
+		
 		qunatityofbook.setTotalprice(book.getPrice());
+		
+		
 		quantitydetails.add(qunatityofbook);
 		cart.setQuantityOfBook(quantitydetails);
 		user.getCartBooks().add(cart);
@@ -104,6 +137,7 @@ public class CartServiceImplimentation implements ICartService{
 			}
 			return cartItem;
 		} // user.
+	
 		return null;
 	}
 
@@ -172,25 +206,46 @@ public class CartServiceImplimentation implements ICartService{
 	public CartItem IncreaseBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails) {
 		Long id;
 			id = (long) generate.parseJWT(token);
+			
+			
+			
 			Long quantityId = bookQuantityDetails.getQuantityId();
 			Long quantity = bookQuantityDetails.getQuantityOfBook();
 			Users user = userRepository.findById(id).get();
 			if(user!=null) {
 			Book book = bookRepository.findById(bookId).get();
 			if(book!=null) {
+			
+				
 			double totalprice = book.getPrice() * (quantity + 1);
 			boolean notExist = false;
 			for (CartItem cartt : user.getCartBooks()) {
 				if (!cartt.getBooksList().isEmpty()) {
 					notExist = cartt.getBooksList().stream().
 							noneMatch(books -> books.getBookId().equals(bookId));
+
+					
 					if (!notExist) {
+						
+//						
+						
 						Quantity quantityDetails = quantityRepository.findById(quantityId).orElseThrow(null);
 						quantityDetails.setQuantityOfBook(quantity + 1);
 						quantityDetails.setTotalprice(totalprice);
+						if(quantityDetails.getQuantityOfBook()<=book.getNoOfBooks()) 
+						{
 						quantityRepository.save(quantityDetails);
-						return cartt;	}}
+						return cartt;
+						}
+						throw new UserException("there is no enough quantity of book");
+
+						
+							}
+
+					
+					}//cart
 			}
+	
 			}//book 
 			
 			}//user
@@ -203,7 +258,7 @@ public class CartServiceImplimentation implements ICartService{
 	@Override
 	public CartItem descreaseBooksQuantityInCart(String token, Long bookId, CartDto bookQuantityDetails) {
 		Long id;
-	
+	    
 			id = (long) generate.parseJWT(token);
 		Long quantityId = bookQuantityDetails.getQuantityId();
 		Long quantity = bookQuantityDetails.getQuantityOfBook();
@@ -223,9 +278,16 @@ public class CartServiceImplimentation implements ICartService{
 					Quantity quantityDetails = quantityRepository.findById(quantityId).orElseThrow(null);
 					quantityDetails.setQuantityOfBook(quantity-1);
 					quantityDetails.setTotalprice(totalprice);
-					quantityRepository.save(quantityDetails);
-					return cartt;
-			
+					Long l= quantityDetails.getQuantityOfBook();
+					int i=l.intValue();
+					if(i>=0 ){
+						if(i==0) {	
+				      removeBooksFromCart(token, bookId);
+						}
+						quantityRepository.save(quantityDetails);
+					   return cartt;
+					}
+					throw new UserException("invalid Quantity");
 					}
 
 		       }
@@ -233,8 +295,9 @@ public class CartServiceImplimentation implements ICartService{
 		}//book
 		
 		}//user
-		
 		return null;
+		
+	
 		}
 	
 	
