@@ -1,27 +1,44 @@
 package com.bridgelabz.bookstore.servicelayer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.anything;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.bridgelabz.bookstore.controller.BookStoreController;
 import com.bridgelabz.bookstore.controller.CartController;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.CartItem;
+import com.bridgelabz.bookstore.entity.Users;
+import com.bridgelabz.bookstore.implementation.AdminServiceImpl;
 import com.bridgelabz.bookstore.implementation.BookServiceImplementation;
 import com.bridgelabz.bookstore.implementation.CartServiceImplimentation;
 import com.bridgelabz.bookstore.repository.BookImple;
+import com.bridgelabz.bookstore.repository.BookInterface;
+import com.bridgelabz.bookstore.repository.CustomerRepository;
+import com.bridgelabz.bookstore.service.IAdminService;
+import com.bridgelabz.bookstore.util.JwtGenerator;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AdminServiceImpleTest {
 	
 	@InjectMocks
@@ -33,9 +50,24 @@ public class AdminServiceImpleTest {
 	@Mock
 	BookServiceImplementation bookServiceImplementation;
 	
+	@Mock
+	JwtGenerator jwt;
+
+	@Mock
+	BookInterface bookRepo;
+	
+	@Mock
+	CustomerRepository userRepo;
+	
+	@InjectMocks
+	private AdminServiceImpl adminService;
+	
+	private MockMvc mockMvc;
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
+		mockMvc = MockMvcBuilders.standaloneSetup(adminService).build();
 	}
 	
 	@Mock
@@ -46,56 +78,57 @@ public class AdminServiceImpleTest {
 	@Mock
 	CartServiceImplimentation cartService;
 	
-	@Test
-	final void bookInfoByIfTest() {
-		
-		info = new Book();
-		
-		info.setBookId(1L);
-		info.setNoOfBooks((long)118);
-		info.setPrice(670.0);
-		info.setAuthorName("Abbar");
-		info.setBookDetails("bu’l Fath Jalal-ud-din Muhammad Akbar, the third Mughal emperor, is widely regarded as one of the greatest rulers in India’s history");
-		info.setImage("Akbar.jpg");
-		
-		when(bookServiceImplementation.getBookbyId((long)1)).thenReturn(info);
-		Book bookinfo = bookServiceImplementation.getBookbyId((long) 1);
-		
-		System.out.println("Expected Author Name : "+bookinfo.getAuthorName());
-		System.out.println("Actual Author Name : "+info.getAuthorName());
-		assertEquals(info.getAuthorName(), bookinfo.getAuthorName());
-		
-		System.out.println("Expected BookDetails : "+info.getBookDetails());
-		System.out.println("Actual BookDetails : "+bookinfo.getBookDetails());
-		assertEquals(info.getBookDetails(), bookinfo.getBookDetails());
-		
-		assertEquals(info.getPrice(), bookinfo.getPrice());
-		
-		assertEquals(info.getNoOfBooks(), bookinfo.getNoOfBooks());
-		
-		assertEquals(info.getImage(), bookinfo.getImage());
-	}
-	
-	
-	CartItem cartItem;
-	
-	@Test
-	final void addBooktoCartTest() {
-		
-		cartItem = new CartItem();
-		cartItem.setCartId(((long)5));
-		cartItem.setBooksList((List<Book>) info);
-		
-		when(cartService.addBooktoCart("token", 5)).thenReturn((List<CartItem>) cartItem);
-		
-//		cartItem = cartService.addBooktoCart("token", 5);
+//	@Test
+//	final void bookInfoByIfTest() {
 //		
-//		assertEquals("equals ", expecteds, actuals);
-		
-		
-	}
+//		info = new Book();
+//		
+//		info.setBookId(1L);
+//		info.setNoOfBooks((long)118);
+//		info.setPrice(670.0);
+//		info.setAuthorName("Abbar");
+//		info.setBookDetails("bu’l Fath Jalal-ud-din Muhammad Akbar, the third Mughal emperor, is widely regarded as one of the greatest rulers in India’s history");
+//		info.setImage("Akbar.jpg");
+//		
+//		when(bookServiceImplementation.getBookbyId((long)1)).thenReturn(info);
+//		Book bookinfo = bookServiceImplementation.getBookbyId((long) 1);
+//		
+//		System.out.println("Expected Author Name : "+bookinfo.getAuthorName());
+//		System.out.println("Actual Author Name : "+info.getAuthorName());
+//		assertEquals(info.getAuthorName(), bookinfo.getAuthorName());
+//		
+//		System.out.println("Expected BookDetails : "+info.getBookDetails());
+//		System.out.println("Actual BookDetails : "+bookinfo.getBookDetails());
+//		assertEquals(info.getBookDetails(), bookinfo.getBookDetails());
+//		
+//		assertEquals(info.getPrice(), bookinfo.getPrice());
+//		
+//		assertEquals(info.getNoOfBooks(), bookinfo.getNoOfBooks());
+//		
+//		assertEquals(info.getImage(), bookinfo.getImage());
+//	}
+//	
+//	
+//	CartItem cartItem;
+//	
+//	@Test
+//	final void addBooktoCartTest() {
+//		
+//		cartItem = new CartItem();
+//		cartItem.setCartId(((long)5));
+//		cartItem.setBooksList((List<Book>) info);
+//		
+//		when(cartService.addBooktoCart("token", 5)).thenReturn((List<CartItem>) cartItem);
+//		
+////		cartItem = cartService.addBooktoCart("token", 5);
+////		
+////		assertEquals("equals ", expecteds, actuals);
+//		
+//		
+//	}
+//	
 	
-
+	
 	
 //	cartId": 4,
 //    "booksList": [],

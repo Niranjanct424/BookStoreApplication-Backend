@@ -212,23 +212,23 @@ public class OrderServiceImp implements IOrderServices {
 	public int changeOrderStatus(String status,long orderId) {
 
 		int changedOrderStatus = orderRepository.OrderStatusdefault(status,orderId);
-		long userId=orderRepository.findUserId(orderId);
-		
-		
-		Users userdetails = userRepo.findById(userId).get();
-		
-		
-		
-		if(changedOrderStatus >0) 
-		{	 
-			String body="";
-				emailData.setEmail(userdetails.getEmail());		
-				emailData.setSubject("Book Store");
-				body=(status.equals("in shipment")) ? "Your Order has been Shipped" : (status.equals("delivered")) ? "Your Order has been Delivered" : "Your order is in Progress"; 
-				
-				emailData.setBody(body);
-				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
-		}
+//		long userId=orderRepository.findUserId(orderId);
+//		
+//		
+//		Users userdetails = userRepo.findById(userId).get();
+//		
+//		
+//		
+//		if(changedOrderStatus >0) 
+//		{	 
+//			String body="";
+//				emailData.setEmail(userdetails.getEmail());		
+//				emailData.setSubject("Book Store");
+//				body=(status.equals("in shipment")) ? "Your Order has been Shipped" : (status.equals("delivered")) ? "Your Order has been Delivered" : "Your order is in Progress"; 
+//				
+//				emailData.setBody(body);
+//				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+//		}
 		return changedOrderStatus;
 	}
 	
