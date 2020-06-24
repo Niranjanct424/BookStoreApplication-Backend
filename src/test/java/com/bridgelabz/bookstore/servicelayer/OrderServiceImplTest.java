@@ -61,5 +61,10 @@ class OrderServiceImplTest {
 	}
 	
 	
-	
+	@Test
+	void place_Order_Test() {
+		String token="validToken";
+		long userId=1L;
+		Mockito.when(jwt.parseJWT(token)).thenReturn(userId);
+	}
 }
