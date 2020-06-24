@@ -192,4 +192,36 @@ class OrderServiceImplTest {
 		
 		assertNotEquals( 2,changedOrderStatus);
 	}
+	
+	@Test
+	void get_All_Order_Details_Test() {
+		
+		Order order=new Order();
+		order.setOrderId(1L);
+		order.setOrderStatus("pending");
+		order.setBooksList(null);
+		order.setAddressId(1L);
+		order.setOrderPlacedTime(null);
+		order.setQuantityOfBooks(null);
+		order.setTotalPrice(400D);
+		
+		Order order1=new Order();
+		order1.setOrderId(2L);
+		order1.setOrderStatus("pending");
+		order1.setBooksList(null);
+		order1.setAddressId(2L);
+		order1.setOrderPlacedTime(null);
+		order1.setQuantityOfBooks(null);
+		order1.setTotalPrice(500D);
+		
+		
+		List<Order> actualorderList = new ArrayList<Order>();
+		actualorderList.add(order1);
+		
+		Mockito.when(orderRepository.getorder()).thenReturn(actualorderList);
+		
+		assertThat(orderService.getallOrders()).isEqualTo(actualorderList);
+	}
+	
+	
 }
