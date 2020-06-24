@@ -171,7 +171,24 @@ public class OrderControllerTest {
 		Assert.assertEquals(result.getResponse().getStatus(), HttpStatus.OK.value());
 	}
 	
+	@Test
+	public void change_Order_Status_Test() throws Exception{
+
+		Mockito.when(service.changeOrderStatus(Mockito.anyString(),Mockito.anyLong())).thenReturn(1);
+		
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put(CHANGE_ORDER_STATUS_URI)
+				.param("status", "in progress")
+				.param("orderId","12345" )
+				.header("token", "validToken")
+				.contentType(MediaType.APPLICATION_JSON);
 	
+
+		ResultActions resultAction = mockMvc.perform(requestBuilder);
+		
+		MvcResult result = resultAction.andReturn();
+		System.out.println("check "+result.getResponse().getStatus());
+		Assert.assertEquals(result.getResponse().getStatus(), HttpStatus.OK.value());
+	}
 	
 
 }
