@@ -111,22 +111,7 @@ public class UserController {
 					.body(new Response("password doesn't match", 401));
 		}
 
-	}
-	
-	@PostMapping("/user/address")
-	@ResponseBody
-	public ResponseEntity<Response> addAdress( @PathVariable("token") String token, @RequestBody UserDto information) {
-		System.out.println("user info" + information.toString());
-		boolean result = service.register(information);
-		if (result) {
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new Response("registration successfull", 200, information));
-		} else {
-			return ResponseEntity.status(HttpStatus.ALREADY_REPORTED)
-					.body(new Response("User Already Exist", 400, information));
-		}
-	}
-	
+	}	
 	@GetMapping("user/getOneUser")
 	public ResponseEntity<Response> getOneUsers(@RequestHeader("token") String token){
 	Users user=service.getSingleUser(token);
