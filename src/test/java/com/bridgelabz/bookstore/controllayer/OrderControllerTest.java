@@ -31,8 +31,6 @@ import com.bridgelabz.bookstore.entity.Order;
 import com.bridgelabz.bookstore.service.IOrderServices;
 
 @RunWith(MockitoJUnitRunner.class)
-//@SpringBootTest
-//@RunWith(SpringRunner.class)
 public class OrderControllerTest {
 
 	private MockMvc mockMvc;

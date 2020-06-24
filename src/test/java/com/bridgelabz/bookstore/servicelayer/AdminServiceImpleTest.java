@@ -195,9 +195,23 @@ public class AdminServiceImpleTest {
 		
 		Mockito.when(userRepo.getCustomerDetailsbyId(userId)).thenReturn(user);
 		
-		Mockito.when(adminService.verifyBook(Mockito.anyLong(), Mockito.anyString(), Mockito.anyString())).thenReturn(true);
+		Book book=new Book();
 		
-		boolean res=adminService.verifyBook(Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
+		book.setBookName("book1");
+		book.setAuthorName("amit");
+		book.setBookDetails("Some book");
+		book.setImage("sita.jpg");
+		book.setNoOfBooks(20L);
+		book.setPrice(200.00);
+		book.setStatus("OnHold");
+		book.setCreatedDateAndTime(null);
+		book.setUpdatedDateAndTime(null);
+		
+		Mockito.when(bookRepo.findByBookId(Mockito.anyLong())).thenReturn(book);
+		Mockito.when(bookRepo.save(book)).thenReturn(book);
+		
+		
+		boolean res=adminService.verifyBook(1L,"OnHold",token);
 		assertTrue(res==true);
 	}
 	

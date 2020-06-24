@@ -127,14 +127,16 @@ class OrderServiceImplTest {
 		long userId=1L;
 		Mockito.when(jwt.parseJWT(token)).thenReturn(userId);
 		
+		
 		Users user =  new Users();
-		user.setUserId(1L);
+		user.setUserId(userId);
 		user.setName("brijesh");
 		user.setMobileNumber(7259866545L);
 		user.setAddress(null);
 		user.setCartBooks(null);
 		user.setCreatedDate(null);
 		user.setRole("admin");
+		
 		
 		
 		Optional<Users> userOptional = Optional.of(user);
@@ -150,23 +152,25 @@ class OrderServiceImplTest {
 		order.setQuantityOfBooks(null);
 		order.setTotalPrice(400D);
 		
-		Order order1=new Order();
-		order1.setOrderId(2L);
-		order1.setOrderStatus("pending");
-		order1.setBooksList(null);
-		order1.setAddressId(2L);
-		order1.setOrderPlacedTime(null);
-		order1.setQuantityOfBooks(null);
-		order1.setTotalPrice(500D);
+//		Order order1=new Order();
+//		order1.setOrderId(2L);
+//		order1.setOrderStatus("pending");
+//		order1.setBooksList(null);
+//		order1.setAddressId(2L);
+//		order1.setOrderPlacedTime(null);
+//		order1.setQuantityOfBooks(null);
+//		order1.setTotalPrice(500D);
 		
 		
 		List<Order> actualorderList = new ArrayList<Order>();
 		actualorderList.add(order);
-		actualorderList.add(order1);
+//		actualorderList.add(order1);
 		
-		Mockito.when(user1.getOrderBookDetails()).thenReturn(actualorderList);
+		user.setOrderBookDetails(actualorderList);
+		
+//		Mockito.when(user.getOrderBookDetails()).thenReturn(actualorderList);
 
-		assertThat(orderService.getOrderList(token)).isEqualTo(user1.getOrderBookDetails());
+		assertThat(orderService.getOrderList(token)).isEqualTo(actualorderList);
 		
 		
 	}
