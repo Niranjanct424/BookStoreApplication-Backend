@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bridgelabz.bookstore.dto.BookDto;
 import com.bridgelabz.bookstore.dto.EditBookDto;
@@ -35,7 +36,7 @@ public class BookStoreController {
 	@Autowired
 	IBookService bookservice;
 
-	@PostMapping("books/addbook/{imageName}")
+	@PostMapping("books/{imageName}")
 	public ResponseEntity<BookResponse> addBook(@PathVariable String imageName, @RequestBody BookDto information,@RequestHeader("token") String token) {
 		
 		boolean res=bookservice.addBooks(imageName,information,token);
@@ -45,7 +46,9 @@ public class BookStoreController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(new BookResponse(400, "The Book details not added "));
 	}
 	
-	@GetMapping("books/getAllBooks")
+
+
+	@GetMapping("books/")
 	public ResponseEntity<BookResponse> getBooks(@RequestHeader("token") String token) {
 		List<Book> books = bookservice.getBookInfo(token);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Book details are", books));
@@ -87,7 +90,7 @@ public class BookStoreController {
 	}
 
 	
-	@PutMapping("books/editbook/{bookId}")
+	@PutMapping("books/{bookId}")
 	public ResponseEntity<BookResponse> editBook(@PathVariable("bookId") long bookId,@RequestBody EditBookDto information,@RequestHeader("token") String token){
 		boolean res =bookservice.editBook(bookId,information,token);
 		if(res)
@@ -95,7 +98,7 @@ public class BookStoreController {
 		return null;
 	}
 
-	@DeleteMapping("books/deletebook/{bookId}")
+	@DeleteMapping("books/{bookId}")
 	public ResponseEntity<BookResponse> deleteBook(@PathVariable long bookId, @RequestHeader("token") String token) {
 		boolean res = bookservice.deleteBook(bookId, token);
 		if (res)
@@ -103,7 +106,7 @@ public class BookStoreController {
 		return null;
 	}
 
-	@PutMapping("books/editBookStatus/{bookId}/{status}")
+	@PutMapping("books/{bookId}/{status}")
 	public ResponseEntity<BookResponse> editBookStatus(@PathVariable long bookId, @PathVariable String status,
 			@RequestHeader("token") String token) {
 		boolean res = bookservice.editBookStatus(bookId, status, token);
@@ -187,6 +190,17 @@ public class BookStoreController {
 		else
 			return ResponseEntity.status(HttpStatus.OK).body(new BookResponse("books not fetched" , books));		
 	}
+	
+	@PostMapping("books/bookimage/{bookId}")
+	public ResponseEntity<BookResponse> uploadImage(@RequestParam("imageFile") MultipartFile file,@RequestHeader String token,@PathVariable long bookId)  {
+		String imageName=file.getOriginalFilename();
+	    boolean res=bookservice.uploadBookImage(bookId,imageName,token);
+	     if(res)
+	    	 return ResponseEntity.status(HttpStatus.OK).body(new BookResponse(202, "Image Uploaded Succesfully"));
+	     else
+	    	 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new BookResponse(203,"error")); 
+	}
 
+	
 
 }
