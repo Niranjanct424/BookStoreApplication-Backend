@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.bridgelabz.bookstore.dto.UserDto;
@@ -24,7 +23,7 @@ import com.bridgelabz.bookstore.response.EmailData;
 import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 
-@SpringBootTest
+
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 
@@ -58,14 +57,13 @@ public class UserServiceTest {
 	@Test()
 	public void userRegisterTest()
 	{
-		Users user = new Users();
 		
 		Users user1 = new Users();
 		user1.setEmail("nayan@gmail.com");
 		
 		UserDto dto = new UserDto();
 		dto.setEmail("nayan@gmail.com");
-		Mockito.when(repository.getUser(Mockito.anyString())).thenReturn(user);
+		Mockito.when(repository.getUser(Mockito.anyString())).thenReturn(null);
 		Mockito.when(modelMapper.map(Mockito.any(), Mockito.any())).thenReturn(user1);
 		Mockito.when(encryption.encode(Mockito.anyString())).thenReturn("encodedPassword");
 		Mockito.when(repository.save(Mockito.any())).thenReturn(user1);

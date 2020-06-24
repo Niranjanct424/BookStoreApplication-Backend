@@ -13,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,7 +26,7 @@ import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.service.ICartService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest
+
 @RunWith(MockitoJUnitRunner.class)
 public class CartControllerTest {
 	
