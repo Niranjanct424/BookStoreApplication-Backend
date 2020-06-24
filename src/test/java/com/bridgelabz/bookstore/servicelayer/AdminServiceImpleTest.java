@@ -200,4 +200,27 @@ public class AdminServiceImpleTest {
 		boolean res=adminService.verifyBook(Mockito.anyLong(), Mockito.anyString(), Mockito.anyString());
 		assertTrue(res==true);
 	}
+	
+	@Test
+	final void get_Books_By_Valid_Status_Test() {
+		Book book=new Book();
+		
+		book.setBookName("book1");
+		book.setAuthorName("amit");
+		book.setBookDetails("Some book");
+		book.setImage("sita.jpg");
+		book.setNoOfBooks(20L);
+		book.setPrice(200.00);
+		book.setStatus("OnHold");
+		book.setCreatedDateAndTime(null);
+		book.setUpdatedDateAndTime(null);
+		
+		List<Book> actualBookList = new ArrayList<Book>();
+		actualBookList.add(book);
+		
+		Mockito.when(bookRepo.findByStatus("OnHold")).thenReturn(actualBookList);
+		
+		assertThat(adminService.getBooksByStatus("OnHold")).isEqualTo(actualBookList);
+
+	}
 }
