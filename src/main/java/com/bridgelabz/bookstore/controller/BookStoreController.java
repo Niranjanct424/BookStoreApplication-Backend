@@ -52,7 +52,6 @@ public class BookStoreController {
 	public ResponseEntity<BookResponse> getBooks(@RequestHeader("token") String token) {
 		List<Book> books = bookservice.getBookInfo(token);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new BookResponse("The Book details are", books));
-
 	}
 
 	/**
