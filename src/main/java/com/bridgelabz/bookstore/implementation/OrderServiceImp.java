@@ -228,13 +228,13 @@ public class OrderServiceImp implements IOrderServices {
 		Users userdetails = userRepo.findById(userId).get();
 		
 		
-		
+
 		if(changedOrderStatus >0) 
 		{	 
 			String body="";
 				emailData.setEmail(userdetails.getEmail());		
 				emailData.setSubject("Book Store");
-				body=(status.equals("in shipment")) ? "Your Order has been Shipped" : (status.equals("delivered")) ? "Your Order has been Delivered" : "Your order is in Progress"; 
+				body=(status.equals("in shipment")) ? "Your Product has been Shipped for Order ID : "+orderId +"." : (status.equals("delivered")) ? "Your Product has been Delivered for Order ID : "+orderId +"." : "Your Product is in Progress for Order ID : "+orderId +"."; 
 				
 				emailData.setBody(body);
 				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
