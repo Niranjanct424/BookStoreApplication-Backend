@@ -21,7 +21,6 @@ import com.bridgelabz.bookstore.dto.RatingReviewDTO;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.ReviewAndRating;
 import com.bridgelabz.bookstore.entity.Users;
-import com.bridgelabz.bookstore.entity.WishlistBook;
 import com.bridgelabz.bookstore.exception.BookAlreadyExist;
 import com.bridgelabz.bookstore.exception.UserException;
 import com.bridgelabz.bookstore.repository.AddressRepository;
@@ -30,7 +29,6 @@ import com.bridgelabz.bookstore.repository.IUserRepository;
 import com.bridgelabz.bookstore.repository.ReviewRatingRepository;
 import com.bridgelabz.bookstore.response.EmailData;
 import com.bridgelabz.bookstore.service.IBookService;
-import com.bridgelabz.bookstore.service.IWishlistService;
 import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 
@@ -291,6 +289,7 @@ public class BookServiceImplementation implements IBookService {
 //							}//if id equating
 //							}//wish book
 //						}//wishbookw for
+						info.setUpdatedDateAndTime(LocalDateTime.now());
 						repository.save(info);
 						return true;
 					}

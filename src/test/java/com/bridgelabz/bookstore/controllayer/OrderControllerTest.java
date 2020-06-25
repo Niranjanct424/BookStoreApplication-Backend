@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -13,11 +14,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -25,7 +27,8 @@ import com.bridgelabz.bookstore.controller.OrderController;
 import com.bridgelabz.bookstore.entity.Order;
 import com.bridgelabz.bookstore.service.IOrderServices;
 
-@SpringBootTest
+
+
 @RunWith(MockitoJUnitRunner.class)
 public class OrderControllerTest {
 
@@ -38,6 +41,10 @@ public class OrderControllerTest {
 	@Mock
 	private IOrderServices service;
 
+	private static final String GET_ORDERS_URI="/bookstore/getOrdersByAdmin";
+	
+	private static final String CHANGE_ORDER_STATUS_URI="/bookstore/orderStatusByAdmin";
+	
 	@BeforeEach
 	void setUp(){
 		MockitoAnnotations.initMocks(this);
@@ -128,5 +135,57 @@ public class OrderControllerTest {
 
 
 	}
+	
+	@Test
+	public void get_Order_Details_Test() throws Exception{
+
+		Order order1 = new Order();
+		order1.setOrderId(1234L);
+		order1.setAddressId(1L);
+		order1.setOrderStatus("pending");
+		order1.setTotalPrice(1000D);
+
+		Order order2 = new Order();
+		order2.setOrderId(5678L);
+		order2.setAddressId(2L);
+		order2.setOrderStatus("pending");
+		order2.setTotalPrice(500D);
+
+		List<Order> orderList = new ArrayList<Order>();
+		orderList.add(order1);
+		orderList.add(order2);
+
+		Mockito.when(service.getallOrders()).thenReturn(orderList);
+		
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(GET_ORDERS_URI)
+				.contentType(MediaType.APPLICATION_JSON);
+	
+
+		ResultActions resultAction = mockMvc.perform(requestBuilder);
+		
+		MvcResult result = resultAction.andReturn();
+		System.out.println("check "+result.getResponse().getStatus());
+		Assert.assertEquals(result.getResponse().getStatus(), HttpStatus.OK.value());
+	}
+	
+	@Test
+	public void change_Order_Status_Test() throws Exception{
+
+		Mockito.when(service.changeOrderStatus(Mockito.anyString(),Mockito.anyLong())).thenReturn(1);
+		
+		MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put(CHANGE_ORDER_STATUS_URI)
+				.param("status", "in progress")
+				.param("orderId","12345" )
+				.header("token", "validToken")
+				.contentType(MediaType.APPLICATION_JSON);
+	
+
+		ResultActions resultAction = mockMvc.perform(requestBuilder);
+		
+		MvcResult result = resultAction.andReturn();
+		System.out.println("check "+result.getResponse().getStatus());
+		Assert.assertEquals(result.getResponse().getStatus(), HttpStatus.OK.value());
+	}
+	
 
 }
