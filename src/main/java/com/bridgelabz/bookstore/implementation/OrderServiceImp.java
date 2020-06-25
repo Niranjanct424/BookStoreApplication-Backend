@@ -123,13 +123,14 @@ public class OrderServiceImp implements IOrderServices {
 	 		String body="@"+userdetails.getEmail()+" \n"+"order details"+" \n"+data+"\n"+"please rate us below link"+"\n"
 	 		+"http://localhost:4200/books/rateandreview/"+bookId+"/"+token;
 			emailData.setEmail(userdetails.getEmail());
+			System.out.println("email check------------------"+userdetails.getEmail());
 	
 			emailData.setSubject("your Order is succefully placed");
 	
 			emailData.setBody(body);
 
 	
-			//em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+			em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
 
 			System.out.println("emailData.getEmail() "+emailData.getEmail());
 			System.out.println("emailData.getSubject() "+emailData.getSubject());
@@ -212,23 +213,23 @@ public class OrderServiceImp implements IOrderServices {
 	public int changeOrderStatus(String status,long orderId) {
 
 		int changedOrderStatus = orderRepository.OrderStatusdefault(status,orderId);
-//		long userId=orderRepository.findUserId(orderId);
-//		
-//		
-//		Users userdetails = userRepo.findById(userId).get();
-//		
-//		
-//		
-//		if(changedOrderStatus >0) 
-//		{	 
-//			String body="";
-//				emailData.setEmail(userdetails.getEmail());		
-//				emailData.setSubject("Book Store");
-//				body=(status.equals("in shipment")) ? "Your Order has been Shipped" : (status.equals("delivered")) ? "Your Order has been Delivered" : "Your order is in Progress"; 
-//				
-//				emailData.setBody(body);
-//				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
-//		}
+		long userId=orderRepository.findUserId(orderId);
+		
+		
+		Users userdetails = userRepo.findById(userId).get();
+		
+		
+		
+		if(changedOrderStatus >0) 
+		{	 
+			String body="";
+				emailData.setEmail(userdetails.getEmail());		
+				emailData.setSubject("Book Store");
+				body=(status.equals("in shipment")) ? "Your Order has been Shipped" : (status.equals("delivered")) ? "Your Order has been Delivered" : "Your order is in Progress"; 
+				
+				emailData.setBody(body);
+				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+		}
 		return changedOrderStatus;
 	}
 	
