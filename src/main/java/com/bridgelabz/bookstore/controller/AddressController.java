@@ -59,7 +59,7 @@ public class AddressController {
 	public ResponseEntity<Response> deleteAddress(@RequestParam Long addressId,@RequestHeader String token )
 	{
 		Users message= addressService.deleteAddress(token, addressId);
-		System.out.println("==="+message);
+	
 		if (message != null) {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("added adress", 200, message));
 		}
