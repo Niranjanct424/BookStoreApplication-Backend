@@ -212,9 +212,7 @@ public class BookServiceImplementation implements IBookService {
 	@Override
 
 	public boolean editBook(long bookId,EditBookDto information,String token) {
-		
 		Long id;
-	
 			id = (long) generate.parseJWT(token);
 			Users userInfo = userRepository.getUserById(id);
 			if(userInfo != null) 

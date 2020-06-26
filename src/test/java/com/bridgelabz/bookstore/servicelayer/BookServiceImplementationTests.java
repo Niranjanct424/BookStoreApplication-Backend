@@ -1,5 +1,6 @@
 package com.bridgelabz.bookstore.servicelayer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
@@ -19,14 +20,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.bridgelabz.bookstore.dto.BookDto;
+import com.bridgelabz.bookstore.dto.EditBookDto;
 import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.implementation.BookServiceImplementation;
 import com.bridgelabz.bookstore.implementation.CartServiceImplimentation;
+import com.bridgelabz.bookstore.implementation.WishlistImplementation;
 import com.bridgelabz.bookstore.repository.BookImple;
 import com.bridgelabz.bookstore.repository.BookInterface;
 import com.bridgelabz.bookstore.repository.CustomerRepository;
 import com.bridgelabz.bookstore.repository.IUserRepository;
+import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -60,6 +64,12 @@ class BookServiceImplementationTests {
 	
 	@Mock
 	private ModelMapper modelMapper = new ModelMapper();
+	
+	@Mock
+	private  WishlistImplementation wishService;
+	
+	@Mock
+	private EmailProviderService em;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -151,6 +161,130 @@ class BookServiceImplementationTests {
 	
 	
 	
+	@Test
+	final void delete_Books_Test() {
+		String token="validToken";
+		long userId=1L;
+		Mockito.when(jwt.parseJWT(token)).thenReturn(userId);
+		
+		Users user=new Users();
+		user.setUserId((long) 1);
+		user.setName("brijesh");
+		user.setMobileNumber(7259866545L);
+		user.setAddress(null);
+		user.setCartBooks(null);
+		user.setCreatedDate(null);
+		user.setRole("seller");
+		
+		Mockito.when(userRepository.getUserById((long) 1)).thenReturn(user);
+		
 	
+		Book info = new Book();
+		info.setBookId(1L);
+		info.setAuthorName("Amish");
+		info.setBookDetails("Shiva Triology");
+		info.setBookName("Ram");
+		info.setImage("vayuputra.jpg");
+		info.setPrice(1000.00);
+		info.setNoOfBooks(20L);
+		
+		Mockito.when(repository.fetchbyId((long) 1)).thenReturn(info);
+		
+		Mockito.doNothing().when(repository).deleteByBookId((long) 1);
+		
+		assertEquals(true,bookService.deleteBook((long) 1, token));
+	}
+	
+	@Test
+	final void get_All_Books_Test() {
+
+		String token="validToken";
+		long userId=1L;
+		Mockito.when(jwt.parseJWT(token)).thenReturn(userId);
+		
+		Users user=new Users();
+		user.setUserId((long) 1);
+		user.setName("brijesh");
+		user.setMobileNumber(7259866545L);
+		user.setAddress(null);
+		user.setCartBooks(null);
+		user.setCreatedDate(null);
+		user.setRole("seller");
+		
+		Mockito.when(userRepository.getUserById((long) 1)).thenReturn(user);
+		
+		Book info = new Book();
+		info.setBookId(1L);
+		info.setAuthorName("Amish");
+		info.setBookDetails("Shiva Triology");
+		info.setBookName("Ram");
+		info.setImage("vayuputra.jpg");
+		info.setPrice(1000.00);
+		info.setNoOfBooks(20L);
+		
+		Book info2 = new Book();
+		info2.setBookId(1L);
+		info2.setAuthorName("Sadhguru");
+		info2.setBookDetails("Shiva");
+		info2.setBookName("Death");
+		info2.setImage("death.jpg");
+		info2.setPrice(2000.00);
+		info2.setNoOfBooks(20L);
+		
+		List<Book> bookList=new ArrayList<Book>();
+		bookList.add(info);
+		bookList.add(info2);
+		
+		Mockito.when(repository.getAllBooks()).thenReturn(bookList);
+		
+		assertThat(bookService.getBookInfo(token)).isEqualTo(bookList);
+	}
+	
+	@Test
+	final void edit_Books_Test() {
+
+		String token="validToken";
+		long userId=1L;
+		Mockito.when(jwt.parseJWT(token)).thenReturn(userId);
+		
+		Users user=new Users();
+		user.setUserId((long) 1);
+		user.setName("brijesh");
+		user.setMobileNumber(7259866545L);
+		user.setAddress(null);
+		user.setCartBooks(null);
+		user.setCreatedDate(null);
+		user.setRole("seller");
+		
+		Mockito.when(userRepository.getUserById((long) 1)).thenReturn(user);
+		
+		Book info = new Book();
+		info.setBookId(1L);
+		info.setAuthorName("Amish");
+		info.setBookDetails("Shiva Triology");
+		info.setBookName("Ram");
+		info.setImage("vayuputra.jpg");
+		info.setPrice(1000.00);
+		info.setNoOfBooks(10L);
+		
+		
+		
+		EditBookDto dto=new EditBookDto();
+		dto.setAuthorName("Amish");
+		dto.setBookDetails("Shiva Triology");
+		dto.setBookName("Ram");
+		dto.setImage("vayuputra.jpg");
+		dto.setPrice(2000.00);
+		dto.setNoOfBooks(20L);
+		
+		Mockito.when(repository.fetchbyId((long)1)).thenReturn(info);
+		
+		Mockito.doNothing().when(em).sendMail(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+		
+		Mockito.when(repository.save(info)).thenReturn(info);
+		
+		assertThat(bookService.editBook(1L, dto, token)).isEqualTo(true);
+		
+	}
 	
 }

@@ -118,10 +118,10 @@ class OrderServiceImplTest {
 		cartList.add(cartItem2);
 		
 		Users user = new Users();
-		user.setEmail("nayan@gmail.com");
+		user.setEmail("brijesh@gmail.com");
 		user.setUserId(1L);
 		user.setRole("user");
-		user.setPassword("nayan@123");
+		user.setPassword("bijju@123");
 		user.setVerified(true);
 		user.setCartBooks(cartList);
 		Optional<Users> userOptional = Optional.of(user);
