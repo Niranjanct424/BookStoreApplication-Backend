@@ -262,7 +262,7 @@ class OrderServiceImplTest {
 		
 		Optional<Users> userOptional = Optional.of(user);
 		
-		System.out.println("check "+Mockito.when(userRepo.findById(1L)).thenReturn(userOptional));
+		System.out.println("check "+Mockito.when(userRepoo.findById(1L)).thenReturn(userOptional));
 		Mockito.when(userRepo.findById(1L)).thenReturn(userOptional);
 		
 		
@@ -279,11 +279,33 @@ class OrderServiceImplTest {
 	void change_Order_Status_Invaid_Test() {
 		
 		Mockito.when(orderRepository.OrderStatusdefault("pending",(long)1)).thenReturn(1);
+
+		
+		Mockito.when(orderRepository.findUserId(Mockito.anyLong())).thenReturn(1L);
+		
+		Users user=new Users();
+		user.setUserId(1L);
+		user.setName("brijesh");
+		user.setMobileNumber(7259866545L);
+		user.setAddress(null);
+		user.setCartBooks(null);
+		user.setCreatedDate(null);
+		user.setRole("admin");
+		user.setEmail("brijesh@gmail.com");
+		
+		Optional<Users> userOptional = Optional.of(user);
+		
+		System.out.println("check "+Mockito.when(userRepoo.findById(1L)).thenReturn(userOptional));
+		Mockito.when(userRepo.findById(1L)).thenReturn(userOptional);
+		
+		
+		Mockito.doNothing().when(em).sendMail(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+		
 		
 		int changedOrderStatus = orderService.changeOrderStatus("pending",(long)1);
 		System.out.println("val "+changedOrderStatus);
 		
-		assertNotEquals( 2,changedOrderStatus);
+		assertThat(orderService.changeOrderStatus(Mockito.anyString(), Mockito.anyLong())).isNotEqualTo(1);
 	}
 	
 	@Test
