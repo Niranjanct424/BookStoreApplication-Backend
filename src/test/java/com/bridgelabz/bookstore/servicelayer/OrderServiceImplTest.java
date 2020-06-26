@@ -12,18 +12,25 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.bridgelabz.bookstore.entity.Book;
+import com.bridgelabz.bookstore.entity.CartItem;
 import com.bridgelabz.bookstore.entity.Order;
+import com.bridgelabz.bookstore.entity.Quantity;
 import com.bridgelabz.bookstore.entity.Users;
 import com.bridgelabz.bookstore.implementation.OrderServiceImp;
+import com.bridgelabz.bookstore.repository.BookInterface;
 import com.bridgelabz.bookstore.repository.CustomerRepository;
 import com.bridgelabz.bookstore.repository.OrderRepository;
+import com.bridgelabz.bookstore.repository.UserRepository;
+import com.bridgelabz.bookstore.response.EmailData;
 import com.bridgelabz.bookstore.service.IOrderServices;
+import com.bridgelabz.bookstore.util.EmailProviderService;
 import com.bridgelabz.bookstore.util.JwtGenerator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -49,10 +56,22 @@ class OrderServiceImplTest {
 	CustomerRepository userRepo;
 	
 	@Mock
+	private UserRepository userRepoo;
+	
+	@Mock
 	JwtGenerator jwt;
 	
 	@Mock
 	OrderRepository orderRepository;
+	
+	@Mock
+	private EmailProviderService em;
+	
+	@Mock
+	private EmailData emailData;
+	
+	@Mock
+	BookInterface bookRepo;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -63,9 +82,56 @@ class OrderServiceImplTest {
 	
 	@Test
 	void place_Order_Test() {
-		String token="validToken";
-		long userId=1L;
-		Mockito.when(jwt.parseJWT(token)).thenReturn(userId);
+		Book book1 = new Book();
+		book1.setBookId(1L);
+		book1.setBookName("Fly me");
+		
+		book1.setNoOfBooks(20L);
+		book1.setPrice(199D);
+		
+		Book book2 = new Book();
+		book2.setBookName("Into the Water");
+		
+		List<Book> bookList = new ArrayList<Book>();
+		bookList.add(book1);
+		bookList.add(book2);
+		
+		Quantity quantity = new Quantity();
+		quantity.setQuantity_id(1L);
+		quantity.setQuantityOfBook(2L);
+		Optional<Quantity> quantityOptional = Optional.of(quantity);
+		
+		List<Quantity> quantityList = new ArrayList<Quantity>();
+		quantityList.add(quantity);
+		
+		CartItem cartItem1 = new CartItem();
+		cartItem1.setCartId(1L);
+		cartItem1.setBooksList(bookList);
+		cartItem1.setQuantityOfBook(quantityList);
+		
+		CartItem cartItem2 = new CartItem();
+		cartItem2.setCartId(1L);
+		cartItem2.setBooksList(bookList);
+
+		List<CartItem> cartList = new ArrayList<CartItem>();
+		cartList.add(cartItem1);
+		cartList.add(cartItem2);
+		
+		Users user = new Users();
+		user.setEmail("brijesh@gmail.com");
+		user.setUserId(1L);
+		user.setRole("user");
+		user.setPassword("bijju@123");
+		user.setVerified(true);
+		user.setCartBooks(cartList);
+		Optional<Users> userOptional = Optional.of(user);
+		
+		Mockito.when(bookRepo.save(book1)).thenReturn(book1);
+		
+		
+		Mockito.when(jwt.parseJWT(Mockito.anyString())).thenReturn(1L);
+		Mockito.when(userRepo.findById(user.getUserId())).thenReturn(userOptional);
+		
 	}
 	
 	
@@ -128,20 +194,7 @@ class OrderServiceImplTest {
 		Mockito.when(jwt.parseJWT(token)).thenReturn(userId);
 		
 		
-		Users user =  new Users();
-		user.setUserId(userId);
-		user.setName("brijesh");
-		user.setMobileNumber(7259866545L);
-		user.setAddress(null);
-		user.setCartBooks(null);
-		user.setCreatedDate(null);
-		user.setRole("admin");
 		
-		
-		
-		Optional<Users> userOptional = Optional.of(user);
-		
-		Mockito.when(userRepo.findById(userId)).thenReturn(userOptional);
 		
 		Order order=new Order();
 		order.setOrderId(1L);
@@ -166,9 +219,23 @@ class OrderServiceImplTest {
 		actualorderList.add(order);
 //		actualorderList.add(order1);
 		
+		Users user =  new Users();
+		user.setUserId(userId);
+		user.setName("brijesh");
+		user.setMobileNumber(7259866545L);
+		user.setAddress(null);
+		user.setCartBooks(null);
+		user.setCreatedDate(null);
+		user.setRole("admin");
 		user.setOrderBookDetails(actualorderList);
 		
-//		Mockito.when(user.getOrderBookDetails()).thenReturn(actualorderList);
+		
+		Optional<Users> userOptional = Optional.of(user);
+		
+		Mockito.when(userRepoo.findById(userId)).thenReturn(userOptional);
+		
+		
+		Mockito.when(user1.getOrderBookDetails()).thenReturn(actualorderList);
 
 		assertThat(orderService.getOrderList(token)).isEqualTo(actualorderList);
 		
@@ -179,6 +246,28 @@ class OrderServiceImplTest {
 	void change_Order_Status_Valid_Test() {
 		
 		Mockito.when(orderRepository.OrderStatusdefault("pending",(long)1)).thenReturn(1);
+
+		
+		Mockito.when(orderRepository.findUserId(Mockito.anyLong())).thenReturn(1L);
+		
+		Users user=new Users();
+		user.setUserId(1L);
+		user.setName("brijesh");
+		user.setMobileNumber(7259866545L);
+		user.setAddress(null);
+		user.setCartBooks(null);
+		user.setCreatedDate(null);
+		user.setRole("admin");
+		user.setEmail("brijesh@gmail.com");
+		
+		Optional<Users> userOptional = Optional.of(user);
+		
+		System.out.println("check "+Mockito.when(userRepo.findById(1L)).thenReturn(userOptional));
+		Mockito.when(userRepo.findById(1L)).thenReturn(userOptional);
+		
+		
+		Mockito.doNothing().when(em).sendMail(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+		
 		
 		int changedOrderStatus = orderService.changeOrderStatus("pending",(long)1);
 		System.out.println("val "+changedOrderStatus);

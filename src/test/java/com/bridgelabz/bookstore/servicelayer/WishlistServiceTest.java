@@ -48,6 +48,7 @@ public class WishlistServiceTest {
 		
 		Book book1 = new Book();
 		book1.setBookName("Fly me");
+		book1.setNoOfBooks(20L);
 		
 		Book book2 = new Book();
 		book2.setBookName("Into the Water");

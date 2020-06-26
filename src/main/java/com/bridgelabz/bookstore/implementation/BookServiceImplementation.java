@@ -212,9 +212,7 @@ public class BookServiceImplementation implements IBookService {
 	@Override
 
 	public boolean editBook(long bookId,EditBookDto information,String token) {
-		
 		Long id;
-	
 			id = (long) generate.parseJWT(token);
 			Users userInfo = userRepository.getUserById(id);
 			if(userInfo != null) 
@@ -268,7 +266,7 @@ public class BookServiceImplementation implements IBookService {
 	 				+ "<center>Bookstore Notification</center> "
 	 				+ "</h3>\n "
 	 				+ "<body  style=\"background-color:#FAF3F1;\">\n"+
-	 				"<br>"+" ur Wish book is available name is"+info.getBookName()+"\n"
+	 				"<br>"+" Dear Customer your Wish book "+info.getBookName()+"is available now. \n"
 	 				+"   check ur book below link<br>"+"\n"
 	 		+" http://localhost:4200/wish<br>"
 	

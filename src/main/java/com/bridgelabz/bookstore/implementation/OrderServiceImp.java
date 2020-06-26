@@ -121,6 +121,8 @@ public class OrderServiceImp implements IOrderServices {
 			}    
 			
 			Book book = bookRepository.findById(bookId).orElse(null);
+			
+			String link="http://localhost:4200/books/rateandreview/"+bookId+"/"+token;
 	 		String body="<html> \n"
 	 				
 	 			
@@ -134,7 +136,7 @@ public class OrderServiceImp implements IOrderServices {
 	 			 +userdetails.getEmail()+
 	 				" <br>"+"order details <br>"+" \n"+data+"\n"
 	 				+"please rate us below link<br>"+"\n"
-	 		+"http://localhost:4200/books/ratingreview<br>"
+	 		+link
 	
 	 		+ "</body>"
 	 		+ " </html>" ;
@@ -220,23 +222,23 @@ public class OrderServiceImp implements IOrderServices {
 	public int changeOrderStatus(String status,long orderId) {
 
 		int changedOrderStatus = orderRepository.OrderStatusdefault(status,orderId);
-//		long userId=orderRepository.findUserId(orderId);
-//		
-//		
-//		Users userdetails = userRepo.findById(userId).get();
-//		
-//		
-//		
-//		if(changedOrderStatus >0) 
-//		{	 
-//			String body="";
-//				emailData.setEmail(userdetails.getEmail());		
-//				emailData.setSubject("Book Store");
-//				body=(status.equals("in shipment")) ? "Your Order has been Shipped" : (status.equals("delivered")) ? "Your Order has been Delivered" : "Your order is in Progress"; 
-//				
-//				emailData.setBody(body);
-//				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
-//		}
+		long userId=orderRepository.findUserId(orderId);
+		
+		
+		Users userdetails = userRepo.findById(userId).get();
+		
+		
+
+		if(changedOrderStatus >0) 
+		{	 
+			String body="";
+				emailData.setEmail(userdetails.getEmail());		
+				emailData.setSubject("Book Store");
+				body=(status.equals("in shipment")) ? "Your Product has been Shipped for Order ID : "+orderId +"." : (status.equals("delivered")) ? "Your Product has been Delivered for Order ID : "+orderId +"." : "Your Product is in Progress for Order ID : "+orderId +"."; 
+				
+				emailData.setBody(body);
+				em.sendMail(emailData.getEmail(), emailData.getSubject(), emailData.getBody());
+		}
 		return changedOrderStatus;
 	}
 	
