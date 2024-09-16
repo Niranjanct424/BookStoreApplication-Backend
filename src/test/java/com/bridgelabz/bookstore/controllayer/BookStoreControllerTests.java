@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.bridgelabz.bookstore.controller.BookStoreController;
 import com.bridgelabz.bookstore.dto.BookDto;
-import com.bridgelabz.bookstore.entity.BookInformation;
+import com.bridgelabz.bookstore.entity.Book;
 import com.bridgelabz.bookstore.service.IBookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -54,7 +54,7 @@ class BookStoreControllerTests {
 
 	@Test
 	final void testGetBookById() throws Exception {
-		BookInformation book = new BookInformation();
+		Book book = new Book();
 		ObjectMapper object = new ObjectMapper();
 		String bookdto = object.writeValueAsString(book);
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/books/"+3L).content(bookdto).contentType(MediaType.APPLICATION_JSON);
@@ -65,7 +65,7 @@ class BookStoreControllerTests {
 	
 	@Test
 	final void testGetBookPagewise() throws Exception { 
-		BookInformation book = new BookInformation();
+		Book book = new Book();
 		ObjectMapper object = new ObjectMapper();
 		String bookdto = object.writeValueAsString(book);
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/books/pagewise/"+1L).content(bookdto).contentType(MediaType.APPLICATION_JSON);
@@ -76,7 +76,7 @@ class BookStoreControllerTests {
 	
 	@Test 
 	final void testUnSorting() throws Exception {
-		List<BookInformation> book = new ArrayList<BookInformation>();
+		List<Book> book = new ArrayList<Book>();
 		ObjectMapper object = new ObjectMapper();
 		String bookdto = object.writeValueAsString(book);
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/books/unsorting").content(bookdto).contentType(MediaType.APPLICATION_JSON);
@@ -93,7 +93,7 @@ class BookStoreControllerTests {
 		info.setBookName("Java");
 		info.setImage("Birds");
 		info.setPrice(1000.00);
-		info.setQuantity(2);
+		info.setNoOfBooks((long) 2);
 		ObjectMapper object = new ObjectMapper();
 		String bookdto = object.writeValueAsString(info);
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/books/addbook", info).content(bookdto).contentType(MediaType.APPLICATION_JSON);

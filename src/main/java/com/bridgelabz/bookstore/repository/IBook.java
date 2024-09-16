@@ -2,12 +2,12 @@ package com.bridgelabz.bookstore.repository;
 
 import java.util.List;
 
-import com.bridgelabz.bookstore.entity.BookInformation;
+import com.bridgelabz.bookstore.entity.Book;
 
 public interface IBook {
 
-	BookInformation save(BookInformation bookinformation);
+	Book save(Book bookinformation);
 
-	List<BookInformation> getUsers();
+	List<Book> getUsers();
 
 }

@@ -19,5 +19,6 @@ public class SwaggerConfig {
 				.apis(RequestHandlerSelectors.basePackage("com.bridgelabz.bookstore.controller"))
 				.paths(PathSelectors.any()).build();
 	}
+	
 
 }
